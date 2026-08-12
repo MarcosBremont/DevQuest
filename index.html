@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <title>DevQuest · Aprende a programar</title>
+  <meta name="description" content="DevQuest: aprende HTML, CSS y JavaScript jugando, con progreso guardado y soporte offline.">
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#0d1117">
+  <meta name="color-scheme" content="dark light">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-maskable.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DevQuest">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ============ PANTALLA: SPLASH ============ -->
+    <section id="screen-splash" class="screen is-active" data-screen="splash" aria-label="Cargando">
+      <div class="splash-content">
+        <div class="splash-logo" aria-hidden="true">&lt;/&gt;</div>
+        <h1 class="splash-title">Dev<span class="accent-text">Quest</span></h1>
+        <p class="splash-subtitle">Aprende a programar jugando</p>
+        <div class="splash-loader" role="status" aria-label="Cargando"><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <!-- ============ PANTALLA: BIENVENIDA ============ -->
+    <section id="screen-welcome" class="screen" data-screen="welcome">
+      <div class="welcome-content">
+        <div class="welcome-logo" aria-hidden="true">&lt;/&gt;</div>
+        <h1 class="welcome-title">Dev<span class="accent-text">Quest</span></h1>
+        <p class="welcome-tagline">Domina <strong>HTML</strong>, <strong>CSS</strong> y <strong>JavaScript</strong> a través de retos, minijuegos y desafíos de código. 100% offline.</p>
+
+        <ul class="welcome-features">
+          <li><span class="feat-icon">🎮</span> Minijuegos interactivos por nivel</li>
+          <li><span class="feat-icon">🔥</span> Racha diaria y sistema de XP</li>
+          <li><span class="feat-icon">🏅</span> Medallas e insignias por logros</li>
+          <li><span class="feat-icon">📴</span> Funciona sin conexión a internet</li>
+        </ul>
+
+        <button id="btn-start" class="btn btn-primary btn-block">Comenzar la aventura</button>
+      </div>
+    </section>
+
+    <!-- ============ APP SHELL (con header fijo) ============ -->
+    <div id="app-shell" class="hidden">
+
+      <header id="app-header">
+        <div class="header-top">
+          <button id="btn-back" class="icon-btn hidden" aria-label="Volver atrás">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <div class="brand">
+            <span class="brand-icon" aria-hidden="true">&lt;/&gt;</span>
+            <span>Dev<span class="accent-text">Quest</span></span>
+          </div>
+          <button id="btn-badges" class="icon-btn" aria-label="Ver insignias">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><path d="M8.7 13.5 7 22l5-3 5 3-1.7-8.5"></path></svg>
+          </button>
+        </div>
+
+        <div class="stats-bar" aria-label="Tu progreso">
+          <div class="stat stat-streak" title="Racha diaria">
+            <span class="stat-icon">🔥</span>
+            <span id="stat-streak" class="stat-value">0</span>
+          </div>
+          <div class="stat stat-level" title="Nivel actual">
+            <span class="stat-icon">⭐</span>
+            <span>Nv. <span id="stat-level" class="stat-value">1</span></span>
+          </div>
+          <div class="stat stat-xp" title="Experiencia total">
+            <span class="stat-icon">💎</span>
+            <span id="stat-xp" class="stat-value">0</span>
+            <span class="stat-label">XP</span>
+          </div>
+        </div>
+
+        <div class="progress-track" role="progressbar" aria-label="Progreso general del curso" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="course-progress-bar">
+          <div id="course-progress-fill" class="progress-fill"></div>
+        </div>
+      </header>
+
+      <main id="main-content">
+
+        <!-- ---- Ruta de aprendizaje ---- -->
+        <section id="screen-path" class="screen" data-screen="path">
+          <div class="path-intro">
+            <h2>Tu ruta de aprendizaje</h2>
+            <p id="path-summary" class="path-summary">0 de 0 niveles completados</p>
+          </div>
+          <div id="modules-container" class="modules-container"></div>
+        </section>
+
+        <!-- ---- Lección / ejercicio ---- -->
+        <section id="screen-lesson" class="screen" data-screen="lesson">
+          <div id="lesson-container" class="lesson-container"></div>
+        </section>
+
+        <!-- ---- Insignias ---- -->
+        <section id="screen-achievements" class="screen" data-screen="achievements">
+          <div class="path-intro">
+            <h2>Tus insignias</h2>
+            <p class="path-summary">Logros desbloqueados jugando a DevQuest</p>
+          </div>
+          <div id="badges-container" class="badges-grid"></div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- ============ OVERLAY DE FEEDBACK (acierto/error) ============ -->
+    <div id="feedback-overlay" class="feedback-overlay hidden" role="alert" aria-live="assertive">
+      <div class="feedback-card">
+        <div id="feedback-icon" class="feedback-icon">✔</div>
+        <p id="feedback-message" class="feedback-message">¡Correcto!</p>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: NIVEL COMPLETADO ============ -->
+    <div id="modal-level-complete" class="modal-backdrop hidden">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-burst" id="modal-burst" aria-hidden="true"></div>
+        <div class="modal-trophy">🏆</div>
+        <h2 id="modal-title">¡Nivel superado!</h2>
+        <p id="modal-level-name" class="modal-level-name">Nombre del nivel</p>
+        <div class="modal-xp-earned">+<span id="modal-xp-amount">50</span> XP</div>
+        <div id="modal-badge-earned" class="modal-badge-earned hidden">
+          <span class="modal-badge-icon" id="modal-badge-icon">🏅</span>
+          <span>Nueva insignia: <strong id="modal-badge-name"></strong></span>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-modal-continue" class="btn btn-primary btn-block">Continuar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast para notificaciones cortas -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  </div>
+
+  <script src="content-html.js"></script>
+  <script src="content-css.js"></script>
+  <script src="content-js.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

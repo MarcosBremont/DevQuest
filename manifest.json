@@ -1,0 +1,29 @@
+{
+  "name": "DevQuest — Aprende a programar",
+  "short_name": "DevQuest",
+  "description": "Aprende HTML, CSS y JavaScript jugando, con progreso guardado y soporte 100% offline.",
+  "id": "/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0f17",
+  "theme_color": "#0b0f17",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["education", "developer"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
