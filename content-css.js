@@ -189,5 +189,1336 @@ const CSS_LEVELS = [
         { prompt: '¿Qué propiedad controla cuántas veces se repite una animación?', options: ['animation-iteration-count', 'animation-repeat', 'animation-loop', 'transition-count'], answer: 'animation-iteration-count' }
       ]
     }
+  },
+  {
+    id: 'css-7',
+    title: 'Unidades de medida',
+    subtitle: 'Nivel 7',
+    xp: 55,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'CSS ofrece varias unidades para medir tamaños. <code>px</code> es un valor fijo en píxeles, mientras que <code>%</code>, <code>em</code> y <code>rem</code> son unidades relativas.',
+        '<code>em</code> es relativo al tamaño de fuente del elemento padre, <code>rem</code> es relativo al tamaño de fuente del elemento raíz (<code>html</code>), y <code>vh</code>/<code>vw</code> son relativos al alto y ancho del viewport.'
+      ],
+      code:
+        '<span class="tok-prop">.titulo</span> {\n' +
+        '  <span class="tok-prop">font-size</span>: <span class="tok-val">2rem</span>;\n' +
+        '  <span class="tok-prop">padding</span>: <span class="tok-val">1em</span>;\n' +
+        '  <span class="tok-prop">width</span>: <span class="tok-val">50vw</span>;\n' +
+        '  <span class="tok-prop">height</span>: <span class="tok-val">20vh</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre unidades de medida en CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué unidad es relativa al tamaño de fuente del elemento raíz (html)?', options: ['rem', 'em', 'px', 'vh'], answer: 'rem' },
+        { prompt: '¿Qué unidad representa el 1% del alto del viewport?', options: ['vh', 'vw', '%', 'rem'], answer: 'vh' },
+        { prompt: '¿Qué unidad es relativa al tamaño de fuente del elemento padre?', options: ['em', 'rem', 'px', 'vw'], answer: 'em' },
+        { prompt: '¿Cuál de estas unidades es fija y no cambia según el contexto?', options: ['px', 'em', 'rem', '%'], answer: 'px' }
+      ]
+    }
+  },
+  {
+    id: 'css-8',
+    title: 'Tipografía: fuentes y texto',
+    subtitle: 'Nivel 8',
+    xp: 58,
+    type: 'fill-tags',
+    theory: {
+      paragraphs: [
+        'La tipografía se controla con propiedades como <code>font-family</code> (tipo de letra), <code>font-weight</code> (grosor) y <code>line-height</code> (altura de línea).',
+        '<code>text-align</code> alinea el texto horizontalmente dentro de su contenedor: izquierda, centro, derecha o justificado.'
+      ],
+      code:
+        '<span class="tok-prop">p</span> {\n' +
+        '  <span class="tok-prop">font-family</span>: <span class="tok-val">sans-serif</span>;\n' +
+        '  <span class="tok-prop">font-weight</span>: <span class="tok-val">600</span>;\n' +
+        '  <span class="tok-prop">line-height</span>: <span class="tok-val">1.5</span>;\n' +
+        '  <span class="tok-prop">text-align</span>: <span class="tok-val">center</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Completa la propiedad CSS que falta en cada regla.',
+      blanks: [
+        { id: 'b1', before: '.parrafo {\n  ', after: ': Georgia, serif;\n}', answer: 'font-family', options: ['font-family', 'font-weight', 'font-style', 'text-family'] },
+        { id: 'b2', before: '.titulo {\n  ', after: ': 700;\n}', answer: 'font-weight', options: ['font-weight', 'font-size', 'font-style', 'text-weight'] },
+        { id: 'b3', before: '.texto {\n  ', after: ': 1.6;\n}', answer: 'line-height', options: ['line-height', 'letter-spacing', 'word-spacing', 'text-height'] },
+        { id: 'b4', before: '.aviso {\n  ', after: ': center;\n}', answer: 'text-align', options: ['text-align', 'align-items', 'justify-content', 'text-position'] }
+      ]
+    }
+  },
+  {
+    id: 'css-9',
+    title: 'Fondos y background',
+    subtitle: 'Nivel 9',
+    xp: 60,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>background-color</code> define el color de fondo de un elemento, y <code>background-image</code> permite usar una imagen como fondo.',
+        '<code>background-size</code> controla cómo se ajusta la imagen dentro del elemento; valores comunes son <code>cover</code> (cubre todo el espacio, recortando si hace falta) y <code>contain</code> (se ve completa).'
+      ],
+      code:
+        '<span class="tok-prop">.hero</span> {\n' +
+        '  <span class="tok-prop">background-color</span>: <span class="tok-val">#0f1117</span>;\n' +
+        '  <span class="tok-prop">background-image</span>: <span class="tok-val">url(fondo.jpg)</span>;\n' +
+        '  <span class="tok-prop">background-size</span>: <span class="tok-val">cover</span>;\n' +
+        '  <span class="tok-prop">background-position</span>: <span class="tok-val">center</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre fondos en CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad define el color de fondo de un elemento?', options: ['background-color', 'color', 'fill', 'backdrop'], answer: 'background-color' },
+        { prompt: '¿Qué propiedad permite usar una imagen como fondo?', options: ['background-image', 'background-src', 'image', 'background-url'], answer: 'background-image' },
+        { prompt: '¿Qué valor de background-size hace que la imagen cubra todo el elemento, recortando si es necesario?', options: ['cover', 'contain', 'fill', 'auto'], answer: 'cover' },
+        { prompt: '¿Qué propiedad controla si una imagen de fondo se repite o no?', options: ['background-repeat', 'background-size', 'background-position', 'background-clip'], answer: 'background-repeat' }
+      ]
+    }
+  },
+  {
+    id: 'css-10',
+    title: 'Display: block, inline e inline-block',
+    subtitle: 'Nivel 10',
+    xp: 62,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>display</code> determina cómo se comporta un elemento en el flujo del documento. <code>block</code> ocupa todo el ancho disponible y empieza en una nueva línea; <code>inline</code> solo ocupa el espacio de su contenido y no acepta width ni height.',
+        '<code>inline-block</code> combina lo mejor de ambos: fluye como inline pero acepta <code>width</code>, <code>height</code>, <code>padding</code> y <code>margin</code>. <code>display: none</code> oculta el elemento por completo, sacándolo del flujo.'
+      ],
+      code:
+        '<span class="tok-prop">span</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">inline-block</span>;\n' +
+        '  <span class="tok-prop">width</span>: <span class="tok-val">100px</span>;\n' +
+        '  <span class="tok-prop">height</span>: <span class="tok-val">40px</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.oculto</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">none</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre la propiedad display.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué valor de display hace que un elemento ocupe todo el ancho disponible y empiece en una nueva línea?', options: ['block', 'inline', 'inline-block', 'none'], answer: 'block' },
+        { prompt: '¿Qué valor de display NO permite establecer width ni height al elemento?', options: ['inline', 'block', 'inline-block', 'flex'], answer: 'inline' },
+        { prompt: '¿Qué valor combina el flujo horizontal de inline con la posibilidad de definir width y height?', options: ['inline-block', 'block', 'inline', 'none'], answer: 'inline-block' },
+        { prompt: '¿Qué valor de display oculta un elemento y lo saca por completo del flujo del documento?', options: ['none', 'inline', 'block', 'hidden'], answer: 'none' }
+      ]
+    }
+  },
+  {
+    id: 'css-11',
+    title: 'Posicionamiento: static y relative',
+    subtitle: 'Nivel 11',
+    xp: 64,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>position</code> controla cómo se ubica un elemento. <code>static</code> es el valor por defecto: el elemento sigue el flujo normal y las propiedades <code>top</code>/<code>left</code> no tienen efecto.',
+        '<code>relative</code> también respeta el flujo normal, pero permite desplazar el elemento desde su posición original usando <code>top</code>, <code>right</code>, <code>bottom</code> o <code>left</code>, sin afectar a los elementos vecinos.'
+      ],
+      code:
+        '<span class="tok-prop">.caja</span> {\n' +
+        '  <span class="tok-prop">position</span>: <span class="tok-val">relative</span>;\n' +
+        '  <span class="tok-prop">top</span>: <span class="tok-val">10px</span>;\n' +
+        '  <span class="tok-prop">left</span>: <span class="tok-val">20px</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre position: static y relative.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Cuál es el valor por defecto de la propiedad position?', options: ['static', 'relative', 'absolute', 'fixed'], answer: 'static' },
+        { prompt: '¿Qué valor de position permite mover un elemento con top/left sin sacarlo del flujo normal?', options: ['relative', 'static', 'absolute', 'sticky'], answer: 'relative' },
+        { prompt: 'Con position: static, ¿qué efecto tienen las propiedades top, left, right y bottom?', options: ['Ninguno, se ignoran', 'Mueven el elemento desde el borde de la ventana', 'Mueven el elemento respecto a su padre', 'Generan un error'], answer: 'Ninguno, se ignoran' },
+        { prompt: 'Al usar position: relative con top: 10px, ¿respecto a qué se desplaza el elemento?', options: ['Respecto a su propia posición original', 'Respecto al elemento padre', 'Respecto a la ventana del navegador', 'Respecto al último elemento con position definida'], answer: 'Respecto a su propia posición original' }
+      ]
+    }
+  },
+  {
+    id: 'css-12',
+    title: 'Posicionamiento: absolute y fixed',
+    subtitle: 'Nivel 12',
+    xp: 66,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        '<code>position: absolute</code> saca al elemento del flujo normal y lo ubica respecto a su ancestro posicionado más cercano (el primero que tenga <code>position</code> distinto de <code>static</code>). Si no hay ninguno, se posiciona respecto al documento.',
+        '<code>position: fixed</code> también saca al elemento del flujo, pero lo posiciona respecto a la ventana del navegador (viewport), por lo que permanece visible aunque se haga scroll.'
+      ],
+      code:
+        '<span class="tok-prop">.modal</span> {\n' +
+        '  <span class="tok-prop">position</span>: <span class="tok-val">fixed</span>;\n' +
+        '  <span class="tok-prop">top</span>: <span class="tok-val">0</span>;\n' +
+        '  <span class="tok-prop">right</span>: <span class="tok-val">0</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.tooltip</span> {\n' +
+        '  <span class="tok-prop">position</span>: <span class="tok-val">absolute</span>;\n' +
+        '  <span class="tok-prop">bottom</span>: <span class="tok-val">100%</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre position: absolute y fixed.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Respecto a qué se posiciona un elemento con position: absolute?', options: ['Su ancestro posicionado más cercano', 'Siempre respecto a la ventana del navegador', 'Siempre respecto a su elemento padre inmediato', 'Respecto al elemento anterior en el HTML'], answer: 'Su ancestro posicionado más cercano' },
+        { prompt: '¿Qué valor de position mantiene un elemento fijo en pantalla incluso al hacer scroll?', options: ['fixed', 'absolute', 'relative', 'static'], answer: 'fixed' },
+        { prompt: 'Para que position: absolute funcione respecto a un contenedor específico, ¿qué debe tener ese contenedor?', options: ['Una propiedad position distinta de static (por ejemplo relative)', 'Un display: flex', 'Un width definido en píxeles', 'Ninguna configuración especial'], answer: 'Una propiedad position distinta de static (por ejemplo relative)' },
+        { prompt: '¿Qué tienen en común absolute y fixed respecto al flujo normal del documento?', options: ['Ambos sacan al elemento del flujo normal', 'Ambos respetan el flujo normal', 'Ambos requieren display: grid', 'Ninguno acepta z-index'], answer: 'Ambos sacan al elemento del flujo normal' }
+      ]
+    }
+  },
+  {
+    id: 'css-13',
+    title: 'z-index y apilamiento de capas',
+    subtitle: 'Nivel 13',
+    xp: 68,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Cuando varios elementos posicionados se superponen, <code>z-index</code> determina cuál se muestra por delante: a mayor valor, más arriba en la pila.',
+        '<code>z-index</code> solo funciona en elementos con <code>position</code> distinto de <code>static</code> (relative, absolute, fixed o sticky).'
+      ],
+      code:
+        '<span class="tok-prop">.fondo</span> {\n' +
+        '  <span class="tok-prop">position</span>: <span class="tok-val">absolute</span>;\n' +
+        '  <span class="tok-prop">z-index</span>: <span class="tok-val">1</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.modal</span> {\n' +
+        '  <span class="tok-prop">position</span>: <span class="tok-val">absolute</span>;\n' +
+        '  <span class="tok-prop">z-index</span>: <span class="tok-val">10</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre z-index y apilamiento de capas.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad controla qué elemento se muestra por delante cuando dos se superponen?', options: ['z-index', 'position', 'order', 'layer'], answer: 'z-index' },
+        { prompt: 'Entre dos elementos superpuestos con position definida, ¿cuál se muestra encima?', options: ['El que tenga mayor z-index', 'El que tenga menor z-index', 'El que esté primero en el HTML', 'El que tenga mayor width'], answer: 'El que tenga mayor z-index' },
+        { prompt: '¿Qué requisito necesita un elemento para que z-index tenga efecto?', options: ['Tener position distinto de static', 'Tener display: block', 'Tener un ancho definido', 'Estar dentro de un contenedor flex'], answer: 'Tener position distinto de static' },
+        { prompt: '¿Puede z-index tener valores negativos?', options: ['Sí, para enviar el elemento detrás de otros', 'No, siempre debe ser positivo', 'Solo si se usa con float', 'No, CSS lo redondea a 0'], answer: 'Sí, para enviar el elemento detrás de otros' }
+      ]
+    }
+  },
+  {
+    id: 'css-14',
+    title: 'Bordes y sombras',
+    subtitle: 'Nivel 14',
+    xp: 70,
+    type: 'fill-tags',
+    theory: {
+      paragraphs: [
+        '<code>border-style</code> define el trazo del borde: <code>solid</code>, <code>dashed</code>, <code>dotted</code>, entre otros. Se combina con <code>border-width</code> y <code>border-color</code>.',
+        '<code>box-shadow</code> agrega una sombra alrededor de la caja, con desplazamiento horizontal, vertical, difuminado y color.'
+      ],
+      code:
+        '<span class="tok-prop">.tarjeta</span> {\n' +
+        '  <span class="tok-prop">border-style</span>: <span class="tok-val">dashed</span>;\n' +
+        '  <span class="tok-prop">border-width</span>: <span class="tok-val">2px</span>;\n' +
+        '  <span class="tok-prop">box-shadow</span>: <span class="tok-val">0 4px 12px rgba(0,0,0,0.3)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Completa la propiedad CSS que falta en cada regla.',
+      blanks: [
+        { id: 'b1', before: '.linea {\n  ', after: ': dotted;\n}', answer: 'border-style', options: ['border-style', 'border-type', 'border-line', 'border-kind'] },
+        { id: 'b2', before: '.marco {\n  ', after: ': 3px;\n}', answer: 'border-width', options: ['border-width', 'border-size', 'border-thickness', 'border-length'] },
+        { id: 'b3', before: '.tarjeta {\n  ', after: ': 0 2px 8px rgba(0,0,0,0.4);\n}', answer: 'box-shadow', options: ['box-shadow', 'text-shadow', 'shadow', 'drop-shadow'] },
+        { id: 'b4', before: '.circulo {\n  ', after: ': 50%;\n}', answer: 'border-radius', options: ['border-radius', 'border-round', 'corner-radius', 'radius'] }
+      ]
+    }
+  },
+  {
+    id: 'css-15',
+    title: 'Listas con estilo',
+    subtitle: 'Nivel 15',
+    xp: 72,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>list-style-type</code> cambia el marcador de los elementos de una lista, por ejemplo círculos, números romanos o ninguno.',
+        '<code>list-style</code> es la propiedad abreviada que combina tipo, posición e imagen del marcador; <code>list-style: none</code> es muy común para quitar los puntos en menús de navegación.'
+      ],
+      code:
+        '<span class="tok-prop">ul.menu</span> {\n' +
+        '  <span class="tok-prop">list-style</span>: <span class="tok-val">none</span>;\n' +
+        '  <span class="tok-prop">padding</span>: <span class="tok-val">0</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">ol</span> {\n' +
+        '  <span class="tok-prop">list-style-type</span>: <span class="tok-val">upper-roman</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre listas con estilo.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué declaración quita por completo los marcadores de una lista?', options: ['list-style: none', 'list-style-type: hidden', 'display: none', 'list-item: off'], answer: 'list-style: none' },
+        { prompt: '¿Qué propiedad cambia el tipo de marcador (círculo, cuadrado, número romano)?', options: ['list-style-type', 'list-style-image', 'list-marker', 'bullet-style'], answer: 'list-style-type' },
+        { prompt: 'En un menú de navegación hecho con una lista, ¿por qué suele usarse list-style: none?', options: ['Para quitar los puntos y que se vea como un menú, no como una lista', 'Porque es obligatorio en HTML5', 'Para que los enlaces sean clicables', 'Para centrar el menú'], answer: 'Para quitar los puntos y que se vea como un menú, no como una lista' },
+        { prompt: '¿Qué propiedad indica desde dónde se posiciona el marcador respecto al texto?', options: ['list-style-position', 'list-style-type', 'text-indent', 'list-align'], answer: 'list-style-position' }
+      ]
+    }
+  },
+  {
+    id: 'css-16',
+    title: 'Cursor y estados del puntero',
+    subtitle: 'Nivel 16',
+    xp: 74,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>cursor</code> cambia el ícono del puntero del mouse al pasar sobre un elemento, por ejemplo <code>pointer</code> para indicar que es clicable.',
+        'Combinar <code>cursor</code> con pseudo-clases como <code>:hover</code> o <code>:disabled</code> ayuda a comunicar visualmente si un elemento es interactivo o no.'
+      ],
+      code:
+        '<span class="tok-prop">.boton</span> {\n' +
+        '  <span class="tok-prop">cursor</span>: <span class="tok-val">pointer</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.boton:disabled</span> {\n' +
+        '  <span class="tok-prop">cursor</span>: <span class="tok-val">not-allowed</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre cursor y estados del puntero.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad cambia el ícono del cursor al pasar sobre un elemento?', options: ['cursor', 'pointer-events', 'hover', 'mouse-style'], answer: 'cursor' },
+        { prompt: '¿Qué valor de cursor suele usarse para indicar que un elemento es clicable, como un botón o enlace?', options: ['pointer', 'hand', 'click', 'default'], answer: 'pointer' },
+        { prompt: '¿Qué valor de cursor indica que una acción no está disponible?', options: ['not-allowed', 'disabled', 'blocked', 'wait'], answer: 'not-allowed' },
+        { prompt: '¿Qué pseudo-clase permite aplicar un cursor distinto a un botón deshabilitado?', options: [':disabled', ':hover', ':focus', ':empty'], answer: ':disabled' }
+      ]
+    }
+  },
+  {
+    id: 'css-17',
+    title: 'Comentarios y organización del código',
+    subtitle: 'Nivel 17',
+    xp: 76,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Los comentarios en CSS se escriben entre <code>/* */</code> y no se muestran en la página; sirven para explicar o dejar notas en el código.',
+        'Organizar el CSS en secciones (variables, reset, tipografía, componentes, layout) con comentarios facilita mantener el código a medida que el proyecto crece.'
+      ],
+      code:
+        '<span class="tok-comment">/* ===== Colores base ===== */</span>\n' +
+        '<span class="tok-prop">:root</span> {\n' +
+        '  <span class="tok-prop">--color-primario</span>: <span class="tok-val">#39ffb0</span>;\n' +
+        '}\n\n' +
+        '<span class="tok-comment">/* Botones */</span>\n' +
+        '<span class="tok-prop">.boton</span> {\n' +
+        '  <span class="tok-prop">background</span>: <span class="tok-val">var(--color-primario)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre comentarios y organización del CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Cómo se escribe un comentario en CSS?', options: ['/* comentario */', '// comentario', '<!-- comentario -->', '# comentario'], answer: '/* comentario */' },
+        { prompt: '¿Los comentarios en CSS se muestran en la página al usuario final?', options: ['No, nunca se muestran', 'Sí, siempre se muestran', 'Solo si tienen la clase comment', 'Solo en navegadores antiguos'], answer: 'No, nunca se muestran' },
+        { prompt: '¿Qué ventaja tiene organizar el CSS en secciones comentadas?', options: ['Facilita encontrar y mantener el código', 'Hace que la página cargue más rápido', 'Es obligatorio para que el CSS funcione', 'Reduce el tamaño del archivo'], answer: 'Facilita encontrar y mantener el código' },
+        { prompt: '¿Cuál de estos NO es un comentario válido en CSS?', options: ['// comentario', '/* comentario */', '/* comentario\n   en varias líneas */', '/* -- nota -- */'], answer: '// comentario' }
+      ]
+    }
+  },
+  {
+    id: 'css-18',
+    title: 'Formas de vincular CSS a un HTML',
+    subtitle: 'Nivel 18',
+    xp: 78,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Hay tres formas de aplicar CSS a un documento HTML: <strong>inline</strong> (atributo <code>style</code> en la etiqueta), <strong>interno</strong> (etiqueta <code>&lt;style&gt;</code> en el head) y <strong>externo</strong> (archivo .css enlazado con <code>&lt;link&gt;</code>).',
+        'La forma externa es la más recomendada en proyectos grandes porque separa contenido y estilo, permite reutilizar el mismo CSS en varias páginas y se puede cachear en el navegador.'
+      ],
+      code:
+        '<span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-string">"stylesheet"</span> <span class="tok-attr">href</span>=<span class="tok-string">"estilos.css"</span><span class="tok-tag">&gt;</span>\n\n' +
+        '<span class="tok-tag">&lt;style&gt;</span>\n' +
+        '  <span class="tok-prop">body</span> { <span class="tok-prop">margin</span>: <span class="tok-val">0</span>; }\n' +
+        '<span class="tok-tag">&lt;/style&gt;</span>\n\n' +
+        '<span class="tok-tag">&lt;p</span> <span class="tok-attr">style</span>=<span class="tok-string">"color: red;"</span><span class="tok-tag">&gt;</span>Texto<span class="tok-tag">&lt;/p&gt;</span>'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre las formas de vincular CSS a un HTML.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué atributo se usa para aplicar CSS inline directamente en una etiqueta HTML?', options: ['style', 'class', 'css', 'link'], answer: 'style' },
+        { prompt: '¿Qué etiqueta enlaza un archivo CSS externo?', options: ['link', 'style', 'script', 'css'], answer: 'link' },
+        { prompt: '¿Qué forma de aplicar CSS es la más recomendada para proyectos grandes?', options: ['Externa, con un archivo .css enlazado', 'Inline, en cada etiqueta', 'Interna, en el head de cada página', 'No importa, todas son iguales'], answer: 'Externa, con un archivo .css enlazado' },
+        { prompt: '¿Qué etiqueta se usa para escribir CSS interno dentro del propio HTML?', options: ['style', 'link', 'script', 'css'], answer: 'style' }
+      ]
+    }
+  },
+  {
+    id: 'css-19',
+    title: 'Especificidad y cascada CSS',
+    subtitle: 'Nivel 19',
+    xp: 79,
+    type: 'order-builder',
+    theory: {
+      paragraphs: [
+        'Cuando varias reglas CSS afectan al mismo elemento, la <strong>especificidad</strong> decide cuál gana. Los selectores de id pesan más que las clases, y las clases pesan más que los selectores de etiqueta.',
+        'Los estilos <strong>inline</strong> (atributo style) tienen la especificidad más alta de todas, por encima de cualquier selector en una hoja de estilos, salvo que se use <code>!important</code>.'
+      ],
+      code:
+        '<span class="tok-prop">p</span> { <span class="tok-prop">color</span>: <span class="tok-val">black</span>; }          ' + '<span class="tok-comment">/* etiqueta */</span>\n' +
+        '<span class="tok-prop">.aviso</span> { <span class="tok-prop">color</span>: <span class="tok-val">orange</span>; }   ' + '<span class="tok-comment">/* clase */</span>\n' +
+        '<span class="tok-prop">#principal</span> { <span class="tok-prop">color</span>: <span class="tok-val">blue</span>; } ' + '<span class="tok-comment">/* id */</span>'
+    },
+    exercise: {
+      instructions: 'Ordená estas formas de aplicar el color de un texto, de menor a mayor especificidad.',
+      items: [
+        { id: 'a', code: 'p { color: black; }' },
+        { id: 'b', code: '.aviso { color: orange; }' },
+        { id: 'c', code: '#principal { color: blue; }' },
+        { id: 'd', code: 'style="color: red;" (inline)' }
+      ],
+      correctOrder: ['a', 'b', 'c', 'd']
+    }
+  },
+  {
+    id: 'css-20',
+    title: 'Herencia de propiedades',
+    subtitle: 'Nivel 20',
+    xp: 80,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Algunas propiedades CSS se <strong>heredan</strong> automáticamente de un elemento padre a sus hijos, como <code>color</code>, <code>font-family</code> o <code>line-height</code>.',
+        'Otras propiedades, como <code>border</code>, <code>margin</code> o <code>padding</code>, NO se heredan por defecto: cada elemento debe definirlas explícitamente. La palabra clave <code>inherit</code> fuerza a un elemento a heredar el valor de su padre.'
+      ],
+      code:
+        '<span class="tok-prop">body</span> {\n' +
+        '  <span class="tok-prop">color</span>: <span class="tok-val">#222</span>;\n' +
+        '  <span class="tok-prop">font-family</span>: <span class="tok-val">sans-serif</span>;\n' +
+        '}\n' +
+        '<span class="tok-comment">/* los párrafos heredan color y font-family automáticamente */</span>\n\n' +
+        '<span class="tok-prop">.hijo</span> {\n' +
+        '  <span class="tok-prop">border</span>: <span class="tok-val">inherit</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre herencia de propiedades en CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Cuál de estas propiedades SÍ se hereda por defecto de padre a hijo?', options: ['color', 'border', 'margin', 'padding'], answer: 'color' },
+        { prompt: '¿Cuál de estas propiedades NO se hereda por defecto?', options: ['border', 'font-family', 'color', 'line-height'], answer: 'border' },
+        { prompt: '¿Qué valor especial fuerza a un elemento a tomar el valor de su padre en una propiedad que normalmente no se hereda?', options: ['inherit', 'initial', 'unset', 'auto'], answer: 'inherit' },
+        { prompt: 'Si defino color en el elemento body, ¿qué pasa con el texto de un párrafo dentro de body que no define su propio color?', options: ['Hereda el color de body', 'Se muestra en negro sin importar el color de body', 'CSS genera un error', 'El texto desaparece'], answer: 'Hereda el color de body' }
+      ]
+    }
+  },
+  {
+    id: 'css-21',
+    title: 'Flexbox: flex-direction y flex-wrap',
+    subtitle: 'Nivel 21',
+    xp: 80,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        '<code>flex-direction</code> define el eje principal del contenedor flex: <code>row</code> (horizontal, por defecto), <code>column</code> (vertical), o sus versiones invertidas <code>row-reverse</code> y <code>column-reverse</code>.',
+        'Por defecto los elementos flex intentan caber en una sola línea. <code>flex-wrap: wrap</code> permite que pasen a la siguiente línea cuando no hay espacio suficiente.'
+      ],
+      code:
+        '<span class="tok-prop">.contenedor</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">flex</span>;\n' +
+        '  <span class="tok-prop">flex-direction</span>: <span class="tok-val">column</span>;\n' +
+        '  <span class="tok-prop">flex-wrap</span>: <span class="tok-val">wrap</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre flex-direction y flex-wrap.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad cambia el eje principal de un contenedor flex de horizontal a vertical?', options: ['flex-direction', 'flex-wrap', 'justify-content', 'align-items'], answer: 'flex-direction' },
+        { prompt: '¿Qué valor de flex-direction apila los elementos verticalmente?', options: ['column', 'row', 'wrap', 'column-reverse'], answer: 'column' },
+        { prompt: '¿Qué propiedad permite que los elementos flex pasen a una nueva línea cuando no caben?', options: ['flex-wrap', 'flex-direction', 'flex-flow', 'overflow'], answer: 'flex-wrap' },
+        { prompt: '¿Cuál es el valor por defecto de flex-wrap?', options: ['nowrap', 'wrap', 'wrap-reverse', 'auto'], answer: 'nowrap' }
+      ]
+    }
+  },
+  {
+    id: 'css-22',
+    title: 'Flexbox: grow, shrink y basis',
+    subtitle: 'Nivel 22',
+    xp: 83,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        '<code>flex-grow</code> indica cuánto puede crecer un elemento para ocupar el espacio sobrante del contenedor, en proporción al resto. <code>flex-shrink</code> indica cuánto puede encogerse si no hay espacio suficiente.',
+        '<code>flex-basis</code> define el tamaño inicial del elemento antes de repartir el espacio sobrante. La propiedad abreviada <code>flex</code> combina las tres: <code>flex: grow shrink basis;</code>.'
+      ],
+      code:
+        '<span class="tok-prop">.item</span> {\n' +
+        '  <span class="tok-prop">flex-grow</span>: <span class="tok-val">1</span>;\n' +
+        '  <span class="tok-prop">flex-shrink</span>: <span class="tok-val">0</span>;\n' +
+        '  <span class="tok-prop">flex-basis</span>: <span class="tok-val">200px</span>;\n' +
+        '}\n' +
+        '<span class="tok-comment">/* equivalente a: */</span>\n' +
+        '<span class="tok-prop">.item</span> {\n' +
+        '  <span class="tok-prop">flex</span>: <span class="tok-val">1 0 200px</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre flex-grow, flex-shrink y flex-basis.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad controla cuánto puede crecer un elemento flex para ocupar el espacio sobrante?', options: ['flex-grow', 'flex-shrink', 'flex-basis', 'flex-wrap'], answer: 'flex-grow' },
+        { prompt: '¿Qué propiedad controla cuánto puede encogerse un elemento flex si falta espacio?', options: ['flex-shrink', 'flex-grow', 'flex-basis', 'flex-direction'], answer: 'flex-shrink' },
+        { prompt: '¿Qué propiedad define el tamaño inicial de un elemento flex antes de repartir el espacio sobrante?', options: ['flex-basis', 'flex-grow', 'flex-shrink', 'width'], answer: 'flex-basis' },
+        { prompt: 'Si un elemento tiene flex-grow: 0, ¿qué ocurre con el espacio sobrante del contenedor?', options: ['El elemento no crece, mantiene su tamaño base', 'El elemento ocupa todo el espacio sobrante', 'El contenedor genera un error', 'El elemento se encoge a 0'], answer: 'El elemento no crece, mantiene su tamaño base' }
+      ]
+    }
+  },
+  {
+    id: 'css-23',
+    title: 'CSS Grid: conceptos básicos',
+    subtitle: 'Nivel 23',
+    xp: 86,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'CSS Grid es un sistema de layout en dos dimensiones (filas y columnas). Se activa con <code>display: grid</code> en el contenedor.',
+        '<code>grid-template-columns</code> y <code>grid-template-rows</code> definen cuántas filas/columnas tiene la grilla y su tamaño. La función <code>repeat()</code> y la unidad <code>fr</code> (fracción del espacio disponible) simplifican la escritura.'
+      ],
+      code:
+        '<span class="tok-prop">.grid</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">grid</span>;\n' +
+        '  <span class="tok-prop">grid-template-columns</span>: <span class="tok-val">repeat(3, 1fr)</span>;\n' +
+        '  <span class="tok-prop">grid-template-rows</span>: <span class="tok-val">100px auto</span>;\n' +
+        '  <span class="tok-prop">gap</span>: <span class="tok-val">16px</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre los conceptos básicos de CSS Grid.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad activa el layout de Grid en un contenedor?', options: ['display: grid', 'display: flex', 'position: grid', 'layout: grid'], answer: 'display: grid' },
+        { prompt: '¿Qué propiedad define el número y tamaño de las columnas de la grilla?', options: ['grid-template-columns', 'grid-template-rows', 'grid-column', 'columns'], answer: 'grid-template-columns' },
+        { prompt: '¿Qué representa la unidad fr en CSS Grid?', options: ['Una fracción del espacio disponible', 'Un valor fijo en píxeles', 'Un porcentaje del viewport', 'La cantidad de filas'], answer: 'Una fracción del espacio disponible' },
+        { prompt: '¿Qué hace repeat(3, 1fr) dentro de grid-template-columns?', options: ['Crea 3 columnas de igual ancho', 'Crea 3 filas de igual alto', 'Repite el contenido 3 veces', 'Crea 1 columna de 3fr'], answer: 'Crea 3 columnas de igual ancho' }
+      ]
+    }
+  },
+  {
+    id: 'css-24',
+    title: 'CSS Grid: posicionar elementos',
+    subtitle: 'Nivel 24',
+    xp: 89,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Dentro de una grilla, se puede ubicar cada elemento en filas y columnas específicas con <code>grid-column</code> y <code>grid-row</code>, usando los números de línea de la grilla.',
+        'Por ejemplo, <code>grid-column: 1 / 3;</code> hace que un elemento ocupe desde la línea 1 hasta la línea 3, es decir, dos columnas.'
+      ],
+      code:
+        '<span class="tok-prop">.destacado</span> {\n' +
+        '  <span class="tok-prop">grid-column</span>: <span class="tok-val">1 / 3</span>;\n' +
+        '  <span class="tok-prop">grid-row</span>: <span class="tok-val">2 / 4</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre el posicionamiento de elementos en CSS Grid.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad ubica un elemento en columnas específicas de la grilla?', options: ['grid-column', 'grid-row', 'grid-area', 'column-span'], answer: 'grid-column' },
+        { prompt: '¿Qué hace grid-column: 1 / 3?', options: ['El elemento ocupa desde la línea 1 hasta la línea 3 (dos columnas)', 'El elemento ocupa la columna número 1 y 3 solamente', 'El elemento se repite 3 veces', 'El elemento ocupa 3 filas'], answer: 'El elemento ocupa desde la línea 1 hasta la línea 3 (dos columnas)' },
+        { prompt: '¿Qué propiedad ubica un elemento en filas específicas de la grilla?', options: ['grid-row', 'grid-column', 'row-span', 'grid-line'], answer: 'grid-row' },
+        { prompt: '¿Qué necesita un elemento hijo para poder usar grid-column y grid-row?', options: ['Que su contenedor padre tenga display: grid', 'Que tenga position: absolute', 'Que tenga display: flex', 'Nada especial, funciona siempre'], answer: 'Que su contenedor padre tenga display: grid' }
+      ]
+    }
+  },
+  {
+    id: 'css-25',
+    title: 'Variables CSS (custom properties)',
+    subtitle: 'Nivel 25',
+    xp: 92,
+    type: 'fill-tags',
+    theory: {
+      paragraphs: [
+        'Las variables CSS (custom properties) se declaran con dos guiones, por ejemplo <code>--color-primario: #39ffb0;</code>, generalmente dentro de <code>:root</code> para que estén disponibles en todo el documento.',
+        'Para usar el valor de una variable se usa la función <code>var()</code>, por ejemplo <code>color: var(--color-primario);</code>. Esto permite cambiar un valor en un solo lugar y que se actualice en toda la página.'
+      ],
+      code:
+        '<span class="tok-prop">:root</span> {\n' +
+        '  <span class="tok-prop">--color-primario</span>: <span class="tok-val">#39ffb0</span>;\n' +
+        '  <span class="tok-prop">--espaciado</span>: <span class="tok-val">16px</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.boton</span> {\n' +
+        '  <span class="tok-prop">background</span>: <span class="tok-val">var(--color-primario)</span>;\n' +
+        '  <span class="tok-prop">padding</span>: <span class="tok-val">var(--espaciado)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Completa cada línea con la variable, función o propiedad que corresponde.',
+      blanks: [
+        { id: 'b1', before: ':root {\n  ', after: ': #45d3ff;\n}', answer: '--color-secundario', options: ['--color-secundario', 'color-secundario', '$color-secundario', '@color-secundario'] },
+        { id: 'b2', before: '.boton {\n  background: ', after: '(--color-primario);\n}', answer: 'var', options: ['var', 'calc', 'get', 'value'] },
+        { id: 'b3', before: '.caja {\n  ', after: ': var(--espaciado);\n}', answer: 'padding', options: ['padding', 'margin', 'gap', 'border'] },
+        { id: 'b4', before: '.texto {\n  ', after: ': var(--color-primario);\n}', answer: 'color', options: ['color', 'background', 'border-color', 'fill'] }
+      ]
+    }
+  },
+  {
+    id: 'css-26',
+    title: 'Pseudo-elementos ::before y ::after',
+    subtitle: 'Nivel 26',
+    xp: 95,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Los pseudo-elementos permiten insertar contenido generado antes o después del contenido real de un elemento, sin agregar HTML extra. Se usan con <code>::before</code> y <code>::after</code>.',
+        'Requieren la propiedad <code>content</code> para funcionar, aunque sea con un valor vacío. Son muy usados para íconos decorativos, comillas o efectos visuales.'
+      ],
+      code:
+        '<span class="tok-prop">.cita::before</span> {\n' +
+        '  <span class="tok-prop">content</span>: <span class="tok-val">"“"</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.cita::after</span> {\n' +
+        '  <span class="tok-prop">content</span>: <span class="tok-val">"”"</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre los pseudo-elementos ::before y ::after.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué pseudo-elemento inserta contenido antes del contenido real de un elemento?', options: ['::before', '::after', ':hover', ':first-child'], answer: '::before' },
+        { prompt: '¿Qué propiedad es obligatoria para que ::before o ::after funcionen?', options: ['content', 'display', 'text', 'value'], answer: 'content' },
+        { prompt: '¿Qué pseudo-elemento inserta contenido después del contenido real?', options: ['::after', '::before', ':last-child', ':focus'], answer: '::after' },
+        { prompt: '¿Los pseudo-elementos ::before y ::after agregan elementos reales al HTML del documento?', options: ['No, son elementos virtuales generados solo visualmente por CSS', 'Sí, se agregan al DOM de forma permanente', 'Sí, pero solo si tienen id', 'No, y tampoco se pueden ver'], answer: 'No, son elementos virtuales generados solo visualmente por CSS' }
+      ]
+    }
+  },
+  {
+    id: 'css-27',
+    title: 'Combinadores de selectores',
+    subtitle: 'Nivel 27',
+    xp: 98,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'El combinador descendiente (espacio) selecciona elementos dentro de otro, sin importar la profundidad: <code>div p</code> selecciona todos los párrafos dentro de un div.',
+        'El combinador de hijo directo <code>&gt;</code> solo selecciona hijos inmediatos, y el combinador de hermano adyacente <code>+</code> selecciona el elemento que viene justo después de otro con el mismo padre.'
+      ],
+      code:
+        '<span class="tok-prop">div p</span> { <span class="tok-prop">color</span>: <span class="tok-val">gray</span>; }' + '   <span class="tok-comment">/* cualquier p descendiente */</span>\n' +
+        '<span class="tok-prop">div &gt; p</span> { <span class="tok-prop">color</span>: <span class="tok-val">blue</span>; }' + '  <span class="tok-comment">/* solo p hijos directos */</span>\n' +
+        '<span class="tok-prop">h2 + p</span> { <span class="tok-prop">margin-top</span>: <span class="tok-val">0</span>; }' + '  <span class="tok-comment">/* p justo después de un h2 */</span>'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre combinadores de selectores.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué selecciona el selector <code>div p</code> (con un espacio)?', options: ['Todos los párrafos descendientes de un div, sin importar la profundidad', 'Solo los párrafos que son hijos directos de un div', 'El primer párrafo dentro de un div', 'Todos los div que están dentro de un párrafo'], answer: 'Todos los párrafos descendientes de un div, sin importar la profundidad' },
+        { prompt: '¿Qué selecciona el selector <code>div &gt; p</code>?', options: ['Solo los párrafos que son hijos directos de un div', 'Todos los párrafos descendientes de un div', 'El párrafo que viene después de un div', 'Todos los div hijos de un párrafo'], answer: 'Solo los párrafos que son hijos directos de un div' },
+        { prompt: '¿Qué selecciona el selector <code>h2 + p</code>?', options: ['El párrafo que viene justo después de un h2, como hermano', 'Todos los párrafos dentro de un h2', 'El h2 que viene después de un párrafo', 'El primer párrafo de la página'], answer: 'El párrafo que viene justo después de un h2, como hermano' },
+        { prompt: '¿Cuál es el símbolo del combinador de "hijo directo"?', options: ['> (mayor que)', '+ (más)', '~ (virgulilla)', 'espacio en blanco'], answer: '> (mayor que)' }
+      ]
+    }
+  },
+  {
+    id: 'css-28',
+    title: 'Transformaciones 2D',
+    subtitle: 'Nivel 28',
+    xp: 101,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>transform</code> permite mover, rotar, escalar o inclinar un elemento sin afectar el flujo del documento. Funciones comunes: <code>translate()</code>, <code>rotate()</code>, <code>scale()</code> y <code>skew()</code>.',
+        'Se pueden combinar varias funciones en una misma declaración, por ejemplo <code>transform: translateX(20px) rotate(10deg);</code>, y se aplican en el orden en que se escriben.'
+      ],
+      code:
+        '<span class="tok-prop">.caja</span> {\n' +
+        '  <span class="tok-prop">transform</span>: <span class="tok-val">translateX(20px) rotate(10deg) scale(1.2)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre transformaciones 2D en CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué función de transform mueve un elemento sin afectar el flujo del documento?', options: ['translate()', 'rotate()', 'scale()', 'skew()'], answer: 'translate()' },
+        { prompt: '¿Qué función de transform gira un elemento un número de grados?', options: ['rotate()', 'translate()', 'scale()', 'skew()'], answer: 'rotate()' },
+        { prompt: '¿Qué función de transform cambia el tamaño de un elemento?', options: ['scale()', 'rotate()', 'translate()', 'resize()'], answer: 'scale()' },
+        { prompt: '¿La propiedad transform afecta la posición de los elementos vecinos en el flujo normal?', options: ['No, el espacio original del elemento se mantiene', 'Sí, siempre reordena a los vecinos', 'Solo si se usa scale()', 'Solo si el elemento tiene position: absolute'], answer: 'No, el espacio original del elemento se mantiene' }
+      ]
+    }
+  },
+  {
+    id: 'css-29',
+    title: 'Overflow y scroll',
+    subtitle: 'Nivel 29',
+    xp: 104,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>overflow</code> controla qué pasa cuando el contenido de un elemento es más grande que su caja. <code>hidden</code> recorta el contenido sobrante, <code>scroll</code> siempre muestra barras de desplazamiento y <code>auto</code> las muestra solo si hacen falta.',
+        '<code>overflow-x</code> y <code>overflow-y</code> controlan cada eje por separado, por ejemplo para permitir scroll horizontal en una lista de tarjetas.'
+      ],
+      code:
+        '<span class="tok-prop">.contenedor</span> {\n' +
+        '  <span class="tok-prop">height</span>: <span class="tok-val">200px</span>;\n' +
+        '  <span class="tok-prop">overflow-y</span>: <span class="tok-val">auto</span>;\n' +
+        '  <span class="tok-prop">overflow-x</span>: <span class="tok-val">hidden</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre overflow y scroll.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué valor de overflow recorta el contenido que no cabe, sin mostrar barras de scroll?', options: ['hidden', 'auto', 'scroll', 'visible'], answer: 'hidden' },
+        { prompt: '¿Qué valor de overflow muestra barras de scroll solo cuando son necesarias?', options: ['auto', 'hidden', 'scroll', 'clip'], answer: 'auto' },
+        { prompt: '¿Qué propiedad controla el scroll únicamente en el eje vertical?', options: ['overflow-y', 'overflow-x', 'overflow', 'scroll-y'], answer: 'overflow-y' },
+        { prompt: '¿Qué valor de overflow muestra siempre las barras de scroll, aunque el contenido quepa?', options: ['scroll', 'auto', 'hidden', 'visible'], answer: 'scroll' }
+      ]
+    }
+  },
+  {
+    id: 'css-30',
+    title: 'Opacidad y transparencia',
+    subtitle: 'Nivel 30',
+    xp: 107,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>opacity</code> controla la transparencia de todo un elemento (y sus hijos), con valores de 0 (invisible) a 1 (opaco).',
+        'El formato de color <code>rgba()</code> permite transparencia solo en ese color (por ejemplo el fondo), sin afectar a los elementos hijos, agregando un cuarto valor alfa entre 0 y 1.'
+      ],
+      code:
+        '<span class="tok-prop">.overlay</span> {\n' +
+        '  <span class="tok-prop">opacity</span>: <span class="tok-val">0.8</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.fondo</span> {\n' +
+        '  <span class="tok-prop">background-color</span>: <span class="tok-val">rgba(0, 0, 0, 0.5)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre opacidad y transparencia.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad controla la transparencia de un elemento completo, incluidos sus hijos?', options: ['opacity', 'visibility', 'transparency', 'display'], answer: 'opacity' },
+        { prompt: '¿Qué valor de opacity hace que un elemento sea totalmente invisible?', options: ['0', '1', '100', 'none'], answer: '0' },
+        { prompt: '¿Qué formato de color permite definir transparencia solo en ese color, sin afectar a los hijos?', options: ['rgba()', 'opacity()', 'hsl()', 'hex()'], answer: 'rgba()' },
+        { prompt: 'En rgba(0, 0, 0, 0.5), ¿qué representa el último valor (0.5)?', options: ['El canal alfa, es decir, la opacidad de ese color', 'El brillo del color', 'La saturación del color', 'El tono del color'], answer: 'El canal alfa, es decir, la opacidad de ese color' }
+      ]
+    }
+  },
+  {
+    id: 'css-31',
+    title: 'Gradientes CSS',
+    subtitle: 'Nivel 31',
+    xp: 109,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        '<code>linear-gradient()</code> crea una transición suave de colores en línea recta; se le puede indicar una dirección o ángulo, por ejemplo <code>to right</code> o <code>45deg</code>.',
+        '<code>radial-gradient()</code> crea una transición de colores que parte desde un punto central hacia afuera, en forma circular o elíptica. Ambos se usan como valor de <code>background</code>.'
+      ],
+      code:
+        '<span class="tok-prop">.hero</span> {\n' +
+        '  <span class="tok-prop">background</span>: <span class="tok-val">linear-gradient(45deg, #39ffb0, #45d3ff)</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.foco</span> {\n' +
+        '  <span class="tok-prop">background</span>: <span class="tok-val">radial-gradient(circle, #fff, #000)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre gradientes CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué función crea una transición de color en línea recta?', options: ['linear-gradient()', 'radial-gradient()', 'conic-gradient()', 'transition-gradient()'], answer: 'linear-gradient()' },
+        { prompt: '¿Qué función crea una transición de color que parte desde un punto central?', options: ['radial-gradient()', 'linear-gradient()', 'center-gradient()', 'circle-gradient()'], answer: 'radial-gradient()' },
+        { prompt: 'En linear-gradient(45deg, #39ffb0, #45d3ff), ¿qué indica 45deg?', options: ['El ángulo de dirección del degradado', 'El porcentaje de mezcla entre colores', 'La opacidad del gradiente', 'El radio del círculo'], answer: 'El ángulo de dirección del degradado' },
+        { prompt: '¿En qué propiedad se suele usar un gradiente como valor?', options: ['background', 'color', 'border', 'filter'], answer: 'background' }
+      ]
+    }
+  },
+  {
+    id: 'css-32',
+    title: 'Float y clear (código legado)',
+    subtitle: 'Nivel 32',
+    xp: 111,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Antes de Flexbox y Grid, <code>float</code> se usaba para crear layouts, haciendo que un elemento "flote" a la izquierda o derecha y el texto lo rodee. Hoy se sigue viendo en código antiguo.',
+        'Cuando un elemento flota, puede sacar a su contenedor padre del flujo normal (colapsando su altura). La propiedad <code>clear</code> evita que un elemento se acomode junto a los flotantes anteriores.'
+      ],
+      code:
+        '<span class="tok-prop">.imagen</span> {\n' +
+        '  <span class="tok-prop">float</span>: <span class="tok-val">left</span>;\n' +
+        '  <span class="tok-prop">margin-right</span>: <span class="tok-val">16px</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.footer</span> {\n' +
+        '  <span class="tok-prop">clear</span>: <span class="tok-val">both</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre float y clear.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad hacía que un elemento "flotara" a un lado y el texto lo rodeara?', options: ['float', 'clear', 'position', 'display'], answer: 'float' },
+        { prompt: '¿Qué propiedad evita que un elemento se ubique junto a elementos flotantes anteriores?', options: ['clear', 'float', 'overflow', 'position'], answer: 'clear' },
+        { prompt: '¿Qué problema común genera el uso de float en un contenedor padre?', options: ['El contenedor puede colapsar su altura', 'El contenedor se vuelve invisible', 'El navegador ignora el float', 'El contenido se centra automáticamente'], answer: 'El contenedor puede colapsar su altura' },
+        { prompt: 'Hoy en día, ¿qué técnicas se prefieren en vez de float para crear layouts?', options: ['Flexbox y CSS Grid', 'Solo tablas HTML', 'position: fixed', 'clear: both en todos los elementos'], answer: 'Flexbox y CSS Grid' }
+      ]
+    }
+  },
+  {
+    id: 'css-33',
+    title: 'Diseño con múltiples columnas',
+    subtitle: 'Nivel 33',
+    xp: 113,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>column-count</code> (o <code>columns</code>) distribuye el contenido de un elemento en varias columnas, como en un periódico.',
+        '<code>column-gap</code> controla el espacio entre columnas, y <code>column-rule</code> agrega una línea divisoria entre ellas, similar a <code>border</code>.'
+      ],
+      code:
+        '<span class="tok-prop">.articulo</span> {\n' +
+        '  <span class="tok-prop">column-count</span>: <span class="tok-val">3</span>;\n' +
+        '  <span class="tok-prop">column-gap</span>: <span class="tok-val">24px</span>;\n' +
+        '  <span class="tok-prop">column-rule</span>: <span class="tok-val">1px solid #ccc</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre el diseño con múltiples columnas.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad divide el contenido de un elemento en varias columnas de texto?', options: ['column-count', 'column-gap', 'column-rule', 'flex-direction'], answer: 'column-count' },
+        { prompt: '¿Qué propiedad controla el espacio entre columnas?', options: ['column-gap', 'column-count', 'gap-column', 'margin'], answer: 'column-gap' },
+        { prompt: '¿Qué propiedad agrega una línea divisoria visual entre columnas?', options: ['column-rule', 'column-border', 'border', 'column-divider'], answer: 'column-rule' },
+        { prompt: '¿Para qué tipo de contenido suele usarse el diseño en columnas tipo periódico?', options: ['Bloques largos de texto, como artículos', 'Menús de navegación', 'Formularios cortos', 'Galerías de imágenes en grilla'], answer: 'Bloques largos de texto, como artículos' }
+      ]
+    }
+  },
+  {
+    id: 'css-34',
+    title: 'Filtros CSS',
+    subtitle: 'Nivel 34',
+    xp: 114,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>filter</code> aplica efectos visuales a un elemento, como <code>blur()</code> (desenfoque), <code>brightness()</code> (brillo) o <code>grayscale()</code> (escala de grises).',
+        'Se pueden combinar varios filtros en una misma declaración, y a diferencia de editar la imagen original, estos efectos se aplican en tiempo real sin modificar el archivo.'
+      ],
+      code:
+        '<span class="tok-prop">.imagen</span> {\n' +
+        '  <span class="tok-prop">filter</span>: <span class="tok-val">blur(4px) brightness(0.8)</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.imagen:hover</span> {\n' +
+        '  <span class="tok-prop">filter</span>: <span class="tok-val">grayscale(0)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre filtros CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad aplica efectos visuales como desenfoque o brillo a un elemento?', options: ['filter', 'transform', 'effect', 'opacity'], answer: 'filter' },
+        { prompt: '¿Qué función de filter desenfoca un elemento?', options: ['blur()', 'brightness()', 'grayscale()', 'contrast()'], answer: 'blur()' },
+        { prompt: '¿Qué función de filter convierte un elemento a escala de grises?', options: ['grayscale()', 'blur()', 'invert()', 'sepia()'], answer: 'grayscale()' },
+        { prompt: '¿Se pueden combinar varias funciones de filter en una sola declaración?', options: ['Sí, separadas por espacios', 'No, solo se puede usar una a la vez', 'Sí, pero solo con comas', 'No, requieren reglas separadas'], answer: 'Sí, separadas por espacios' }
+      ]
+    }
+  },
+  {
+    id: 'css-35',
+    title: 'Object-fit y object-position',
+    subtitle: 'Nivel 35',
+    xp: 115,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Cuando una imagen no tiene las mismas proporciones que su contenedor, <code>object-fit</code> controla cómo se ajusta: <code>cover</code> la recorta para llenar el espacio, <code>contain</code> la muestra completa dejando espacio libre.',
+        '<code>object-position</code> controla qué parte de la imagen se muestra cuando se recorta, similar a <code>background-position</code> pero para elementos como imágenes o videos.'
+      ],
+      code:
+        '<span class="tok-prop">img</span> {\n' +
+        '  <span class="tok-prop">width</span>: <span class="tok-val">300px</span>;\n' +
+        '  <span class="tok-prop">height</span>: <span class="tok-val">200px</span>;\n' +
+        '  <span class="tok-prop">object-fit</span>: <span class="tok-val">cover</span>;\n' +
+        '  <span class="tok-prop">object-position</span>: <span class="tok-val">top</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre object-fit y object-position.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad controla cómo se ajusta una imagen dentro de un contenedor con proporciones distintas?', options: ['object-fit', 'background-size', 'image-fit', 'object-position'], answer: 'object-fit' },
+        { prompt: '¿Qué valor de object-fit recorta la imagen para llenar todo el espacio disponible?', options: ['cover', 'contain', 'fill', 'none'], answer: 'cover' },
+        { prompt: '¿Qué valor de object-fit muestra la imagen completa sin recortarla, dejando espacio libre si es necesario?', options: ['contain', 'cover', 'fill', 'scale-down'], answer: 'contain' },
+        { prompt: '¿Qué propiedad controla qué parte de la imagen se muestra cuando se recorta con object-fit: cover?', options: ['object-position', 'background-position', 'image-align', 'object-fit'], answer: 'object-position' }
+      ]
+    }
+  },
+  {
+    id: 'css-36',
+    title: 'CSS Grid avanzado: grid-template-areas',
+    subtitle: 'Nivel 36',
+    xp: 115,
+    type: 'fill-tags',
+    theory: {
+      paragraphs: [
+        '<code>grid-template-areas</code> permite diseñar el layout dibujando un mapa con nombres de área, muy visual y fácil de leer. Cada elemento hijo se asigna a un área con <code>grid-area</code>.',
+        'Es una forma declarativa de armar layouts completos (header, sidebar, main, footer) sin calcular números de línea manualmente.'
+      ],
+      code:
+        '<span class="tok-prop">.layout</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">grid</span>;\n' +
+        '  <span class="tok-prop">grid-template-areas</span>:\n' +
+        '    <span class="tok-val">"header header"</span>\n' +
+        '    <span class="tok-val">"sidebar main"</span>\n' +
+        '    <span class="tok-val">"footer footer"</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.header</span> { <span class="tok-prop">grid-area</span>: <span class="tok-val">header</span>; }'
+    },
+    exercise: {
+      instructions: 'Completa cada línea con la propiedad correcta.',
+      blanks: [
+        { id: 'b1', before: '.layout {\n  display: grid;\n  ', after: ':\n    "header header"\n    "sidebar main";\n}', answer: 'grid-template-areas', options: ['grid-template-areas', 'grid-template-columns', 'grid-area', 'grid-layout'] },
+        { id: 'b2', before: '.header {\n  ', after: ': header;\n}', answer: 'grid-area', options: ['grid-area', 'grid-name', 'grid-template-areas', 'area'] },
+        { id: 'b3', before: '.sidebar {\n  ', after: ': sidebar;\n}', answer: 'grid-area', options: ['grid-area', 'grid-column', 'grid-row', 'grid-name'] },
+        { id: 'b4', before: '.main {\n  ', after: ': main;\n}', answer: 'grid-area', options: ['grid-area', 'grid-template', 'grid-cell', 'area-name'] }
+      ]
+    }
+  },
+  {
+    id: 'css-37',
+    title: 'Transformaciones 3D',
+    subtitle: 'Nivel 37',
+    xp: 119,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Para lograr efectos 3D se usan funciones como <code>rotateX()</code>, <code>rotateY()</code> y <code>rotateZ()</code>, que giran un elemento sobre cada eje.',
+        'La propiedad <code>perspective</code>, aplicada al contenedor padre, define la distancia del "ojo" del espectador y da profundidad a las transformaciones 3D de sus hijos. Sin ella, las rotaciones 3D se ven planas.'
+      ],
+      code:
+        '<span class="tok-prop">.escena</span> {\n' +
+        '  <span class="tok-prop">perspective</span>: <span class="tok-val">800px</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.carta</span> {\n' +
+        '  <span class="tok-prop">transform</span>: <span class="tok-val">rotateY(180deg)</span>;\n' +
+        '  <span class="tok-prop">transform-style</span>: <span class="tok-val">preserve-3d</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre transformaciones 3D en CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué función de transform gira un elemento sobre el eje vertical (Y)?', options: ['rotateY()', 'rotateX()', 'rotateZ()', 'translateY()'], answer: 'rotateY()' },
+        { prompt: '¿Qué propiedad, aplicada al contenedor padre, da sensación de profundidad a las transformaciones 3D de sus hijos?', options: ['perspective', 'transform-style', 'depth', 'z-index'], answer: 'perspective' },
+        { prompt: '¿Qué función de transform gira un elemento sobre el eje horizontal (X)?', options: ['rotateX()', 'rotateY()', 'rotateZ()', 'translateX()'], answer: 'rotateX()' },
+        { prompt: 'Sin la propiedad perspective definida, ¿cómo se ven las rotaciones 3D?', options: ['Planas, sin sensación real de profundidad', 'Igual que con perspective', 'El navegador genera un error', 'No se aplican'], answer: 'Planas, sin sensación real de profundidad' }
+      ]
+    }
+  },
+  {
+    id: 'css-38',
+    title: 'Animaciones complejas con keyframes',
+    subtitle: 'Nivel 38',
+    xp: 123,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Dentro de <code>@keyframes</code> se pueden definir tantos puntos intermedios como se necesite, usando porcentajes (0%, 25%, 50%...) además de <code>from</code> y <code>to</code>.',
+        'La propiedad abreviada <code>animation</code> combina nombre, duración, función de aceleración, retraso, repeticiones y dirección: <code>animation: nombre 2s ease-in-out infinite alternate;</code>.'
+      ],
+      code:
+        '<span class="tok-kw">@keyframes</span> rebote {\n' +
+        '  0%   { <span class="tok-prop">transform</span>: <span class="tok-val">translateY(0)</span>; }\n' +
+        '  30%  { <span class="tok-prop">transform</span>: <span class="tok-val">translateY(-20px)</span>; }\n' +
+        '  60%  { <span class="tok-prop">transform</span>: <span class="tok-val">translateY(0)</span>; }\n' +
+        '  100% { <span class="tok-prop">transform</span>: <span class="tok-val">translateY(-10px)</span>; }\n' +
+        '}\n' +
+        '<span class="tok-prop">.pelota</span> {\n' +
+        '  <span class="tok-prop">animation</span>: <span class="tok-val">rebote 1.5s ease-in-out infinite</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre animaciones complejas con keyframes.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué palabras clave equivalen a 0% y 100% dentro de @keyframes?', options: ['from y to', 'start y end', 'first y last', 'begin y finish'], answer: 'from y to' },
+        { prompt: '¿Qué valor de animation hace que la animación se repita indefinidamente?', options: ['infinite', 'forever', 'loop', 'repeat'], answer: 'infinite' },
+        { prompt: '¿Qué valor de animation-direction hace que la animación se reproduzca hacia adelante y luego hacia atrás?', options: ['alternate', 'reverse', 'normal', 'both'], answer: 'alternate' },
+        { prompt: 'En animation: rebote 1.5s ease-in-out infinite;, ¿qué representa 1.5s?', options: ['La duración de la animación', 'El retraso antes de empezar', 'La cantidad de repeticiones', 'La velocidad de aceleración'], answer: 'La duración de la animación' }
+      ]
+    }
+  },
+  {
+    id: 'css-39',
+    title: 'Media queries: breakpoints mobile-first',
+    subtitle: 'Nivel 39',
+    xp: 127,
+    type: 'order-builder',
+    theory: {
+      paragraphs: [
+        'En el enfoque <em>mobile-first</em>, se escriben primero los estilos base para pantallas pequeñas, y luego se van agregando media queries con <code>min-width</code> creciente para pantallas más grandes.',
+        'Los breakpoints comunes suelen seguir un orden como: móvil (base, sin media query), tablet (~600px), laptop (~900px) y escritorio grande (~1200px).'
+      ],
+      code:
+        '<span class="tok-prop">.contenedor</span> { <span class="tok-prop">width</span>: <span class="tok-val">100%</span>; }\n\n' +
+        '<span class="tok-kw">@media</span> (min-width: 600px) { ... }\n' +
+        '<span class="tok-kw">@media</span> (min-width: 900px) { ... }\n' +
+        '<span class="tok-kw">@media</span> (min-width: 1200px) { ... }'
+    },
+    exercise: {
+      instructions: 'Ordená estos bloques de CSS mobile-first, del ancho de pantalla más chico al más grande.',
+      items: [
+        { id: 'a', code: 'Estilos base, sin media query (móvil)' },
+        { id: 'b', code: '@media (min-width: 600px) { ... }' },
+        { id: 'c', code: '@media (min-width: 900px) { ... }' },
+        { id: 'd', code: '@media (min-width: 1200px) { ... }' }
+      ],
+      correctOrder: ['a', 'b', 'c', 'd']
+    }
+  },
+  {
+    id: 'css-40',
+    title: 'Diseño fluido con clamp(), min() y max()',
+    subtitle: 'Nivel 40',
+    xp: 131,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        '<code>clamp(mínimo, preferido, máximo)</code> permite definir un valor fluido que crece o decrece, pero nunca por debajo del mínimo ni por encima del máximo. Es muy usado para tipografía responsive sin necesitar media queries.',
+        '<code>min()</code> devuelve el valor más chico de una lista y <code>max()</code> el más grande; son útiles para poner límites a anchos o tamaños que dependen del viewport.'
+      ],
+      code:
+        '<span class="tok-prop">h1</span> {\n' +
+        '  <span class="tok-prop">font-size</span>: <span class="tok-val">clamp(1.5rem, 4vw, 3rem)</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.contenedor</span> {\n' +
+        '  <span class="tok-prop">width</span>: <span class="tok-val">min(90%, 1200px)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre clamp(), min() y max().',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué función CSS permite definir un valor con un mínimo, un valor preferido y un máximo?', options: ['clamp()', 'min()', 'max()', 'calc()'], answer: 'clamp()' },
+        { prompt: 'En clamp(1.5rem, 4vw, 3rem), ¿qué representa 4vw?', options: ['El valor preferido, que crece con el ancho del viewport', 'El valor mínimo', 'El valor máximo', 'Un valor fijo que nunca cambia'], answer: 'El valor preferido, que crece con el ancho del viewport' },
+        { prompt: '¿Qué función devuelve el valor más chico entre varios?', options: ['min()', 'max()', 'clamp()', 'least()'], answer: 'min()' },
+        { prompt: '¿Para qué se usa comúnmente clamp() en tipografía?', options: ['Para que el tamaño de fuente sea fluido sin usar media queries', 'Para fijar el tamaño de fuente siempre igual', 'Para cambiar el color del texto', 'Para centrar el texto'], answer: 'Para que el tamaño de fuente sea fluido sin usar media queries' }
+      ]
+    }
+  },
+  {
+    id: 'css-41',
+    title: 'Container queries (concepto)',
+    subtitle: 'Nivel 41',
+    xp: 135,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'A diferencia de las media queries, que responden al tamaño del <strong>viewport</strong>, las <em>container queries</em> permiten que un elemento cambie de estilo según el tamaño de su <strong>contenedor</strong>, sin importar el tamaño de la pantalla.',
+        'Para usarlas, primero se declara un elemento como contenedor con <code>container-type: inline-size;</code>, y luego se escriben reglas con <code>@container</code> en vez de <code>@media</code>.'
+      ],
+      code:
+        '<span class="tok-prop">.tarjeta-wrapper</span> {\n' +
+        '  <span class="tok-prop">container-type</span>: <span class="tok-val">inline-size</span>;\n' +
+        '}\n\n' +
+        '<span class="tok-kw">@container</span> (min-width: 400px) {\n' +
+        '  <span class="tok-prop">.tarjeta</span> { <span class="tok-prop">display</span>: <span class="tok-val">flex</span>; }\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre container queries.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿En qué se diferencian las container queries de las media queries?', options: ['Responden al tamaño del contenedor, no al del viewport', 'Solo funcionan en móviles', 'No permiten usar min-width', 'Son exactamente lo mismo'], answer: 'Responden al tamaño del contenedor, no al del viewport' },
+        { prompt: '¿Qué propiedad convierte un elemento en un "contenedor" que puede usarse con container queries?', options: ['container-type', 'display: container', 'position: container', 'query-type'], answer: 'container-type' },
+        { prompt: '¿Qué regla se usa para escribir una container query?', options: ['@container', '@media', '@query', '@contain'], answer: '@container' },
+        { prompt: '¿Por qué son útiles las container queries para componentes reutilizables?', options: ['Porque el componente se adapta a su contenedor, sin importar dónde se coloque en la página', 'Porque eliminan la necesidad de escribir CSS', 'Porque solo funcionan con Flexbox', 'Porque reemplazan a las variables CSS'], answer: 'Porque el componente se adapta a su contenedor, sin importar dónde se coloque en la página' }
+      ]
+    }
+  },
+  {
+    id: 'css-42',
+    title: 'Modo oscuro con prefers-color-scheme',
+    subtitle: 'Nivel 42',
+    xp: 139,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La media query <code>prefers-color-scheme</code> detecta si el sistema operativo del usuario tiene activado el modo oscuro o claro, permitiendo adaptar los colores automáticamente.',
+        'Combinarla con variables CSS facilita el mantenimiento: se redefinen las variables de color dentro de la media query, sin duplicar todas las reglas.'
+      ],
+      code:
+        '<span class="tok-prop">:root</span> {\n' +
+        '  <span class="tok-prop">--fondo</span>: <span class="tok-val">#ffffff</span>;\n' +
+        '  <span class="tok-prop">--texto</span>: <span class="tok-val">#111111</span>;\n' +
+        '}\n\n' +
+        '<span class="tok-kw">@media</span> (prefers-color-scheme: dark) {\n' +
+        '  <span class="tok-prop">:root</span> {\n' +
+        '    <span class="tok-prop">--fondo</span>: <span class="tok-val">#111111</span>;\n' +
+        '    <span class="tok-prop">--texto</span>: <span class="tok-val">#ffffff</span>;\n' +
+        '  }\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre el modo oscuro con prefers-color-scheme.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué media query detecta si el usuario prefiere el modo oscuro en su sistema?', options: ['prefers-color-scheme', 'prefers-dark-mode', 'color-scheme', 'dark-mode'], answer: 'prefers-color-scheme' },
+        { prompt: '¿Qué valor de prefers-color-scheme se usa para aplicar estilos de modo oscuro?', options: ['dark', 'light', 'black', 'night'], answer: 'dark' },
+        { prompt: '¿Qué ventaja tiene combinar prefers-color-scheme con variables CSS?', options: ['Se pueden redefinir los colores en un solo lugar, sin duplicar reglas', 'Hace que el sitio cargue más rápido', 'Es obligatorio para que funcione el modo oscuro', 'Elimina la necesidad de usar clases'], answer: 'Se pueden redefinir los colores en un solo lugar, sin duplicar reglas' },
+        { prompt: '¿prefers-color-scheme depende de una configuración de la página o del sistema del usuario?', options: ['Del sistema operativo o navegador del usuario', 'De una clase definida en el body', 'De un atributo data- en el html', 'De JavaScript, siempre'], answer: 'Del sistema operativo o navegador del usuario' }
+      ]
+    }
+  },
+  {
+    id: 'css-43',
+    title: 'Metodologías CSS: BEM',
+    subtitle: 'Nivel 43',
+    xp: 143,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'BEM (<em>Block, Element, Modifier</em>) es una convención para nombrar clases CSS de forma clara y evitar conflictos: <code>bloque__elemento--modificador</code>.',
+        'Por ejemplo, en <code>tarjeta__titulo--destacado</code>, <code>tarjeta</code> es el bloque, <code>titulo</code> es un elemento dentro del bloque, y <code>destacado</code> es una variante (modificador) de ese elemento.'
+      ],
+      code:
+        '<span class="tok-prop">.tarjeta</span> { ... }\n' +
+        '<span class="tok-prop">.tarjeta__titulo</span> { ... }\n' +
+        '<span class="tok-prop">.tarjeta__titulo--destacado</span> { ... }\n' +
+        '<span class="tok-prop">.tarjeta__boton</span> { ... }'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre la metodología BEM.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué significa la sigla BEM?', options: ['Block, Element, Modifier', 'Basic Element Method', 'Build, Extend, Modify', 'Block, Extend, Merge'], answer: 'Block, Element, Modifier' },
+        { prompt: 'En la clase tarjeta__titulo, ¿qué separador se usa entre el bloque y el elemento?', options: ['Doble guion bajo (__)', 'Un solo guion (-)', 'Doble guion (--)', 'Un punto (.)'], answer: 'Doble guion bajo (__)' },
+        { prompt: 'En la clase tarjeta__titulo--destacado, ¿qué representa --destacado?', options: ['Un modificador o variante del elemento', 'El nombre del bloque', 'Un pseudo-elemento', 'Un id único'], answer: 'Un modificador o variante del elemento' },
+        { prompt: '¿Cuál es el objetivo principal de usar una metodología como BEM?', options: ['Mantener nombres de clases claros y evitar conflictos de estilos', 'Reducir el tamaño del archivo CSS', 'Reemplazar a Flexbox y Grid', 'Evitar el uso de selectores de id'], answer: 'Mantener nombres de clases claros y evitar conflictos de estilos' }
+      ]
+    }
+  },
+  {
+    id: 'css-44',
+    title: 'CSS Grid vs Flexbox: cuándo usar cada uno',
+    subtitle: 'Nivel 44',
+    xp: 147,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Flexbox está pensado para layouts en <strong>una dimensión</strong> (una fila o una columna a la vez), como una barra de navegación o una lista de tarjetas que fluye.',
+        'CSS Grid está pensado para layouts en <strong>dos dimensiones</strong> (filas y columnas al mismo tiempo), ideal para la estructura general de una página. Ambos se pueden combinar: Grid para el layout general y Flexbox dentro de cada componente.'
+      ],
+      code:
+        '<span class="tok-prop">.pagina</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">grid</span>;\n' +
+        '  <span class="tok-prop">grid-template-columns</span>: <span class="tok-val">250px 1fr</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.navbar</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">flex</span>;\n' +
+        '  <span class="tok-prop">justify-content</span>: <span class="tok-val">space-between</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre cuándo usar CSS Grid y cuándo Flexbox.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Flexbox está pensado principalmente para layouts en cuántas dimensiones?', options: ['Una dimensión', 'Dos dimensiones', 'Tres dimensiones', 'No tiene límite de dimensiones'], answer: 'Una dimensión' },
+        { prompt: '¿CSS Grid está pensado principalmente para layouts en cuántas dimensiones?', options: ['Dos dimensiones', 'Una dimensión', 'Tres dimensiones', 'Ninguna, solo alinea texto'], answer: 'Dos dimensiones' },
+        { prompt: '¿Cuál es un buen caso de uso típico para Flexbox?', options: ['Una barra de navegación con elementos en fila', 'La estructura general de toda la página con filas y columnas', 'Un calendario con muchas celdas', 'Un mapa de sitio complejo'], answer: 'Una barra de navegación con elementos en fila' },
+        { prompt: '¿Se pueden combinar Grid y Flexbox en la misma página?', options: ['Sí, Grid para el layout general y Flexbox dentro de los componentes', 'No, son excluyentes', 'Solo si se usa JavaScript', 'No, el navegador elige uno automáticamente'], answer: 'Sí, Grid para el layout general y Flexbox dentro de los componentes' }
+      ]
+    }
+  },
+  {
+    id: 'css-45',
+    title: 'Scroll snap',
+    subtitle: 'Nivel 45',
+    xp: 151,
+    type: 'fill-tags',
+    theory: {
+      paragraphs: [
+        '<code>scroll-snap-type</code>, aplicado al contenedor con scroll, hace que el desplazamiento se "enganche" a puntos específicos en vez de quedar en cualquier posición intermedia.',
+        'Cada hijo que debe funcionar como punto de enganche necesita <code>scroll-snap-align</code>, indicando si se alinea al inicio, centro o final del contenedor visible.'
+      ],
+      code:
+        '<span class="tok-prop">.carrusel</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">flex</span>;\n' +
+        '  <span class="tok-prop">overflow-x</span>: <span class="tok-val">auto</span>;\n' +
+        '  <span class="tok-prop">scroll-snap-type</span>: <span class="tok-val">x mandatory</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.carrusel .slide</span> {\n' +
+        '  <span class="tok-prop">scroll-snap-align</span>: <span class="tok-val">start</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Completa cada línea con la propiedad correcta.',
+      blanks: [
+        { id: 'b1', before: '.carrusel {\n  overflow-x: auto;\n  ', after: ': x mandatory;\n}', answer: 'scroll-snap-type', options: ['scroll-snap-type', 'scroll-behavior', 'snap-type', 'scroll-type'] },
+        { id: 'b2', before: '.slide {\n  ', after: ': start;\n}', answer: 'scroll-snap-align', options: ['scroll-snap-align', 'scroll-align', 'snap-align', 'scroll-snap-position'] },
+        { id: 'b3', before: '.carrusel {\n  ', after: ': auto;\n}', answer: 'overflow-x', options: ['overflow-x', 'overflow-y', 'overflow', 'scroll-x'] },
+        { id: 'b4', before: 'html {\n  ', after: ': smooth;\n}', answer: 'scroll-behavior', options: ['scroll-behavior', 'scroll-snap-type', 'scroll-smooth', 'behavior'] }
+      ]
+    }
+  },
+  {
+    id: 'css-46',
+    title: 'Aspect-ratio y proporciones',
+    subtitle: 'Nivel 46',
+    xp: 155,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'La propiedad <code>aspect-ratio</code> define la relación entre ancho y alto de un elemento, por ejemplo <code>16 / 9</code> para video o <code>1 / 1</code> para un cuadrado perfecto.',
+        'Antes de esta propiedad, mantener proporciones (por ejemplo en videos incrustados) requería trucos con padding en porcentaje. Hoy <code>aspect-ratio</code> lo resuelve de forma directa.'
+      ],
+      code:
+        '<span class="tok-prop">.video</span> {\n' +
+        '  <span class="tok-prop">aspect-ratio</span>: <span class="tok-val">16 / 9</span>;\n' +
+        '  <span class="tok-prop">width</span>: <span class="tok-val">100%</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.avatar</span> {\n' +
+        '  <span class="tok-prop">aspect-ratio</span>: <span class="tok-val">1 / 1</span>;\n' +
+        '  <span class="tok-prop">border-radius</span>: <span class="tok-val">50%</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre aspect-ratio y proporciones.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué propiedad define la relación entre ancho y alto de un elemento?', options: ['aspect-ratio', 'object-fit', 'ratio', 'proportion'], answer: 'aspect-ratio' },
+        { prompt: '¿Qué valor de aspect-ratio corresponde a una proporción de video widescreen?', options: ['16 / 9', '1 / 1', '4 / 3', '9 / 16'], answer: '16 / 9' },
+        { prompt: '¿Qué valor de aspect-ratio genera un cuadrado perfecto?', options: ['1 / 1', '16 / 9', '2 / 1', '3 / 4'], answer: '1 / 1' },
+        { prompt: 'Antes de aspect-ratio, ¿qué técnica se usaba comúnmente para mantener proporciones?', options: ['Padding definido en porcentaje', 'flex-basis fijo', 'z-index alto', 'overflow: hidden'], answer: 'Padding definido en porcentaje' }
+      ]
+    }
+  },
+  {
+    id: 'css-47',
+    title: 'Variables CSS dinámicas desde JavaScript',
+    subtitle: 'Nivel 47',
+    xp: 159,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Las variables CSS no son solo estáticas: se pueden leer y modificar desde JavaScript con <code>element.style.setProperty()</code>, lo que permite animaciones o temas controlados por código.',
+        'Esto es muy usado para cosas como sliders personalizados, temas de color dinámicos o efectos que siguen la posición del mouse, sin reescribir todo el CSS.'
+      ],
+      code:
+        '<span class="tok-comment">// JavaScript</span>\n' +
+        'document.documentElement.style.setProperty(<span class="tok-val">"--color-primario"</span>, <span class="tok-val">"#ff6b6b"</span>);\n\n' +
+        '<span class="tok-comment">/* CSS */</span>\n' +
+        '<span class="tok-prop">.boton</span> {\n' +
+        '  <span class="tok-prop">background</span>: <span class="tok-val">var(--color-primario)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre variables CSS dinámicas con JavaScript.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué método de JavaScript permite cambiar el valor de una variable CSS desde el código?', options: ['element.style.setProperty()', 'element.getAttribute()', 'element.classList.add()', 'element.style.getProperty()'], answer: 'element.style.setProperty()' },
+        { prompt: '¿Qué ventaja tiene modificar variables CSS desde JavaScript en vez de cambiar clases?', options: ['Se puede animar o ajustar un valor específico sin reescribir reglas CSS completas', 'Es la única forma de cambiar estilos con JS', 'Elimina la necesidad de escribir CSS', 'Hace que el navegador ignore la hoja de estilos'], answer: 'Se puede animar o ajustar un valor específico sin reescribir reglas CSS completas' },
+        { prompt: '¿Qué uso común tiene esta técnica?', options: ['Temas de color dinámicos o efectos que siguen al mouse', 'Validar formularios', 'Cargar imágenes más rápido', 'Ordenar listas alfabéticamente'], answer: 'Temas de color dinámicos o efectos que siguen al mouse' },
+        { prompt: 'Para que funcione, ¿con qué función debe estar referenciada en el CSS la variable modificada desde JS?', options: ['var()', 'calc()', 'attr()', 'env()'], answer: 'var()' }
+      ]
+    }
+  },
+  {
+    id: 'css-48',
+    title: 'Rendimiento CSS: will-change y reflow',
+    subtitle: 'Nivel 48',
+    xp: 163,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Un <strong>reflow</strong> ocurre cuando el navegador recalcula la posición y el tamaño de los elementos, algo costoso si pasa muchas veces (por ejemplo, animando width o top). Animar <code>transform</code> y <code>opacity</code> es más eficiente porque no provoca reflow.',
+        'La propiedad <code>will-change</code> avisa al navegador con anticipación que una propiedad va a cambiar, para que pueda optimizar el renderizado, pero abusar de ella puede consumir más memoria.'
+      ],
+      code:
+        '<span class="tok-prop">.tarjeta</span> {\n' +
+        '  <span class="tok-prop">will-change</span>: <span class="tok-val">transform</span>;\n' +
+        '  <span class="tok-prop">transition</span>: <span class="tok-val">transform 0.3s ease</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.tarjeta:hover</span> {\n' +
+        '  <span class="tok-prop">transform</span>: <span class="tok-val">translateY(-8px)</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre rendimiento en CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué es un reflow en el navegador?', options: ['El recálculo de la posición y el tamaño de los elementos en la página', 'Un error de sintaxis en el CSS', 'La descarga de una imagen', 'Un tipo de animación con keyframes'], answer: 'El recálculo de la posición y el tamaño de los elementos en la página' },
+        { prompt: '¿Qué dos propiedades se recomiendan animar por ser más eficientes y no causar reflow?', options: ['transform y opacity', 'width y height', 'top y left', 'margin y padding'], answer: 'transform y opacity' },
+        { prompt: '¿Qué hace la propiedad will-change?', options: ['Avisa al navegador con anticipación que una propiedad va a cambiar, para optimizar el renderizado', 'Cambia el valor de una propiedad automáticamente', 'Anima un elemento sin necesitar keyframes', 'Elimina el reflow por completo siempre'], answer: 'Avisa al navegador con anticipación que una propiedad va a cambiar, para optimizar el renderizado' },
+        { prompt: '¿Qué riesgo tiene abusar de will-change en muchos elementos?', options: ['Puede consumir más memoria de la necesaria', 'Bloquea el CSS por completo', 'Elimina las animaciones', 'No tiene ningún riesgo'], answer: 'Puede consumir más memoria de la necesaria' }
+      ]
+    }
+  },
+  {
+    id: 'css-49',
+    title: 'Preprocesadores CSS: introducción a Sass',
+    subtitle: 'Nivel 49',
+    xp: 166,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Sass es un preprocesador que añade funciones al CSS "normal", como variables (<code>$color: #39ffb0;</code>), anidamiento (<em>nesting</em>) de selectores y mixins reutilizables. El código Sass se compila a CSS estándar antes de llegar al navegador.',
+        'El anidamiento permite escribir selectores hijos dentro de su selector padre, reflejando la estructura del HTML y evitando repetir nombres de clases.'
+      ],
+      code:
+        '<span class="tok-val">$color-primario</span>: <span class="tok-val">#39ffb0</span>;\n\n' +
+        '<span class="tok-prop">.tarjeta</span> {\n' +
+        '  <span class="tok-prop">color</span>: <span class="tok-val">$color-primario</span>;\n\n' +
+        '  <span class="tok-prop">.titulo</span> {\n' +
+        '    <span class="tok-prop">font-weight</span>: <span class="tok-val">bold</span>;\n' +
+        '  }\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre Sass como preprocesador CSS.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué es Sass respecto al CSS?', options: ['Un preprocesador que añade funciones extra y se compila a CSS estándar', 'Un framework de JavaScript', 'Una nueva versión oficial de CSS3', 'Un motor de renderizado del navegador'], answer: 'Un preprocesador que añade funciones extra y se compila a CSS estándar' },
+        { prompt: '¿Cómo se declara una variable en Sass?', options: ['$nombre: valor;', '--nombre: valor;', '@nombre: valor;', 'var nombre = valor;'], answer: '$nombre: valor;' },
+        { prompt: '¿Qué característica de Sass permite escribir selectores hijos dentro de su selector padre?', options: ['Nesting (anidamiento)', 'Mixins', 'Herencia (extend)', 'Variables'], answer: 'Nesting (anidamiento)' },
+        { prompt: '¿El navegador puede interpretar directamente un archivo .scss sin compilar?', options: ['No, primero debe compilarse a CSS estándar', 'Sí, todos los navegadores lo soportan nativamente', 'Solo en Chrome', 'Solo si se usa una etiqueta especial'], answer: 'No, primero debe compilarse a CSS estándar' }
+      ]
+    }
+  },
+  {
+    id: 'css-50',
+    title: 'Proyecto integrador: maquetar una landing page',
+    subtitle: 'Nivel 50',
+    xp: 170,
+    type: 'order-builder',
+    theory: {
+      paragraphs: [
+        'Una landing page típica se organiza de arriba hacia abajo: primero la estructura general con Grid o Flexbox, luego el header, el contenido principal (hero, secciones) y finalmente el footer.',
+        'Un buen orden de trabajo evita reescribir código: definir el reset y las variables globales primero, después el layout general, y por último los detalles visuales de cada componente.'
+      ],
+      code:
+        '<span class="tok-prop">:root</span> { <span class="tok-prop">--color-primario</span>: <span class="tok-val">#39ffb0</span>; }\n' +
+        '<span class="tok-prop">*</span> { <span class="tok-prop">margin</span>: <span class="tok-val">0</span>; <span class="tok-prop">box-sizing</span>: <span class="tok-val">border-box</span>; }\n\n' +
+        '<span class="tok-prop">.pagina</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">grid</span>;\n' +
+        '  <span class="tok-prop">grid-template-rows</span>: <span class="tok-val">auto 1fr auto</span>;\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Ordená estos pasos en el orden lógico para maquetar una landing page completa, de principio a fin.',
+      items: [
+        { id: 'a', code: 'Definir variables CSS y un reset básico (:root, *)' },
+        { id: 'b', code: 'Armar el layout general de la página (grid-template-rows)' },
+        { id: 'c', code: 'Maquetar el header con su navegación (flex)' },
+        { id: 'd', code: 'Maquetar el contenido principal (hero, secciones)' },
+        { id: 'e', code: 'Maquetar el footer y ajustar detalles responsive' }
+      ],
+      correctOrder: ['a', 'b', 'c', 'd', 'e']
+    }
   }
 ];

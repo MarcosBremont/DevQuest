@@ -301,6 +301,20 @@ function shuffleArray(arr) {
   return copy;
 }
 
+/* Escapa texto de respuesta (plano) antes de insertarlo como HTML/atributo.
+   Necesario porque algunas respuestas de quiz/fill-tags contienen comillas
+   o < > (ej. '<meta name="viewport">'); el navegador decodifica las
+   entidades al leer el atributo, así que dataset.value sigue coincidiendo
+   con el string original en answer/options. */
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 const PRAISES = ['¡Correcto!', '¡Excelente!', '¡Genial!', '¡Muy bien!', '¡Perfecto!'];
 function pickPraise() {
   return PRAISES[Math.floor(Math.random() * PRAISES.length)];
@@ -321,7 +335,7 @@ function renderFillTagsExercise(level, container) {
   const codeEl = container.querySelector('#fill-code');
   codeEl.innerHTML = exercise.blanks.map((b) => {
     const opts = shuffleArray(b.options);
-    const optionsHtml = opts.map((o) => `<option value="${o}">${o}</option>`).join('');
+    const optionsHtml = opts.map((o) => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
     return `<div class="blank-line" data-blank-id="${b.id}"><span class="tok-punct">${b.before}</span><select class="fill-blank-select" data-blank-id="${b.id}"><option value="">?</option>${optionsHtml}</select><span class="tok-punct">${b.after}</span></div>`;
   }).join('');
 
@@ -470,8 +484,8 @@ function renderQuizExercise(level, container) {
 
     const letters = ['A', 'B', 'C', 'D'];
     const optionsHtml = q.options.map((opt, i) => `
-      <button type="button" class="option-btn" data-value="${opt}">
-        <span class="option-letter">${letters[i]}</span><span>${opt}</span>
+      <button type="button" class="option-btn" data-value="${escapeHtml(opt)}">
+        <span class="option-letter">${letters[i]}</span><span>${escapeHtml(opt)}</span>
       </button>`).join('');
 
     questionArea.innerHTML = `
@@ -509,7 +523,7 @@ function renderQuizExercise(level, container) {
 
     if (exercise.variant === 'console') {
       const out = questionArea.querySelector('#console-output');
-      if (out) out.innerHTML = `<span class="console-prompt">›</span> ${q.answer}`;
+      if (out) out.innerHTML = `<span class="console-prompt">›</span> ${escapeHtml(q.answer)}`;
     }
 
     showFeedback(correct, correct ? pickPraise() : `La respuesta correcta era: ${q.answer}`);
