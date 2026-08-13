@@ -6,10 +6,15 @@
 
 // Sube este número cada vez que cambies el contenido cacheado para forzar
 // la limpieza de la caché antigua en el evento "activate".
-const CACHE_VERSION = 'v1.1.0';
+const CACHE_VERSION = 'v1.2.0';
 const CACHE_NAME = `devquest-cache-${CACHE_VERSION}`;
 
 // App shell: todo lo necesario para que la app arranque sin conexión.
+// Nota: firebase-init.js se cachea como cualquier archivo propio, pero sus
+// imports a la CDN de Firebase (gstatic.com) son de otro origen y este
+// service worker no los intercepta ni cachea (ver el filtro en "fetch" más
+// abajo) — el login/la sincronización necesitan conexión real, pero el
+// resto de la app sigue funcionando 100% offline igual que antes.
 const APP_SHELL = [
   './',
   './index.html',
@@ -18,6 +23,7 @@ const APP_SHELL = [
   './content-css.js',
   './content-js.js',
   './app.js',
+  './firebase-init.js',
   './manifest.json',
   './icons/icon.svg',
   './icons/icon-maskable.svg'

@@ -246,6 +246,7 @@ img, svg { display: block; max-width: 100%; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
 .icon-btn {
+  position: relative;
   background: var(--bg-elevated);
   border: 1px solid var(--border-color-soft);
   color: var(--text-primary);
@@ -255,6 +256,19 @@ img, svg { display: block; max-width: 100%; }
   cursor: pointer;
 }
 .icon-btn:active { transform: scale(0.92); }
+.icon-btn.is-logged-in::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  border: 2px solid var(--bg-header);
+}
+
+.header-actions { display: flex; align-items: center; gap: 8px; }
 
 /* ==========================================================================
    App shell / header con estadísticas
@@ -710,6 +724,126 @@ code { font-family: var(--font-mono); }
 .badge-card.is-locked .badge-emoji { filter: grayscale(1); }
 .badge-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 3px; }
 .badge-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
+
+/* ==========================================================================
+   Cuenta / autenticación (Firebase)
+   ========================================================================== */
+.account-container { max-width: 420px; }
+
+.auth-card { display: flex; flex-direction: column; }
+
+.auth-tabs {
+  display: flex;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color-soft);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  margin-bottom: 20px;
+}
+.auth-tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 9px 10px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+.auth-tab.is-active {
+  background: var(--gradient-primary);
+  color: #06140f;
+}
+
+.auth-form { display: flex; flex-direction: column; gap: 14px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); }
+.form-field input {
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 11px 12px;
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  font-family: inherit;
+}
+.form-field input:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 1px; }
+
+.auth-error {
+  font-size: 0.82rem;
+  color: var(--error);
+  background: var(--error-bg);
+  border: 1px solid var(--error);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  line-height: 1.4;
+}
+.auth-error.is-success { color: var(--success); background: var(--success-bg); border-color: var(--success); }
+
+.auth-forgot-link {
+  align-self: center;
+  background: none;
+  border: none;
+  color: var(--accent-blue);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+.auth-divider::before, .auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color-soft);
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #ffffff;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+}
+.btn-google:active { transform: scale(0.97); }
+
+.auth-guest-note {
+  margin-top: 16px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.auth-unavailable { text-align: center; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+
+.account-profile { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+.account-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: #06140f;
+  font-weight: 800;
+  font-size: 1.5rem;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.account-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.account-email { font-weight: 700; font-size: 1rem; word-break: break-all; }
+.account-sync-status { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 18px; }
+.account-profile .btn { margin-top: 4px; }
 
 /* ==========================================================================
    Feedback overlay (acierto / error)

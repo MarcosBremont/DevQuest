@@ -39,6 +39,10 @@ function saveProgress(progress) {
   } catch (err) {
     console.warn('DevQuest: no se pudo guardar el progreso (¿localStorage lleno o deshabilitado?).', err);
   }
+  // Si hay sesión iniciada, cada guardado local también sube a Firestore
+  // (ver sección 11 más abajo). pushProgressToCloud comprueba por sí misma
+  // si Firebase/la sesión están disponibles antes de hacer nada.
+  pushProgressToCloud(progress);
 }
 
 /* ==========================================================================
@@ -79,7 +83,7 @@ const BADGES = [
 /* ==========================================================================
    4. ESTADO Y NAVEGACIÓN
    ========================================================================== */
-const state = { progress: null, currentLevelId: null };
+const state = { progress: null, currentLevelId: null, user: null, firebaseReady: false };
 let pendingBadgeToasts = [];
 let feedbackTimer = null;
 
@@ -802,11 +806,322 @@ function registerServiceWorker() {
 }
 
 /* ==========================================================================
-   10. INICIALIZACIÓN
+   10. FIREBASE: LOGIN (EMAIL/GOOGLE) Y SINCRONIZACIÓN DE PROGRESO
+   El SDK se carga por separado en firebase-init.js (módulo async, ver
+   index.html) y expone window.DevQuestFirebase. Si esa carga falla o va
+   con retraso (sin conexión, CDN bloqueada), todo lo de aquí comprueba su
+   disponibilidad y degrada a modo invitado sin romper el resto de la app.
+   ========================================================================== */
+const AUTH_ERROR_MESSAGES = {
+  'auth/invalid-email': 'El correo electrónico no es válido.',
+  'auth/user-disabled': 'Esta cuenta ha sido deshabilitada.',
+  'auth/user-not-found': 'No existe ninguna cuenta con ese correo.',
+  'auth/wrong-password': 'Contraseña incorrecta.',
+  'auth/invalid-credential': 'Correo o contraseña incorrectos.',
+  'auth/email-already-in-use': 'Ya existe una cuenta con ese correo. Prueba a iniciar sesión.',
+  'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
+  'auth/popup-closed-by-user': 'Se cerró la ventana de Google antes de completar el inicio de sesión.',
+  'auth/network-request-failed': 'Error de red. Comprueba tu conexión a internet.',
+  'auth/too-many-requests': 'Demasiados intentos. Espera un momento antes de volver a intentarlo.',
+  'auth/invalid-login-credentials': 'Correo o contraseña incorrectos.',
+  'auth/missing-password': 'Escribe tu contraseña.',
+  'auth/operation-not-allowed': 'Este método de acceso todavía no está habilitado para esta app.',
+  'auth/unauthorized-domain': 'Este dominio no está autorizado para iniciar sesión todavía.'
+};
+function getAuthErrorMessage(err) {
+  return AUTH_ERROR_MESSAGES[err && err.code] || 'Ha ocurrido un error. Inténtalo de nuevo.';
+}
+
+function initFirebaseAuth() {
+  const fb = window.DevQuestFirebase;
+  if (!fb) return;
+  state.firebaseReady = true;
+
+  // Recoge el resultado si el login con Google usó signInWithRedirect
+  // (alternativa a la ventana emergente en navegadores que la bloquean).
+  fb.getRedirectResult(fb.auth).catch((err) => {
+    console.warn('DevQuest: error al procesar el resultado de Google Sign-In.', err);
+  });
+
+  fb.onAuthStateChanged(fb.auth, handleAuthStateChanged);
+}
+
+function handleAuthStateChanged(user) {
+  const justLoggedIn = !state.user && !!user;
+  state.user = user;
+  updateAccountButton();
+
+  const onAccountScreen = document.getElementById('screen-account').classList.contains('is-active');
+
+  if (user) {
+    syncProgressOnLogin(user).then(() => {
+      if (justLoggedIn && onAccountScreen) {
+        showToast('¡Sesión iniciada! Tu progreso está sincronizado.', '☁️');
+        renderDashboard();
+        goTo('path');
+      } else if (onAccountScreen) {
+        renderAccountScreen();
+      }
+    });
+  } else if (onAccountScreen) {
+    renderAccountScreen();
+  }
+}
+
+function updateAccountButton() {
+  const btn = document.getElementById('btn-account');
+  if (btn) btn.classList.toggle('is-logged-in', !!state.user);
+}
+
+/* Combina el progreso local con el guardado en la nube sin perder nada:
+   las listas se unen (unión) y el XP se recalcula a partir de los niveles
+   completados —nunca se copia el número tal cual— para que no se pueda
+   desincronizar de las recompensas reales de cada nivel. */
+function mergeProgress(local, cloud) {
+  if (!cloud) return local;
+  const completedLevels = Array.from(new Set([...(local.completedLevels || []), ...(cloud.completedLevels || [])]));
+  const perfectLevels = Array.from(new Set([...(local.perfectLevels || []), ...(cloud.perfectLevels || [])]));
+  const badges = Array.from(new Set([...(local.badges || []), ...(cloud.badges || [])]));
+  const xp = getAllLevels().reduce((sum, lvl) => (completedLevels.includes(lvl.id) ? sum + lvl.xp : sum), 0);
+
+  // La racha es difícil de fusionar entre dos dispositivos con exactitud;
+  // nos quedamos con la del que tenga la fecha de juego más reciente.
+  let streak = local.streak || 0;
+  let lastPlayDate = local.lastPlayDate || null;
+  if (cloud.lastPlayDate && (!lastPlayDate || cloud.lastPlayDate > lastPlayDate)) {
+    streak = cloud.streak || 0;
+    lastPlayDate = cloud.lastPlayDate;
+  }
+
+  return { xp, streak, lastPlayDate, completedLevels, perfectLevels, badges };
+}
+
+async function syncProgressOnLogin(user) {
+  if (!state.firebaseReady) return;
+  const fb = window.DevQuestFirebase;
+  try {
+    const ref = fb.doc(fb.db, 'users', user.uid);
+    const snap = await fb.getDoc(ref);
+    const cloud = snap.exists() ? snap.data() : null;
+    const merged = mergeProgress(state.progress, cloud);
+    state.progress = merged;
+    saveProgress(merged); // guarda en local y vuelve a subir el resultado fusionado
+    updateHeaderStats();
+    if (document.getElementById('screen-path').classList.contains('is-active')) {
+      renderDashboard();
+    }
+  } catch (err) {
+    console.warn('DevQuest: no se pudo sincronizar el progreso al iniciar sesión.', err);
+  }
+}
+
+function pushProgressToCloud(progress) {
+  if (!state.firebaseReady || !state.user) return;
+  const fb = window.DevQuestFirebase;
+  const ref = fb.doc(fb.db, 'users', state.user.uid);
+  fb.setDoc(ref, {
+    xp: progress.xp,
+    streak: progress.streak,
+    lastPlayDate: progress.lastPlayDate,
+    completedLevels: progress.completedLevels,
+    perfectLevels: progress.perfectLevels,
+    badges: progress.badges,
+    updatedAt: fb.serverTimestamp()
+  }, { merge: true }).catch((err) => {
+    console.warn('DevQuest: no se pudo sincronizar el progreso con la nube.', err);
+  });
+}
+
+/* ---- Pantalla de cuenta: perfil si hay sesión, formulario si no ---- */
+function renderAccountScreen() {
+  const container = document.getElementById('account-container');
+
+  if (state.user) {
+    const user = state.user;
+    const initial = (user.email || '?').charAt(0).toUpperCase();
+    container.innerHTML = `
+      <div class="card account-profile">
+        <div class="account-avatar">${user.photoURL ? `<img src="${escapeHtml(user.photoURL)}" alt="">` : initial}</div>
+        <div class="account-email">${escapeHtml(user.email || '')}</div>
+        <div class="account-sync-status">☁️ Progreso sincronizado con tu cuenta</div>
+        <button type="button" id="btn-sign-out" class="btn btn-secondary btn-block">Cerrar sesión</button>
+      </div>
+    `;
+    document.getElementById('btn-sign-out').addEventListener('click', handleSignOut);
+    return;
+  }
+
+  if (!state.firebaseReady) {
+    container.innerHTML = `
+      <div class="card">
+        <p class="auth-unavailable">La sincronización con la nube no está disponible ahora mismo (sin conexión, o el servicio todavía no ha cargado). Tu progreso se sigue guardando con normalidad en este dispositivo.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="card auth-card">
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab is-active" data-mode="login">Iniciar sesión</button>
+        <button type="button" class="auth-tab" data-mode="signup">Crear cuenta</button>
+      </div>
+      <form id="auth-form" class="auth-form" novalidate>
+        <div class="form-field">
+          <label for="auth-email">Correo electrónico</label>
+          <input id="auth-email" type="email" autocomplete="email" required>
+        </div>
+        <div class="form-field">
+          <label for="auth-password">Contraseña</label>
+          <input id="auth-password" type="password" autocomplete="current-password" required minlength="6">
+        </div>
+        <div class="form-field hidden" id="auth-confirm-field">
+          <label for="auth-confirm">Confirmar contraseña</label>
+          <input id="auth-confirm" type="password" autocomplete="new-password" minlength="6">
+        </div>
+        <p id="auth-error" class="auth-error hidden"></p>
+        <button type="submit" id="auth-submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+        <button type="button" id="auth-forgot" class="auth-forgot-link">¿Olvidaste tu contraseña?</button>
+      </form>
+      <div class="auth-divider"><span>o</span></div>
+      <button type="button" id="auth-google" class="btn btn-google btn-block">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.91c1.7-1.57 2.69-3.88 2.69-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.17l-2.91-2.27c-.81.54-1.84.86-3.05.86-2.35 0-4.34-1.58-5.05-3.71H.96v2.34C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.95 10.71A5.4 5.4 0 0 1 3.68 9c0-.6.1-1.18.27-1.71V4.95H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.05l2.99-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.95l2.99 2.34C4.66 5.16 6.65 3.58 9 3.58z"/></svg>
+        Continuar con Google
+      </button>
+      <p class="auth-guest-note">Tu progreso actual en este dispositivo se fusionará con tu cuenta al iniciar sesión.</p>
+    </div>
+  `;
+
+  wireAuthForm();
+}
+
+function wireAuthForm() {
+  const tabs = document.querySelectorAll('.auth-tab');
+  const confirmField = document.getElementById('auth-confirm-field');
+  const confirmInput = document.getElementById('auth-confirm');
+  const submitBtn = document.getElementById('auth-submit');
+  const forgotBtn = document.getElementById('auth-forgot');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((t) => t.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      const isSignup = tab.dataset.mode === 'signup';
+      confirmField.classList.toggle('hidden', !isSignup);
+      confirmInput.required = isSignup;
+      submitBtn.textContent = isSignup ? 'Crear cuenta' : 'Iniciar sesión';
+      forgotBtn.classList.toggle('hidden', isSignup);
+      hideAuthError();
+    });
+  });
+
+  document.getElementById('auth-form').addEventListener('submit', handleAuthFormSubmit);
+  document.getElementById('auth-google').addEventListener('click', handleGoogleSignIn);
+  forgotBtn.addEventListener('click', handleForgotPassword);
+}
+
+function showAuthError(message, isSuccess) {
+  const el = document.getElementById('auth-error');
+  if (!el) return;
+  el.textContent = message;
+  el.classList.remove('hidden');
+  el.classList.toggle('is-success', !!isSuccess);
+}
+function hideAuthError() {
+  const el = document.getElementById('auth-error');
+  if (el) el.classList.add('hidden');
+}
+function setAuthBusy(busy) {
+  document.querySelectorAll('#screen-account button, #screen-account input').forEach((el) => { el.disabled = busy; });
+}
+
+async function handleAuthFormSubmit(e) {
+  e.preventDefault();
+  const fb = window.DevQuestFirebase;
+  if (!fb) return;
+
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const mode = document.querySelector('.auth-tab.is-active').dataset.mode;
+  hideAuthError();
+
+  if (mode === 'signup') {
+    const confirm = document.getElementById('auth-confirm').value;
+    if (password !== confirm) {
+      showAuthError('Las contraseñas no coinciden.');
+      return;
+    }
+  }
+
+  setAuthBusy(true);
+  try {
+    if (mode === 'login') {
+      await fb.signInWithEmailAndPassword(fb.auth, email, password);
+    } else {
+      await fb.createUserWithEmailAndPassword(fb.auth, email, password);
+    }
+  } catch (err) {
+    showAuthError(getAuthErrorMessage(err));
+  } finally {
+    setAuthBusy(false);
+  }
+}
+
+async function handleGoogleSignIn() {
+  const fb = window.DevQuestFirebase;
+  if (!fb) return;
+  hideAuthError();
+  setAuthBusy(true);
+  try {
+    await fb.signInWithPopup(fb.auth, fb.googleProvider);
+  } catch (err) {
+    // Si el navegador bloqueó la ventana emergente (frecuente en PWAs
+    // instaladas o navegadores móviles), reintentamos con redirección.
+    if (err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-supported-in-this-environment') {
+      try {
+        await fb.signInWithRedirect(fb.auth, fb.googleProvider);
+        return;
+      } catch (err2) {
+        showAuthError(getAuthErrorMessage(err2));
+      }
+    } else {
+      showAuthError(getAuthErrorMessage(err));
+    }
+  } finally {
+    setAuthBusy(false);
+  }
+}
+
+async function handleForgotPassword() {
+  const fb = window.DevQuestFirebase;
+  if (!fb) return;
+  const email = document.getElementById('auth-email').value.trim();
+  if (!email) {
+    showAuthError('Escribe tu correo electrónico arriba y vuelve a pulsar el enlace.');
+    return;
+  }
+  hideAuthError();
+  try {
+    await fb.sendPasswordResetEmail(fb.auth, email);
+    showAuthError('Te hemos enviado un correo para restablecer tu contraseña.', true);
+  } catch (err) {
+    showAuthError(getAuthErrorMessage(err));
+  }
+}
+
+function handleSignOut() {
+  const fb = window.DevQuestFirebase;
+  if (!fb) return;
+  fb.signOut(fb.auth).catch((err) => console.warn('DevQuest: error al cerrar sesión.', err));
+}
+
+/* ==========================================================================
+   11. INICIALIZACIÓN
    ========================================================================== */
 function wireStaticEvents() {
   document.getElementById('btn-start').addEventListener('click', enterApp);
   document.getElementById('btn-badges').addEventListener('click', () => { renderBadges(); goTo('achievements'); });
+  document.getElementById('btn-account').addEventListener('click', () => { renderAccountScreen(); goTo('account'); });
   document.getElementById('btn-back').addEventListener('click', () => { renderDashboard(); goTo('path'); });
   document.getElementById('btn-modal-continue').addEventListener('click', closeLevelCompleteModal);
 }
@@ -815,6 +1130,12 @@ function init() {
   state.progress = loadProgress();
   registerServiceWorker();
   wireStaticEvents();
+
+  if (window.DevQuestFirebase) {
+    initFirebaseAuth();
+  } else {
+    window.addEventListener('devquest-firebase-ready', initFirebaseAuth, { once: true });
+  }
 
   setTimeout(() => {
     document.getElementById('screen-splash').classList.remove('is-active');

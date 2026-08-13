@@ -61,9 +61,14 @@
             <span class="brand-icon" aria-hidden="true">&lt;/&gt;</span>
             <span>Dev<span class="accent-text">Quest</span></span>
           </div>
-          <button id="btn-badges" class="icon-btn" aria-label="Ver insignias">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><path d="M8.7 13.5 7 22l5-3 5 3-1.7-8.5"></path></svg>
-          </button>
+          <div class="header-actions">
+            <button id="btn-account" class="icon-btn" aria-label="Tu cuenta">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"></path></svg>
+            </button>
+            <button id="btn-badges" class="icon-btn" aria-label="Ver insignias">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><path d="M8.7 13.5 7 22l5-3 5 3-1.7-8.5"></path></svg>
+            </button>
+          </div>
         </div>
 
         <div class="stats-bar" aria-label="Tu progreso">
@@ -112,6 +117,15 @@
           <div id="badges-container" class="badges-grid"></div>
         </section>
 
+        <!-- ---- Cuenta / login ---- -->
+        <section id="screen-account" class="screen" data-screen="account">
+          <div class="path-intro">
+            <h2>Tu cuenta</h2>
+            <p class="path-summary">Inicia sesión para guardar tu progreso en la nube</p>
+          </div>
+          <div id="account-container" class="account-container"></div>
+        </section>
+
       </main>
     </div>
 
@@ -150,5 +164,8 @@
   <script src="content-css.js"></script>
   <script src="content-js.js"></script>
   <script src="app.js"></script>
+  <!-- "async": no bloquea el arranque de la app ni DOMContentLoaded, así
+       DevQuest sigue siendo utilizable al instante incluso sin conexión. -->
+  <script type="module" src="firebase-init.js" async></script>
 </body>
 </html>
