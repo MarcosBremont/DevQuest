@@ -54,7 +54,8 @@ function saveProgress(progress) {
 const MODULES = [
   { id: 'html', title: 'HTML5', icon: '📄', levels: HTML_LEVELS },
   { id: 'css', title: 'CSS3', icon: '🎨', levels: CSS_LEVELS },
-  { id: 'js', title: 'JavaScript', icon: '⚡', levels: JS_LEVELS }
+  { id: 'js', title: 'JavaScript', icon: '⚡', levels: JS_LEVELS },
+  { id: 'csharp', title: 'C#', icon: '🔷', levels: CSHARP_LEVELS }
 ];
 
 
@@ -75,6 +76,7 @@ const BADGES = [
   { id: 'html-master', name: 'Maestro HTML', desc: 'Completa el módulo de HTML5', icon: '📄', check: (p) => isModuleCompleted('html', p) },
   { id: 'css-master', name: 'Maestro CSS', desc: 'Completa el módulo de CSS3', icon: '🎨', check: (p) => isModuleCompleted('css', p) },
   { id: 'js-master', name: 'Maestro JS', desc: 'Completa el módulo de JavaScript', icon: '⚡', check: (p) => isModuleCompleted('js', p) },
+  { id: 'csharp-master', name: 'Maestro C#', desc: 'Completa el módulo de C#', icon: '🔷', check: (p) => isModuleCompleted('csharp', p) },
   { id: 'streak-3', name: 'Racha de 3 días', desc: 'Practica 3 días seguidos', icon: '🔥', check: (p) => p.streak >= 3 },
   { id: 'streak-7', name: 'Racha de 7 días', desc: 'Practica 7 días seguidos', icon: '🔥', check: (p) => p.streak >= 7 },
   { id: 'full-stack', name: 'Full Stack Junior', desc: 'Completa todos los módulos de DevQuest', icon: '🚀', check: (p) => areAllModulesCompleted(p) }
@@ -98,10 +100,14 @@ function findLevel(levelId) {
   return null;
 }
 function isLevelUnlocked(levelId) {
-  const all = getAllLevels();
-  const idx = all.findIndex((l) => l.id === levelId);
+  // El desbloqueo es independiente por módulo (lenguaje): cada uno tiene su
+  // propio nivel 1 siempre abierto, sin depender de terminar los demás. Así
+  // se puede elegir cualquier lenguaje y empezarlo cuando se quiera.
+  const found = findLevel(levelId);
+  if (!found) return false;
+  const idx = found.module.levels.findIndex((l) => l.id === levelId);
   if (idx <= 0) return true;
-  return state.progress.completedLevels.includes(all[idx - 1].id);
+  return state.progress.completedLevels.includes(found.module.levels[idx - 1].id);
 }
 function computeUserLevel(xp) {
   return Math.floor(xp / 150) + 1;
