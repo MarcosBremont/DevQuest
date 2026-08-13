@@ -9,6 +9,13 @@
    este módulo simplemente no se ejecuta y app.js sigue funcionando en modo
    invitado (localStorage), degradando sin romper nada — DevQuest sigue
    siendo utilizable offline.
+
+   Google Sign-In usa signInWithRedirect (no signInWithPopup): los popups
+   dependen de comunicación entre ventanas que las políticas
+   Cross-Origin-Opener-Policy de accounts.google.com pueden romper en
+   silencio (la promesa se queda colgada sin error), y además los popups
+   son poco fiables en PWAs instaladas/móvil. El redirect evita ese
+   problema por completo al no depender de ninguna ventana secundaria.
    ========================================================================== */
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js';
@@ -18,7 +25,6 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
   sendPasswordResetEmail,
@@ -54,7 +60,6 @@ window.DevQuestFirebase = {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
   sendPasswordResetEmail,

@@ -855,12 +855,17 @@ function handleAuthStateChanged(user) {
 
   if (user) {
     syncProgressOnLogin(user).then(() => {
-      if (justLoggedIn && onAccountScreen) {
-        showToast('¡Sesión iniciada! Tu progreso está sincronizado.', '☁️');
-        renderDashboard();
-        goTo('path');
-      } else if (onAccountScreen) {
-        renderAccountScreen();
+      // El toast se muestra sin importar la pantalla activa: tras un login
+      // con Google por redirect, la app arranca de cero y puede que ya no
+      // estemos en la pantalla de cuenta cuando esto se dispara.
+      if (justLoggedIn) showToast('¡Sesión iniciada! Tu progreso está sincronizado.', '☁️');
+      if (onAccountScreen) {
+        if (justLoggedIn) {
+          renderDashboard();
+          goTo('path');
+        } else {
+          renderAccountScreen();
+        }
       }
     });
   } else if (onAccountScreen) {
@@ -1073,21 +1078,15 @@ async function handleGoogleSignIn() {
   hideAuthError();
   setAuthBusy(true);
   try {
-    await fb.signInWithPopup(fb.auth, fb.googleProvider);
+    // signInWithRedirect en vez de signInWithPopup: los popups dependen de
+    // comunicación entre ventanas que las políticas COOP de
+    // accounts.google.com pueden romper en silencio (la promesa del popup
+    // se queda colgada sin lanzar ningún error que podamos capturar). El
+    // redirect navega fuera de la app; el resultado se procesa solo al
+    // volver, en initFirebaseAuth() / handleAuthStateChanged().
+    await fb.signInWithRedirect(fb.auth, fb.googleProvider);
   } catch (err) {
-    // Si el navegador bloqueó la ventana emergente (frecuente en PWAs
-    // instaladas o navegadores móviles), reintentamos con redirección.
-    if (err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-supported-in-this-environment') {
-      try {
-        await fb.signInWithRedirect(fb.auth, fb.googleProvider);
-        return;
-      } catch (err2) {
-        showAuthError(getAuthErrorMessage(err2));
-      }
-    } else {
-      showAuthError(getAuthErrorMessage(err));
-    }
-  } finally {
+    showAuthError(getAuthErrorMessage(err));
     setAuthBusy(false);
   }
 }
