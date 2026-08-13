@@ -55,7 +55,8 @@ const MODULES = [
   { id: 'html', title: 'HTML5', icon: '📄', levels: HTML_LEVELS },
   { id: 'css', title: 'CSS3', icon: '🎨', levels: CSS_LEVELS },
   { id: 'js', title: 'JavaScript', icon: '⚡', levels: JS_LEVELS },
-  { id: 'csharp', title: 'C#', icon: '🔷', levels: CSHARP_LEVELS }
+  { id: 'csharp', title: 'C#', icon: '🔷', levels: CSHARP_LEVELS },
+  { id: 'mysql', title: 'MySQL', icon: '🗄️', levels: MYSQL_LEVELS }
 ];
 
 
@@ -77,6 +78,7 @@ const BADGES = [
   { id: 'css-master', name: 'Maestro CSS', desc: 'Completa el módulo de CSS3', icon: '🎨', check: (p) => isModuleCompleted('css', p) },
   { id: 'js-master', name: 'Maestro JS', desc: 'Completa el módulo de JavaScript', icon: '⚡', check: (p) => isModuleCompleted('js', p) },
   { id: 'csharp-master', name: 'Maestro C#', desc: 'Completa el módulo de C#', icon: '🔷', check: (p) => isModuleCompleted('csharp', p) },
+  { id: 'mysql-master', name: 'Maestro MySQL', desc: 'Completa el módulo de MySQL', icon: '🗄️', check: (p) => isModuleCompleted('mysql', p) },
   { id: 'streak-3', name: 'Racha de 3 días', desc: 'Practica 3 días seguidos', icon: '🔥', check: (p) => p.streak >= 3 },
   { id: 'streak-7', name: 'Racha de 7 días', desc: 'Practica 7 días seguidos', icon: '🔥', check: (p) => p.streak >= 7 },
   { id: 'full-stack', name: 'Full Stack Junior', desc: 'Completa todos los módulos de DevQuest', icon: '🚀', check: (p) => areAllModulesCompleted(p) }

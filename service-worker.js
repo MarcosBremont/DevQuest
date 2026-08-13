@@ -6,7 +6,7 @@
 
 // Sube este número cada vez que cambies el contenido cacheado para forzar
 // la limpieza de la caché antigua en el evento "activate".
-const CACHE_VERSION = 'v1.5.0';
+const CACHE_VERSION = 'v1.6.0';
 const CACHE_NAME = `devquest-cache-${CACHE_VERSION}`;
 
 // App shell: todo lo necesario para que la app arranque sin conexión.
@@ -23,6 +23,7 @@ const APP_SHELL = [
   './content-css.js',
   './content-js.js',
   './content-csharp.js',
+  './content-mysql.js',
   './app.js',
   './firebase-init.js',
   './manifest.json',
