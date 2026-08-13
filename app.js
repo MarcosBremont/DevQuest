@@ -832,43 +832,68 @@ function getAuthErrorMessage(err) {
   return AUTH_ERROR_MESSAGES[err && err.code] || 'Ha ocurrido un error. Inténtalo de nuevo.';
 }
 
+/* Logs de depuración del login — con prefijo y color para que sean fáciles
+   de encontrar entre el resto de mensajes de la consola. Quitar cuando ya
+   no haga falta diagnosticar el flujo de autenticación. */
+function dqlog(...args) {
+  console.log('%c[DevQuest Auth]', 'color:#39ffb0;font-weight:bold', ...args);
+}
+
 function initFirebaseAuth() {
+  dqlog('initFirebaseAuth() ejecutándose. window.DevQuestFirebase =', window.DevQuestFirebase);
   const fb = window.DevQuestFirebase;
-  if (!fb) return;
+  if (!fb) {
+    dqlog('window.DevQuestFirebase no existe todavía: initFirebaseAuth aborta.');
+    return;
+  }
   state.firebaseReady = true;
+  dqlog('state.firebaseReady = true. auth.currentUser en este momento:', fb.auth.currentUser);
 
   // Recoge el resultado si el login con Google usó signInWithRedirect
   // (alternativa a la ventana emergente en navegadores que la bloquean).
-  fb.getRedirectResult(fb.auth).catch((err) => {
+  fb.getRedirectResult(fb.auth).then((result) => {
+    dqlog('getRedirectResult() resuelto. result =', result, '| result?.user?.email =', result && result.user ? result.user.email : null);
+  }).catch((err) => {
+    dqlog('getRedirectResult() rechazado con error:', err && err.code, err);
     console.warn('DevQuest: error al procesar el resultado de Google Sign-In.', err);
   });
 
-  fb.onAuthStateChanged(fb.auth, handleAuthStateChanged);
+  fb.onAuthStateChanged(fb.auth, (user) => {
+    dqlog('onAuthStateChanged() disparado. user =', user ? user.email : null);
+    handleAuthStateChanged(user);
+  });
+  dqlog('onAuthStateChanged listener registrado.');
 }
 
 function handleAuthStateChanged(user) {
   const justLoggedIn = !state.user && !!user;
+  dqlog('handleAuthStateChanged() — antes: state.user =', state.user ? state.user.email : null, '| nuevo user =', user ? user.email : null, '| justLoggedIn =', justLoggedIn);
   state.user = user;
   updateAccountButton();
 
   const onAccountScreen = document.getElementById('screen-account').classList.contains('is-active');
+  dqlog('onAccountScreen =', onAccountScreen, '| pantalla activa actual =', document.querySelector('.screen.is-active')?.dataset.screen);
 
   if (user) {
     syncProgressOnLogin(user).then(() => {
+      dqlog('syncProgressOnLogin() terminó. state.user sigue siendo =', state.user ? state.user.email : null);
       // El toast se muestra sin importar la pantalla activa: tras un login
       // con Google por redirect, la app arranca de cero y puede que ya no
       // estemos en la pantalla de cuenta cuando esto se dispara.
       if (justLoggedIn) showToast('¡Sesión iniciada! Tu progreso está sincronizado.', '☁️');
       if (onAccountScreen) {
         if (justLoggedIn) {
+          dqlog('Navegando a "path" tras login recién hecho en la pantalla de cuenta.');
           renderDashboard();
           goTo('path');
         } else {
+          dqlog('Re-renderizando pantalla de cuenta (ya logueado, sin cambio nuevo).');
           renderAccountScreen();
         }
       }
     });
   } else if (onAccountScreen) {
+    dqlog('user es null y estamos en la pantalla de cuenta: renderizando formulario de login.');
     renderAccountScreen();
   }
 }
@@ -876,6 +901,7 @@ function handleAuthStateChanged(user) {
 function updateAccountButton() {
   const btn = document.getElementById('btn-account');
   if (btn) btn.classList.toggle('is-logged-in', !!state.user);
+  dqlog('updateAccountButton() — is-logged-in =', !!state.user);
 }
 
 /* Combina el progreso local con el guardado en la nube sin perder nada:
@@ -902,20 +928,26 @@ function mergeProgress(local, cloud) {
 }
 
 async function syncProgressOnLogin(user) {
-  if (!state.firebaseReady) return;
+  dqlog('syncProgressOnLogin() empieza para', user.email, '| state.firebaseReady =', state.firebaseReady);
+  if (!state.firebaseReady) { dqlog('syncProgressOnLogin() aborta: firebaseReady es false.'); return; }
   const fb = window.DevQuestFirebase;
   try {
     const ref = fb.doc(fb.db, 'users', user.uid);
+    dqlog('Leyendo documento de Firestore users/' + user.uid + '…');
     const snap = await fb.getDoc(ref);
     const cloud = snap.exists() ? snap.data() : null;
+    dqlog('Documento leído. existe =', snap.exists(), '| datos =', cloud);
     const merged = mergeProgress(state.progress, cloud);
+    dqlog('Progreso fusionado =', merged);
     state.progress = merged;
     saveProgress(merged); // guarda en local y vuelve a subir el resultado fusionado
     updateHeaderStats();
     if (document.getElementById('screen-path').classList.contains('is-active')) {
       renderDashboard();
     }
+    dqlog('syncProgressOnLogin() terminó con éxito.');
   } catch (err) {
+    dqlog('syncProgressOnLogin() ERROR:', err && err.code, err);
     console.warn('DevQuest: no se pudo sincronizar el progreso al iniciar sesión.', err);
   }
 }
@@ -924,6 +956,7 @@ function pushProgressToCloud(progress) {
   if (!state.firebaseReady || !state.user) return;
   const fb = window.DevQuestFirebase;
   const ref = fb.doc(fb.db, 'users', state.user.uid);
+  dqlog('pushProgressToCloud() subiendo progreso para', state.user.email, progress);
   fb.setDoc(ref, {
     xp: progress.xp,
     streak: progress.streak,
@@ -932,7 +965,10 @@ function pushProgressToCloud(progress) {
     perfectLevels: progress.perfectLevels,
     badges: progress.badges,
     updatedAt: fb.serverTimestamp()
-  }, { merge: true }).catch((err) => {
+  }, { merge: true }).then(() => {
+    dqlog('pushProgressToCloud() subida completada.');
+  }).catch((err) => {
+    dqlog('pushProgressToCloud() ERROR:', err && err.code, err);
     console.warn('DevQuest: no se pudo sincronizar el progreso con la nube.', err);
   });
 }
@@ -940,6 +976,8 @@ function pushProgressToCloud(progress) {
 /* ---- Pantalla de cuenta: perfil si hay sesión, formulario si no ---- */
 function renderAccountScreen() {
   const container = document.getElementById('account-container');
+  const fbCurrentUser = window.DevQuestFirebase ? window.DevQuestFirebase.auth.currentUser : undefined;
+  dqlog('renderAccountScreen() — state.user =', state.user ? state.user.email : null, '| state.firebaseReady =', state.firebaseReady, '| firebase.auth.currentUser =', fbCurrentUser ? fbCurrentUser.email : fbCurrentUser);
 
   if (state.user) {
     const user = state.user;
@@ -1120,7 +1158,11 @@ function handleSignOut() {
 function wireStaticEvents() {
   document.getElementById('btn-start').addEventListener('click', enterApp);
   document.getElementById('btn-badges').addEventListener('click', () => { renderBadges(); goTo('achievements'); });
-  document.getElementById('btn-account').addEventListener('click', () => { renderAccountScreen(); goTo('account'); });
+  document.getElementById('btn-account').addEventListener('click', () => {
+    dqlog('Clic en el icono de cuenta. state.user =', state.user ? state.user.email : null, '| state.firebaseReady =', state.firebaseReady);
+    renderAccountScreen();
+    goTo('account');
+  });
   document.getElementById('btn-back').addEventListener('click', () => { renderDashboard(); goTo('path'); });
   document.getElementById('btn-modal-continue').addEventListener('click', closeLevelCompleteModal);
 }
@@ -1131,9 +1173,14 @@ function init() {
   wireStaticEvents();
 
   if (window.DevQuestFirebase) {
+    dqlog('init(): window.DevQuestFirebase ya estaba listo, llamando a initFirebaseAuth() ya mismo.');
     initFirebaseAuth();
   } else {
-    window.addEventListener('devquest-firebase-ready', initFirebaseAuth, { once: true });
+    dqlog('init(): window.DevQuestFirebase aún no existe, esperando el evento devquest-firebase-ready…');
+    window.addEventListener('devquest-firebase-ready', () => {
+      dqlog('Evento devquest-firebase-ready recibido.');
+      initFirebaseAuth();
+    }, { once: true });
   }
 
   setTimeout(() => {
