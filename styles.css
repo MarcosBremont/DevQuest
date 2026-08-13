@@ -807,16 +807,11 @@ code { font-family: var(--font-mono); }
   background: var(--border-color-soft);
 }
 
-.btn-google {
+.google-signin-container {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 10px;
-  background: #ffffff;
-  color: #3c4043;
-  border: 1px solid #dadce0;
+  min-height: 44px;
 }
-.btn-google:active { transform: scale(0.97); }
 
 .auth-guest-note {
   margin-top: 16px;

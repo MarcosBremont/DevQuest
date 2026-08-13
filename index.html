@@ -167,5 +167,11 @@
   <!-- "async": no bloquea el arranque de la app ni DOMContentLoaded, así
        DevQuest sigue siendo utilizable al instante incluso sin conexión. -->
   <script type="module" src="firebase-init.js" async></script>
+  <!-- Google Identity Services: botón "Continuar con Google". Entrega el
+       token de identidad directamente en esta página (sin redirect/popup a
+       otro dominio), así que funciona incluso con Brave Shields u otras
+       protecciones de privacidad que bloqueen cookies/almacenamiento entre
+       sitios. -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 </html>

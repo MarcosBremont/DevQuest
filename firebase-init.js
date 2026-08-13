@@ -10,23 +10,25 @@
    invitado (localStorage), degradando sin romper nada — DevQuest sigue
    siendo utilizable offline.
 
-   Google Sign-In usa signInWithRedirect (no signInWithPopup): los popups
-   dependen de comunicación entre ventanas que las políticas
-   Cross-Origin-Opener-Policy de accounts.google.com pueden romper en
-   silencio (la promesa se queda colgada sin error), y además los popups
-   son poco fiables en PWAs instaladas/móvil. El redirect evita ese
-   problema por completo al no depender de ninguna ventana secundaria.
+   Google Sign-In usa Google Identity Services (accounts.google.com/gsi/
+   client, cargado aparte en index.html) + signInWithCredential, NO
+   signInWithRedirect ni signInWithPopup: ambos dependen de que
+   devquest-73552.firebaseapp.com le "devuelva" el resultado a la página
+   original mediante almacenamiento/iframes entre dominios distintos, y
+   navegadores con protecciones de privacidad fuertes (Brave Shields,
+   bloqueo de cookies de terceros, protección contra huellas digitales)
+   rompen justo ese mecanismo en silencio. GIS entrega el token de
+   identidad directamente en la propia página, sin depender de eso.
    ========================================================================== */
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js';
 import {
   getAuth,
   GoogleAuthProvider,
+  signInWithCredential,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithRedirect,
-  getRedirectResult,
   sendPasswordResetEmail,
   signOut
 } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js';
@@ -51,17 +53,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
 
 window.DevQuestFirebase = {
   auth,
   db,
-  googleProvider,
+  GoogleAuthProvider,
+  signInWithCredential,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithRedirect,
-  getRedirectResult,
   sendPasswordResetEmail,
   signOut,
   doc,

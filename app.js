@@ -849,15 +849,6 @@ function initFirebaseAuth() {
   state.firebaseReady = true;
   dqlog('state.firebaseReady = true. auth.currentUser en este momento:', fb.auth.currentUser);
 
-  // Recoge el resultado si el login con Google usó signInWithRedirect
-  // (alternativa a la ventana emergente en navegadores que la bloquean).
-  fb.getRedirectResult(fb.auth).then((result) => {
-    dqlog('getRedirectResult() resuelto. result =', result, '| result?.user?.email =', result && result.user ? result.user.email : null);
-  }).catch((err) => {
-    dqlog('getRedirectResult() rechazado con error:', err && err.code, err);
-    console.warn('DevQuest: error al procesar el resultado de Google Sign-In.', err);
-  });
-
   fb.onAuthStateChanged(fb.auth, (user) => {
     dqlog('onAuthStateChanged() disparado. user =', user ? user.email : null);
     handleAuthStateChanged(user);
@@ -1027,10 +1018,7 @@ function renderAccountScreen() {
         <button type="button" id="auth-forgot" class="auth-forgot-link">¿Olvidaste tu contraseña?</button>
       </form>
       <div class="auth-divider"><span>o</span></div>
-      <button type="button" id="auth-google" class="btn btn-google btn-block">
-        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.91c1.7-1.57 2.69-3.88 2.69-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.17l-2.91-2.27c-.81.54-1.84.86-3.05.86-2.35 0-4.34-1.58-5.05-3.71H.96v2.34C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.95 10.71A5.4 5.4 0 0 1 3.68 9c0-.6.1-1.18.27-1.71V4.95H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.05l2.99-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.95l2.99 2.34C4.66 5.16 6.65 3.58 9 3.58z"/></svg>
-        Continuar con Google
-      </button>
+      <div id="google-signin-container" class="google-signin-container"></div>
       <p class="auth-guest-note">Tu progreso actual en este dispositivo se fusionará con tu cuenta al iniciar sesión.</p>
     </div>
   `;
@@ -1059,8 +1047,8 @@ function wireAuthForm() {
   });
 
   document.getElementById('auth-form').addEventListener('submit', handleAuthFormSubmit);
-  document.getElementById('auth-google').addEventListener('click', handleGoogleSignIn);
   forgotBtn.addEventListener('click', handleForgotPassword);
+  renderGoogleSignInButton();
 }
 
 function showAuthError(message, isSuccess) {
@@ -1110,21 +1098,63 @@ async function handleAuthFormSubmit(e) {
   }
 }
 
-async function handleGoogleSignIn() {
+/* Client ID web de OAuth que Firebase generó automáticamente para este
+   proyecto al activar Google como proveedor (mismo client_id que ya usaba
+   el flujo anterior por redirect, visible en las URLs de Google). Google
+   Identity Services (GIS) lo usa para emitir un token de identidad
+   directamente en esta página, sin depender de cookies/almacenamiento
+   entre devquest-73552.firebaseapp.com y este dominio. */
+const GOOGLE_OAUTH_CLIENT_ID = '906497704896-97a6i6hri8sdi23jqsvn7pb2ahg8fv6c.apps.googleusercontent.com';
+let googleIdentityInitialized = false;
+
+function renderGoogleSignInButton() {
+  const container = document.getElementById('google-signin-container');
+  if (!container) return;
+
+  if (!window.google || !window.google.accounts || !window.google.accounts.id) {
+    dqlog('Google Identity Services todavía no ha cargado; reintentando en 500ms.');
+    container.innerHTML = '<p class="auth-unavailable" style="padding:10px 0;">Cargando el botón de Google…</p>';
+    setTimeout(() => {
+      if (document.getElementById('google-signin-container')) renderGoogleSignInButton();
+    }, 500);
+    return;
+  }
+
+  if (!googleIdentityInitialized) {
+    dqlog('Inicializando Google Identity Services con client_id', GOOGLE_OAUTH_CLIENT_ID);
+    window.google.accounts.id.initialize({
+      client_id: GOOGLE_OAUTH_CLIENT_ID,
+      callback: handleGoogleCredentialResponse
+    });
+    googleIdentityInitialized = true;
+  }
+
+  container.innerHTML = '';
+  window.google.accounts.id.renderButton(container, {
+    theme: 'filled_black',
+    size: 'large',
+    shape: 'pill',
+    text: 'continue_with',
+    logo_alignment: 'left',
+    width: Math.min(container.parentElement.clientWidth || 300, 300)
+  });
+  dqlog('Botón de Google renderizado.');
+}
+
+async function handleGoogleCredentialResponse(response) {
+  dqlog('handleGoogleCredentialResponse() recibido. ¿Hay credential JWT? ->', !!(response && response.credential));
   const fb = window.DevQuestFirebase;
-  if (!fb) return;
+  if (!fb || !response || !response.credential) return;
   hideAuthError();
   setAuthBusy(true);
   try {
-    // signInWithRedirect en vez de signInWithPopup: los popups dependen de
-    // comunicación entre ventanas que las políticas COOP de
-    // accounts.google.com pueden romper en silencio (la promesa del popup
-    // se queda colgada sin lanzar ningún error que podamos capturar). El
-    // redirect navega fuera de la app; el resultado se procesa solo al
-    // volver, en initFirebaseAuth() / handleAuthStateChanged().
-    await fb.signInWithRedirect(fb.auth, fb.googleProvider);
+    const credential = fb.GoogleAuthProvider.credential(response.credential);
+    const result = await fb.signInWithCredential(fb.auth, credential);
+    dqlog('signInWithCredential() completado. usuario =', result.user.email);
   } catch (err) {
+    dqlog('signInWithCredential() ERROR:', err && err.code, err);
     showAuthError(getAuthErrorMessage(err));
+  } finally {
     setAuthBusy(false);
   }
 }
