@@ -866,22 +866,25 @@ function handleAuthStateChanged(user) {
   dqlog('onAccountScreen =', onAccountScreen, '| pantalla activa actual =', document.querySelector('.screen.is-active')?.dataset.screen);
 
   if (user) {
-    syncProgressOnLogin(user).then(() => {
-      dqlog('syncProgressOnLogin() terminó. state.user sigue siendo =', state.user ? state.user.email : null);
-      // El toast se muestra sin importar la pantalla activa: tras un login
-      // con Google por redirect, la app arranca de cero y puede que ya no
-      // estemos en la pantalla de cuenta cuando esto se dispara.
-      if (justLoggedIn) showToast('¡Sesión iniciada! Tu progreso está sincronizado.', '☁️');
-      if (onAccountScreen) {
-        if (justLoggedIn) {
-          dqlog('Navegando a "path" tras login recién hecho en la pantalla de cuenta.');
-          renderDashboard();
-          goTo('path');
-        } else {
-          dqlog('Re-renderizando pantalla de cuenta (ya logueado, sin cambio nuevo).');
-          renderAccountScreen();
-        }
+    // La UI se actualiza YA, sin esperar a que termine (o falle) la
+    // sincronización con Firestore: si la nube tarda o está mal
+    // configurada, el usuario debe ver de inmediato que inició sesión de
+    // todos modos. La sincronización sigue en segundo plano y, si trae
+    // progreso nuevo, ya se encarga ella misma de refrescar la pantalla.
+    dqlog('Actualizando la UI de inmediato (sin esperar a Firestore).');
+    if (justLoggedIn) showToast('¡Sesión iniciada!', '☁️');
+    if (onAccountScreen) {
+      if (justLoggedIn) {
+        dqlog('Navegando a "path" tras login recién hecho en la pantalla de cuenta.');
+        renderDashboard();
+        goTo('path');
+      } else {
+        dqlog('Re-renderizando pantalla de cuenta (ya logueado, sin cambio nuevo).');
+        renderAccountScreen();
       }
+    }
+    syncProgressOnLogin(user).then(() => {
+      dqlog('syncProgressOnLogin() terminó (segundo plano). state.user sigue siendo =', state.user ? state.user.email : null);
     });
   } else if (onAccountScreen) {
     dqlog('user es null y estamos en la pantalla de cuenta: renderizando formulario de login.');
@@ -918,6 +921,17 @@ function mergeProgress(local, cloud) {
   return { xp, streak, lastPlayDate, completedLevels, perfectLevels, badges };
 }
 
+/* Si Firestore no responde (base de datos no creada, reglas mal
+   configuradas, sin red…) esto evita que la lectura se quede colgada
+   indefinidamente: falla rápido con un error claro en vez de dejar la
+   sincronización en el limbo. */
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`Tiempo de espera agotado (${ms}ms): ${label}`)), ms))
+  ]);
+}
+
 async function syncProgressOnLogin(user) {
   dqlog('syncProgressOnLogin() empieza para', user.email, '| state.firebaseReady =', state.firebaseReady);
   if (!state.firebaseReady) { dqlog('syncProgressOnLogin() aborta: firebaseReady es false.'); return; }
@@ -925,7 +939,7 @@ async function syncProgressOnLogin(user) {
   try {
     const ref = fb.doc(fb.db, 'users', user.uid);
     dqlog('Leyendo documento de Firestore users/' + user.uid + '…');
-    const snap = await fb.getDoc(ref);
+    const snap = await withTimeout(fb.getDoc(ref), 8000, 'lectura de Firestore');
     const cloud = snap.exists() ? snap.data() : null;
     dqlog('Documento leído. existe =', snap.exists(), '| datos =', cloud);
     const merged = mergeProgress(state.progress, cloud);
