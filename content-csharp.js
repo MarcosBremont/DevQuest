@@ -996,75 +996,14 @@ const CSHARP_LEVELS = [
   },
   {
     id: 'csharp-34',
-    title: 'Delegados',
-    subtitle: 'Nivel 34',
-    xp: 104,
-    type: 'quiz',
-    theory: {
-      paragraphs: [
-        'Un <code>delegate</code> es un tipo que representa la <strong>firma</strong> de un método (sus parámetros y su tipo de retorno), permitiendo guardar una referencia a un método en una variable y pasarla como si fuera un dato.',
-        'Esto es útil para escribir código más flexible: por ejemplo, un método que recibe un delegado como parámetro puede ejecutar distinta lógica según qué método le pasen, sin tener que conocerlo de antemano.'
-      ],
-      code:
-        '<span class="tok-kw">delegate</span> <span class="tok-kw">int</span> Operacion(<span class="tok-kw">int</span> a, <span class="tok-kw">int</span> b);\n\n' +
-        '<span class="tok-kw">static</span> <span class="tok-kw">int</span> Sumar(<span class="tok-kw">int</span> a, <span class="tok-kw">int</span> b) { <span class="tok-kw">return</span> a + b; }\n\n' +
-        'Operacion op = Sumar;\n' +
-        'Console.WriteLine(op(<span class="tok-num">2</span>, <span class="tok-num">3</span>)); <span class="tok-comment">// 5</span>'
-    },
-    exercise: {
-      instructions: 'Responde estas preguntas sobre delegados.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué representa un delegate en C#?', options: ['La firma de un método, permitiendo tratar métodos como datos', 'Un tipo de excepción', 'Una colección de elementos', 'Un modificador de acceso'], answer: 'La firma de un método, permitiendo tratar métodos como datos' },
-        { prompt: 'Si tienes "delegate int Operacion(int a, int b);", ¿qué método puede asignarse a una variable de ese tipo?', options: ['Cualquier método que reciba dos int y devuelva un int', 'Cualquier método sin importar sus parámetros', 'Solo métodos llamados Operacion', 'Solo métodos static void'], answer: 'Cualquier método que reciba dos int y devuelva un int' },
-        { prompt: '¿Para qué sirve pasar un delegate como parámetro de un método?', options: ['Para que ese método pueda ejecutar distinta lógica según qué función le pasen', 'Para evitar declarar variables', 'Para que el método se ejecute automáticamente al iniciar el programa', 'Para convertir el método en static'], answer: 'Para que ese método pueda ejecutar distinta lógica según qué función le pasen' },
-        { prompt: '¿Qué relación tienen las expresiones lambda con los delegados?', options: ['Una lambda puede asignarse a una variable de tipo delegate', 'No tienen ninguna relación', 'Las lambdas reemplazan por completo a las clases', 'Los delegados solo aceptan métodos static'], answer: 'Una lambda puede asignarse a una variable de tipo delegate' }
-      ]
-    }
-  },
-  {
-    id: 'csharp-35',
-    title: 'Eventos',
-    subtitle: 'Nivel 35',
-    xp: 108,
-    type: 'quiz',
-    theory: {
-      paragraphs: [
-        'Un <code>event</code> se construye sobre un delegate y sigue el patrón <strong>publicador/suscriptor</strong>: una clase "publica" el evento y otras partes del código se "suscriben" a él con <code>+=</code> para reaccionar cuando ocurre, sin que el publicador conozca de antemano quién escucha.',
-        'A diferencia de un delegate normal, un <code>event</code> solo puede dispararse (invocarse) desde dentro de la clase que lo declara; el código externo solo puede suscribirse o desuscribirse, no invocarlo directamente.'
-      ],
-      code:
-        '<span class="tok-kw">class</span> Boton {\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">event</span> Action Click;\n\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">void</span> Presionar() {\n' +
-        '    Click?.Invoke();\n' +
-        '  }\n' +
-        '}\n\n' +
-        'Boton b = <span class="tok-kw">new</span> Boton();\n' +
-        'b.Click += () =&gt; Console.WriteLine(<span class="tok-string">"¡Click!"</span>);\n' +
-        'b.Presionar();'
-    },
-    exercise: {
-      instructions: 'Responde estas preguntas sobre eventos.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué patrón sigue un event en C#?', options: ['Publicador/suscriptor: unas partes publican el evento y otras se suscriben', 'Herencia múltiple', 'Singleton', 'Encapsulamiento de campos privados'], answer: 'Publicador/suscriptor: unas partes publican el evento y otras se suscriben' },
-        { prompt: '¿Con qué operador se suscribe un método a un evento?', options: ['+=', '=', '->', '::'], answer: '+=' },
-        { prompt: '¿Desde dónde se puede invocar (disparar) un event?', options: ['Solo desde dentro de la clase que lo declara', 'Desde cualquier parte del programa', 'Solo desde el método Main', 'Solo desde una clase derivada'], answer: 'Solo desde dentro de la clase que lo declara' },
-        { prompt: '¿Sobre qué tipo se construye un event?', options: ['Sobre un delegate', 'Sobre una interfaz', 'Sobre un struct', 'Sobre un enum'], answer: 'Sobre un delegate' }
-      ]
-    }
-  },
-  {
-    id: 'csharp-36',
     title: 'LINQ básico (Where, Select)',
-    subtitle: 'Nivel 36',
-    xp: 118,
+    subtitle: 'Nivel 34',
+    xp: 105,
     type: 'fill-tags',
     theory: {
       paragraphs: [
         'LINQ (Language Integrated Query) permite consultar colecciones con una sintaxis declarativa. <code>Where()</code> filtra elementos que cumplen una condición, y <code>Select()</code> transforma cada elemento en algo nuevo. Ambos reciben una expresión lambda y requieren <code>using System.Linq;</code>.',
-        'Estos métodos no modifican la colección original: devuelven una nueva secuencia con el resultado. Se pueden encadenar, por ejemplo filtrar primero y transformar después.'
+        'Estos métodos no modifican la colección original: devuelven una nueva secuencia con el resultado. Se pueden encadenar, por ejemplo filtrar primero y transformar después — este mismo patrón es el que vas a usar más adelante para trabajar con listas de datos leídos desde una base de datos.'
       ],
       code:
         'List&lt;<span class="tok-kw">int</span>&gt; numeros = <span class="tok-kw">new</span> List&lt;<span class="tok-kw">int</span>&gt; { <span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>, <span class="tok-num">4</span>, <span class="tok-num">5</span> };\n' +
@@ -1082,10 +1021,10 @@ const CSHARP_LEVELS = [
     }
   },
   {
-    id: 'csharp-37',
+    id: 'csharp-35',
     title: 'LINQ avanzado (OrderBy, GroupBy, First)',
-    subtitle: 'Nivel 37',
-    xp: 124,
+    subtitle: 'Nivel 35',
+    xp: 110,
     type: 'quiz',
     theory: {
       paragraphs: [
@@ -1109,15 +1048,15 @@ const CSHARP_LEVELS = [
     }
   },
   {
-    id: 'csharp-38',
+    id: 'csharp-36',
     title: 'Expresiones lambda',
-    subtitle: 'Nivel 38',
-    xp: 122,
+    subtitle: 'Nivel 36',
+    xp: 114,
     type: 'quiz',
     theory: {
       paragraphs: [
         'Una <strong>expresión lambda</strong> es una forma compacta de escribir una función anónima, sin necesidad de declararla como método aparte. Se escribe con la sintaxis <code>(parámetros) =&gt; expresión</code>.',
-        'Se usan constantemente con LINQ y delegados, pero también se pueden guardar en una variable como cualquier otro valor, por ejemplo <code>Func&lt;int, int&gt; doble = n =&gt; n * 2;</code>.'
+        'Se usan constantemente con LINQ, pero también se pueden guardar en una variable como cualquier otro valor, por ejemplo <code>Func&lt;int, int&gt; doble = n =&gt; n * 2;</code>.'
       ],
       code:
         'Func&lt;<span class="tok-kw">int</span>, <span class="tok-kw">int</span>&gt; doble = n =&gt; n * <span class="tok-num">2</span>;\n' +
@@ -1137,15 +1076,15 @@ const CSHARP_LEVELS = [
     }
   },
   {
-    id: 'csharp-39',
+    id: 'csharp-37',
     title: 'Genéricos (Generics)',
-    subtitle: 'Nivel 39',
-    xp: 128,
+    subtitle: 'Nivel 37',
+    xp: 118,
     type: 'quiz',
     theory: {
       paragraphs: [
         'Los <strong>genéricos</strong> permiten escribir una clase o método que funciona con cualquier tipo, indicado con un parámetro de tipo entre <code>&lt; &gt;</code>, como la <code>T</code> en <code>class Caja&lt;T&gt;</code>. El tipo concreto se decide recién al usar la clase.',
-        'Esto evita duplicar código: en vez de escribir una clase distinta para cada tipo de dato, se escribe una sola vez <code>Caja&lt;T&gt;</code> y se usa como <code>Caja&lt;int&gt;</code> o <code>Caja&lt;string&gt;</code> según haga falta, con seguridad de tipos garantizada por el compilador.'
+        'Esto evita duplicar código: en vez de escribir una clase distinta para cada tipo de dato, se escribe una sola vez <code>Caja&lt;T&gt;</code> y se usa como <code>Caja&lt;int&gt;</code> o <code>Caja&lt;string&gt;</code> según haga falta. Más adelante vas a ver <code>List&lt;Producto&gt;</code> o <code>List&lt;Cliente&gt;</code> — el mismo <code>List&lt;T&gt;</code> genérico funcionando con tus propios modelos de datos.'
       ],
       code:
         '<span class="tok-kw">class</span> Caja&lt;T&gt; {\n' +
@@ -1169,15 +1108,43 @@ const CSHARP_LEVELS = [
     }
   },
   {
-    id: 'csharp-40',
-    title: 'Async/await en C#',
-    subtitle: 'Nivel 40',
-    xp: 132,
+    id: 'csharp-38',
+    title: 'Records como modelos de datos',
+    subtitle: 'Nivel 38',
+    xp: 122,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Un método marcado como <code>async</code> puede usar <code>await</code> para esperar una operación que toma tiempo (como leer un archivo o llamar a una API) <strong>sin bloquear</strong> el hilo de ejecución mientras espera.',
-        'Un método <code>async</code> normalmente devuelve <code>Task</code> (si no devuelve ningún valor útil) o <code>Task&lt;T&gt;</code> (si devuelve un valor de tipo <code>T</code> una vez terminada la operación). Nunca debería devolver <code>void</code>, salvo en manejadores de eventos.'
+        'Un <code>record</code> (desde C# 9) es un tipo pensado para representar <strong>datos inmutables</strong>. Se puede declarar en una sola línea: <code>record Producto(int Id, string Nombre, double Precio);</code>, y el compilador genera automáticamente las propiedades, el constructor y más.',
+        'Los records son ideales como <strong>modelo de datos</strong> para representar una fila de una tabla: cada instancia de <code>Producto</code> representa un registro, con sus propiedades correspondiendo a las columnas. Vas a usar exactamente este patrón cuando conectes C# con MySQL más adelante en este módulo.'
+      ],
+      code:
+        '<span class="tok-kw">record</span> Producto(<span class="tok-kw">int</span> Id, <span class="tok-kw">string</span> Nombre, <span class="tok-kw">double</span> Precio);\n\n' +
+        'Producto p1 = <span class="tok-kw">new</span> Producto(<span class="tok-num">1</span>, <span class="tok-string">"Mouse"</span>, <span class="tok-num">15</span>);\n' +
+        'Producto p2 = <span class="tok-kw">new</span> Producto(<span class="tok-num">1</span>, <span class="tok-string">"Mouse"</span>, <span class="tok-num">15</span>);\n' +
+        'Console.WriteLine(p1 == p2); <span class="tok-comment">// True, igualdad por valor</span>'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre records.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Para qué tipo de datos está especialmente pensado un record?', options: ['Datos inmutables, como el estado de una entidad que no cambia', 'Datos que cambian constantemente en un bucle', 'Solo para números enteros', 'Solo para representar excepciones'], answer: 'Datos inmutables, como el estado de una entidad que no cambia' },
+        { prompt: 'Si p1 y p2 son dos records Producto con los mismos valores, ¿qué devuelve p1 == p2?', options: ['True, porque los records comparan por valor', 'False, porque son objetos distintos en memoria', 'Depende de si se declararon con new', 'Error de compilación'], answer: 'True, porque los records comparan por valor' },
+        { prompt: '¿Por qué un record es una buena opción para representar una fila de una tabla de base de datos?', options: ['Porque sus propiedades pueden representar las columnas de forma clara e inmutable', 'Porque solo los records pueden guardarse en una base de datos', 'Porque los records se conectan automáticamente a MySQL', 'Porque no permiten más de dos propiedades'], answer: 'Porque sus propiedades pueden representar las columnas de forma clara e inmutable' },
+        { prompt: '¿Qué genera automáticamente el compilador al declarar un record con parámetros, como Producto(int Id, string Nombre, double Precio)?', options: ['Las propiedades y el constructor, entre otras cosas', 'Solo el nombre de la clase', 'Un método Main automático', 'Una interfaz vacía'], answer: 'Las propiedades y el constructor, entre otras cosas' }
+      ]
+    }
+  },
+  {
+    id: 'csharp-39',
+    title: 'Async/await en C#',
+    subtitle: 'Nivel 39',
+    xp: 126,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Un método marcado como <code>async</code> puede usar <code>await</code> para esperar una operación que toma tiempo (como leer un archivo, llamar a una API, o consultar una base de datos) <strong>sin bloquear</strong> el hilo de ejecución mientras espera.',
+        'Un método <code>async</code> normalmente devuelve <code>Task</code> (si no devuelve ningún valor útil) o <code>Task&lt;T&gt;</code> (si devuelve un valor de tipo <code>T</code>). Las operaciones de base de datos suelen tener una versión async (como <code>ExecuteReaderAsync()</code>), muy usada en aplicaciones reales para no congelar la interfaz mientras se espera al servidor.'
       ],
       code:
         '<span class="tok-kw">static</span> <span class="tok-kw">async</span> Task&lt;<span class="tok-kw">string</span>&gt; ObtenerDatos() {\n' +
@@ -1193,316 +1160,354 @@ const CSHARP_LEVELS = [
         { prompt: '¿Qué permite hacer await dentro de un método async?', options: ['Esperar una operación larga sin bloquear el hilo de ejecución', 'Detener el programa por completo hasta reiniciarlo', 'Ejecutar dos métodos exactamente al mismo tiempo en el mismo hilo', 'Convertir cualquier método en static'], answer: 'Esperar una operación larga sin bloquear el hilo de ejecución' },
         { prompt: '¿Qué tipo de retorno usa normalmente un método async que no devuelve ningún valor útil?', options: ['Task', 'void', 'int', 'string'], answer: 'Task' },
         { prompt: '¿Qué tipo de retorno usa un método async que sí devuelve un valor de tipo string?', options: ['Task de string', 'string', 'void', 'async string'], answer: 'Task de string' },
-        { prompt: '¿Por qué normalmente se evita que un método async devuelva void?', options: ['Porque dificulta manejar excepciones y esperar a que termine desde quien lo llama', 'Porque C# no lo permite bajo ninguna circunstancia', 'Porque hace que el método se ejecute de forma síncrona', 'Porque solo los constructores pueden ser async'], answer: 'Porque dificulta manejar excepciones y esperar a que termine desde quien lo llama' }
+        { prompt: '¿Por qué muchas operaciones de base de datos ofrecen una versión async, como ExecuteReaderAsync()?', options: ['Para no bloquear el programa mientras se espera la respuesta del servidor de base de datos', 'Porque las consultas SQL no funcionan de forma síncrona', 'Porque son obligatorias en cualquier conexión', 'Porque hacen que la consulta se ejecute dos veces'], answer: 'Para no bloquear el programa mientras se espera la respuesta del servidor de base de datos' }
+      ]
+    }
+  },
+  {
+    id: 'csharp-40',
+    title: 'Conectar C# a una base de datos MySQL',
+    subtitle: 'Nivel 40',
+    xp: 130,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Para que un programa en C# pueda leer y escribir en una base de datos MySQL, necesita un paquete conector (como <strong>MySqlConnector</strong>, instalable con NuGet) y la clase <code>MySqlConnection</code>, que representa la conexión abierta hacia el servidor.',
+        'La conexión se configura con una <strong>cadena de conexión</strong> (connection string): un texto con el servidor, la base de datos y las credenciales. Siempre hay que cerrar la conexión cuando se termina de usar, normalmente envolviéndola en un bloque <code>using</code> para que se cierre automáticamente aunque ocurra un error.'
+      ],
+      code:
+        '<span class="tok-kw">using</span> MySqlConnector;\n\n' +
+        '<span class="tok-kw">string</span> cadena = <span class="tok-string">"Server=localhost;Database=devquest;User=root;Password=1234;"</span>;\n\n' +
+        '<span class="tok-kw">using</span> (<span class="tok-kw">var</span> conexion = <span class="tok-kw">new</span> MySqlConnection(cadena)) {\n' +
+        '  conexion.Open();\n' +
+        '  Console.WriteLine(<span class="tok-string">"Conexión abierta correctamente"</span>);\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre cómo conectar C# con MySQL.',
+      variant: 'plain',
+      questions: [
+        { prompt: '¿Qué clase representa la conexión hacia un servidor MySQL desde C#?', options: ['MySqlConnection', 'MySqlCommand', 'MySqlDataReader', 'MySqlServer'], answer: 'MySqlConnection' },
+        { prompt: '¿Qué es una "cadena de conexión" (connection string)?', options: ['Un texto con el servidor, la base de datos y las credenciales necesarias para conectarse', 'Una consulta SQL completa', 'El nombre de una tabla', 'Un tipo de dato de C#'], answer: 'Un texto con el servidor, la base de datos y las credenciales necesarias para conectarse' },
+        { prompt: '¿Por qué conviene envolver la MySqlConnection en un bloque "using"?', options: ['Para que la conexión se cierre automáticamente aunque ocurra un error', 'Para que la conexión nunca se cierre', 'Porque es obligatorio en cualquier clase de C#', 'Para que la consulta se ejecute más rápido'], answer: 'Para que la conexión se cierre automáticamente aunque ocurra un error' },
+        { prompt: '¿Qué método abre efectivamente la conexión con el servidor de base de datos?', options: ['Open()', 'Connect()', 'Start()', 'Init()'], answer: 'Open()' }
       ]
     }
   },
   {
     id: 'csharp-41',
-    title: 'Interfaces genéricas: IEnumerable, IComparable',
+    title: 'Ejecutar comandos SQL desde C#',
     subtitle: 'Nivel 41',
-    xp: 130,
-    type: 'quiz',
-    theory: {
-      paragraphs: [
-        'La interfaz <code>IEnumerable</code> es lo que permite recorrer una colección con <code>foreach</code>: cualquier clase que la implemente (como las listas o los arrays) puede iterarse elemento por elemento.',
-        'La interfaz <code>IComparable</code> define un método <code>CompareTo()</code> que indica cómo comparar dos objetos entre sí, lo que permite que métodos como <code>Sort()</code> o <code>OrderBy()</code> sepan en qué orden colocarlos.'
-      ],
-      code:
-        '<span class="tok-kw">class</span> Persona : IComparable&lt;Persona&gt; {\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">int</span> Edad;\n\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">int</span> CompareTo(Persona otra) {\n' +
-        '    <span class="tok-kw">return</span> Edad.CompareTo(otra.Edad);\n' +
-        '  }\n' +
-        '}'
-    },
-    exercise: {
-      instructions: 'Responde estas preguntas sobre IEnumerable e IComparable.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué permite hacer la interfaz IEnumerable en una clase?', options: ['Que sus objetos se puedan recorrer con foreach', 'Que sus objetos se puedan comparar entre sí', 'Que la clase no pueda tener herencia', 'Que sus métodos sean automáticamente static'], answer: 'Que sus objetos se puedan recorrer con foreach' },
-        { prompt: '¿Qué método debe implementar una clase que implementa IComparable?', options: ['CompareTo', 'Equals', 'GetEnumerator', 'ToString'], answer: 'CompareTo' },
-        { prompt: '¿Para qué le sirve a C# que una clase implemente IComparable?', options: ['Para saber cómo ordenar sus objetos con métodos como Sort() u OrderBy()', 'Para poder crear objetos con new', 'Para hacer que la clase sea abstracta', 'Para que la clase tenga un constructor por defecto'], answer: 'Para saber cómo ordenar sus objetos con métodos como Sort() u OrderBy()' },
-        { prompt: '¿Qué tienen en común una lista genérica y un array respecto a IEnumerable?', options: ['Ambos implementan IEnumerable y se pueden recorrer con foreach', 'Ninguno de los dos se puede recorrer con foreach', 'Solo los arrays implementan IEnumerable', 'Solo las listas implementan IEnumerable'], answer: 'Ambos implementan IEnumerable y se pueden recorrer con foreach' }
-      ]
-    }
-  },
-  {
-    id: 'csharp-42',
-    title: 'Patrones de diseño básicos: Singleton',
-    subtitle: 'Nivel 42',
-    xp: 136,
-    type: 'quiz',
-    theory: {
-      paragraphs: [
-        'El patrón <strong>Singleton</strong> garantiza que una clase tenga <strong>una sola instancia</strong> en toda la aplicación, y ofrece un punto de acceso global a ella. Se implementa con un constructor <code>private</code> (para que nadie más pueda usar <code>new</code>) y una propiedad o método <code>static</code> que devuelve siempre el mismo objeto.',
-        'Se usa para recursos que tiene sentido que existan una única vez, como la configuración de la aplicación o una conexión compartida a un registro de logs.'
-      ],
-      code:
-        '<span class="tok-kw">class</span> Configuracion {\n' +
-        '  <span class="tok-kw">private</span> <span class="tok-kw">static</span> Configuracion instancia;\n' +
-        '  <span class="tok-kw">private</span> Configuracion() { }\n\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">static</span> Configuracion Instancia {\n' +
-        '    <span class="tok-kw">get</span> {\n' +
-        '      <span class="tok-kw">if</span> (instancia == <span class="tok-kw">null</span>) instancia = <span class="tok-kw">new</span> Configuracion();\n' +
-        '      <span class="tok-kw">return</span> instancia;\n' +
-        '    }\n' +
-        '  }\n' +
-        '}'
-    },
-    exercise: {
-      instructions: 'Responde estas preguntas sobre el patrón Singleton.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué garantiza el patrón Singleton?', options: ['Que una clase tenga una única instancia en toda la aplicación', 'Que una clase no pueda heredar de otra', 'Que un método se ejecute solo una vez por segundo', 'Que todos los campos sean readonly'], answer: 'Que una clase tenga una única instancia en toda la aplicación' },
-        { prompt: '¿Por qué el constructor de un Singleton se declara private?', options: ['Para que nadie fuera de la clase pueda crear instancias con new', 'Porque los constructores private se ejecutan más rápido', 'Es un requisito del compilador para cualquier clase static', 'Para que la clase pueda heredar de Exception'], answer: 'Para que nadie fuera de la clase pueda crear instancias con new' },
-        { prompt: '¿Cómo se obtiene la única instancia de un Singleton desde otras partes del código?', options: ['A través de una propiedad o método static de la propia clase', 'Con el operador new de forma directa', 'Heredando de la clase Singleton', 'Solo se puede usar dentro del método Main'], answer: 'A través de una propiedad o método static de la propia clase' },
-        { prompt: '¿Qué tipo de recurso es un buen candidato para implementarse como Singleton?', options: ['La configuración global de una aplicación', 'Cada producto de un carrito de compras', 'Cada fila de una tabla de la base de datos', 'Cada mensaje enviado por el usuario'], answer: 'La configuración global de una aplicación' }
-      ]
-    }
-  },
-  {
-    id: 'csharp-43',
-    title: 'Records (C# 9+)',
-    subtitle: 'Nivel 43',
     xp: 134,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Un <code>record</code> (desde C# 9) es un tipo pensado para representar <strong>datos inmutables</strong>. Se puede declarar en una sola línea: <code>record Persona(string Nombre, int Edad);</code>, y el compilador genera automáticamente las propiedades, el constructor y más.',
-        'A diferencia de una <code>class</code> normal, dos records con los mismos valores se consideran <strong>iguales</strong> al compararlos con <code>==</code> o <code>Equals()</code> (igualdad por valor), mientras que dos objetos de una clase normal solo son iguales si son literalmente el mismo objeto en memoria (igualdad por referencia).'
+        '<code>MySqlCommand</code> representa una instrucción SQL que se va a ejecutar sobre una conexión abierta. Para operaciones que NO devuelven filas (<code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>CREATE TABLE</code>), se usa el método <code>ExecuteNonQuery()</code>, que devuelve cuántas filas fueron afectadas.',
+        'Esto conecta directamente con tres de las cuatro operaciones del CRUD: <strong>Create</strong> (INSERT), <strong>Update</strong> (UPDATE) y <strong>Delete</strong> (DELETE) se ejecutan todas de la misma forma desde C# — solo cambia el texto de la consulta SQL que le pasás al MySqlCommand.'
       ],
       code:
-        '<span class="tok-kw">record</span> Persona(<span class="tok-kw">string</span> Nombre, <span class="tok-kw">int</span> Edad);\n\n' +
-        'Persona p1 = <span class="tok-kw">new</span> Persona(<span class="tok-string">"Ana"</span>, <span class="tok-num">16</span>);\n' +
-        'Persona p2 = <span class="tok-kw">new</span> Persona(<span class="tok-string">"Ana"</span>, <span class="tok-num">16</span>);\n' +
-        'Console.WriteLine(p1 == p2); <span class="tok-comment">// True, igualdad por valor</span>'
-    },
-    exercise: {
-      instructions: 'Responde estas preguntas sobre records.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Para qué tipo de datos está especialmente pensado un record?', options: ['Datos inmutables, como el estado de una entidad que no cambia', 'Datos que cambian constantemente en un bucle', 'Solo para números enteros', 'Solo para representar excepciones'], answer: 'Datos inmutables, como el estado de una entidad que no cambia' },
-        { prompt: 'Si p1 y p2 son dos records Persona con los mismos valores, ¿qué devuelve p1 == p2?', options: ['True, porque los records comparan por valor', 'False, porque son objetos distintos en memoria', 'Depende de si se declararon con new', 'Error de compilación'], answer: 'True, porque los records comparan por valor' },
-        { prompt: '¿Qué diferencia principal hay entre un record y una class normal respecto a la igualdad?', options: ['El record compara por valor y la class normal compara por referencia', 'No hay ninguna diferencia', 'La class siempre es más rápida al comparar', 'El record nunca puede compararse con =='], answer: 'El record compara por valor y la class normal compara por referencia' },
-        { prompt: '¿Qué genera automáticamente el compilador al declarar un record con parámetros, como Persona(string Nombre, int Edad)?', options: ['Las propiedades y el constructor, entre otras cosas', 'Solo el nombre de la clase', 'Un método Main automático', 'Una interfaz vacía'], answer: 'Las propiedades y el constructor, entre otras cosas' }
-      ]
-    }
-  },
-  {
-    id: 'csharp-44',
-    title: 'Pattern matching (switch expressions, is)',
-    subtitle: 'Nivel 44',
-    xp: 140,
-    type: 'quiz',
-    theory: {
-      paragraphs: [
-        'El operador <code>is</code> permite comprobar si un valor es de cierto tipo y, de paso, capturarlo en una nueva variable: <code>if (obj is int n)</code> comprueba y asigna <code>n</code> en un solo paso.',
-        'Las <strong>switch expressions</strong> son una forma compacta de <code>switch</code> que devuelven un valor directamente, usando <code>=&gt;</code> en vez de <code>case</code> y <code>break</code>, y <code>_</code> como caso por defecto ("cualquier otro valor").'
-      ],
-      code:
-        '<span class="tok-kw">object</span> valor = <span class="tok-num">5</span>;\n' +
-        '<span class="tok-kw">if</span> (valor <span class="tok-kw">is</span> <span class="tok-kw">int</span> numero) {\n' +
-        '  Console.WriteLine(<span class="tok-string">"Es un entero: "</span> + numero);\n' +
-        '}\n\n' +
-        '<span class="tok-kw">int</span> nota = <span class="tok-num">8</span>;\n' +
-        '<span class="tok-kw">string</span> resultado = nota <span class="tok-kw">switch</span> {\n' +
-        '  <span class="tok-num">10</span> =&gt; <span class="tok-string">"Perfecto"</span>,\n' +
-        '  &gt;= <span class="tok-num">6</span> =&gt; <span class="tok-string">"Aprobado"</span>,\n' +
-        '  _ =&gt; <span class="tok-string">"Reprobado"</span>\n' +
-        '};'
+        '<span class="tok-kw">using</span> (<span class="tok-kw">var</span> conexion = <span class="tok-kw">new</span> MySqlConnection(cadena)) {\n' +
+        '  conexion.Open();\n' +
+        '  <span class="tok-kw">var</span> comando = <span class="tok-kw">new</span> MySqlCommand(\n' +
+        '    <span class="tok-string">"INSERT INTO productos (nombre, precio) VALUES (\'Mouse\', 15)"</span>, conexion);\n' +
+        '  <span class="tok-kw">int</span> filas = comando.ExecuteNonQuery();\n' +
+        '  Console.WriteLine(filas + <span class="tok-string">" fila(s) insertada(s)"</span>);\n' +
+        '}'
     },
     exercise: {
       instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto.',
       variant: 'code',
       questions: [
-        { code: 'object valor = 5;\nif (valor is int numero) {\n  Console.WriteLine("Es un entero: " + numero);\n} else {\n  Console.WriteLine("No es un entero");\n}', prompt: '¿Qué imprime la consola?', options: ['Es un entero: 5', 'No es un entero', '5', 'Error'], answer: 'Es un entero: 5' },
-        { code: 'int nota = 8;\nstring resultado = nota switch {\n  10 => "Perfecto",\n  >= 6 => "Aprobado",\n  _ => "Reprobado"\n};\nConsole.WriteLine(resultado);', prompt: '¿Qué imprime la consola?', options: ['Aprobado', 'Perfecto', 'Reprobado', '8'], answer: 'Aprobado' },
-        { code: 'int nota = 3;\nstring resultado = nota switch {\n  10 => "Perfecto",\n  >= 6 => "Aprobado",\n  _ => "Reprobado"\n};\nConsole.WriteLine(resultado);', prompt: '¿Qué imprime la consola?', options: ['Reprobado', 'Aprobado', 'Perfecto', 'Error'], answer: 'Reprobado' },
-        { code: 'object valor = "hola";\nif (valor is int numero) {\n  Console.WriteLine("Es entero");\n} else {\n  Console.WriteLine("No es entero");\n}', prompt: '¿Qué imprime la consola?', options: ['No es entero', 'Es entero', 'hola', 'Error'], answer: 'No es entero' }
+        { code: 'var comando = new MySqlCommand("UPDATE productos SET precio = 20 WHERE id = 1", conexion);\nint filas = comando.ExecuteNonQuery();\nConsole.WriteLine(filas);', prompt: 'Si la consulta actualizó exactamente una fila, ¿qué representa el valor que imprime la consola?', options: ['El número de filas afectadas por la operación (1)', 'El nuevo precio del producto', 'El id del producto actualizado', 'Siempre imprime 0'], answer: 'El número de filas afectadas por la operación (1)' },
+        { code: 'var comando = new MySqlCommand("DELETE FROM productos WHERE id = 3", conexion);\ncomando.ExecuteNonQuery();', prompt: '¿Qué método de MySqlCommand ejecuta correctamente esta consulta DELETE?', options: ['ExecuteNonQuery()', 'ExecuteReader()', 'ExecuteScalar()', 'Open()'], answer: 'ExecuteNonQuery()' },
+        { code: 'var comando = new MySqlCommand("SELECT * FROM productos", conexion);\nint filas = comando.ExecuteNonQuery();', prompt: '¿Por qué NO conviene usar ExecuteNonQuery() para esta consulta SELECT?', options: ['ExecuteNonQuery() no devuelve las filas de resultado, solo un conteo de filas afectadas', 'SELECT no es una consulta SQL válida', 'ExecuteNonQuery() borra la tabla automáticamente', 'No compila'], answer: 'ExecuteNonQuery() no devuelve las filas de resultado, solo un conteo de filas afectadas' },
+        { code: 'var conexion = new MySqlConnection(cadena);\nvar comando = new MySqlCommand("INSERT INTO productos (nombre) VALUES (\'Teclado\')", conexion);\ncomando.ExecuteNonQuery();', prompt: '¿Qué problema tiene este código?', options: ['Nunca se llamó a conexion.Open(), así que fallará al ejecutar el comando', 'INSERT no admite una sola columna', 'Falta el punto y coma en la consulta', 'MySqlCommand no existe en C#'], answer: 'Nunca se llamó a conexion.Open(), así que fallará al ejecutar el comando' }
+      ]
+    }
+  },
+  {
+    id: 'csharp-42',
+    title: 'Leer resultados con MySqlDataReader',
+    subtitle: 'Nivel 42',
+    xp: 138,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Para consultas que sí devuelven filas (<code>SELECT</code>, la "R" de CRUD), se usa <code>ExecuteReader()</code>, que devuelve un <code>MySqlDataReader</code>: un cursor que se recorre fila por fila llamando a <code>Read()</code>, el cual devuelve <code>true</code> mientras haya una fila más disponible.',
+        'Dentro de cada fila se accede a las columnas por nombre, por ejemplo <code>reader.GetString("nombre")</code> o <code>reader.GetDouble("precio")</code>, indicando el tipo correcto de cada una.'
+      ],
+      code:
+        '<span class="tok-kw">var</span> comando = <span class="tok-kw">new</span> MySqlCommand(<span class="tok-string">"SELECT nombre, precio FROM productos"</span>, conexion);\n' +
+        '<span class="tok-kw">using</span> (<span class="tok-kw">var</span> reader = comando.ExecuteReader()) {\n' +
+        '  <span class="tok-kw">while</span> (reader.Read()) {\n' +
+        '    Console.WriteLine(reader.GetString(<span class="tok-string">"nombre"</span>) + <span class="tok-string">" - "</span> + reader.GetDouble(<span class="tok-string">"precio"</span>));\n' +
+        '  }\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto.',
+      variant: 'code',
+      questions: [
+        { code: 'var comando = new MySqlCommand("SELECT nombre FROM productos", conexion);\nvar reader = comando.ExecuteReader();\nint contador = 0;\nwhile (reader.Read()) {\n  contador++;\n}\nConsole.WriteLine(contador);', prompt: 'Si la tabla productos tiene 5 filas, ¿qué imprime la consola?', options: ['5', '0', '1', 'Error'], answer: '5' },
+        { code: 'var reader = comando.ExecuteReader();\nbool hayFila = reader.Read();', prompt: '¿Qué representa el valor booleano que devuelve reader.Read()?', options: ['Si hay una fila más disponible para leer', 'Si la consulta tuvo éxito en general', 'Si la tabla existe', 'Si la conexión sigue abierta'], answer: 'Si hay una fila más disponible para leer' },
+        { code: 'var comando = new MySqlCommand("SELECT nombre, precio FROM productos", conexion);\nvar reader = comando.ExecuteReader();\nwhile (reader.Read()) {\n  string nombre = reader.GetString("nombre");\n  double precio = reader.GetDouble("precio");\n  Console.WriteLine(nombre + ": " + precio);\n}', prompt: '¿Qué patrón describe mejor este código?', options: ['Recorre cada fila del resultado e imprime sus columnas nombre y precio', 'Inserta una fila nueva por cada vuelta del bucle', 'Elimina todas las filas de la tabla', 'Cuenta cuántas columnas tiene la tabla'], answer: 'Recorre cada fila del resultado e imprime sus columnas nombre y precio' },
+        { code: 'var comando = new MySqlCommand("SELECT COUNT(*) AS total FROM productos", conexion);\nvar reader = comando.ExecuteReader();\nreader.Read();\nint total = reader.GetInt32("total");\nConsole.WriteLine(total);', prompt: 'Si hay 8 productos en la tabla, ¿qué imprime la consola?', options: ['8', '1', '0', 'Error, hace falta un bucle while'], answer: '8' }
+      ]
+    }
+  },
+  {
+    id: 'csharp-43',
+    title: 'Consultas parametrizadas y seguridad',
+    subtitle: 'Nivel 43',
+    xp: 142,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Construir una consulta SQL concatenando texto directamente con datos del usuario (por ejemplo <code>"...WHERE nombre = \'" + nombreIngresado + "\'"</code>) es peligroso: si alguien escribe algo malicioso en ese campo, puede alterar la consulta completa. Esto se llama <strong>inyección SQL</strong>.',
+        'La solución es usar <strong>parámetros</strong>: se escribe un marcador como <code>@nombre</code> en la consulta y se le asigna el valor por separado con <code>comando.Parameters.AddWithValue("@nombre", valor)</code>. El motor de la base de datos siempre trata ese valor como un dato, nunca como código SQL — nunca deberías construir una consulta CRUD concatenando texto del usuario.'
+      ],
+      code:
+        '<span class="tok-comment">// ❌ Peligroso: vulnerable a inyección SQL</span>\n' +
+        '<span class="tok-kw">var</span> malo = <span class="tok-kw">new</span> MySqlCommand(\n' +
+        '  <span class="tok-string">"SELECT * FROM usuarios WHERE nombre = \'"</span> + nombreIngresado + <span class="tok-string">"\'"</span>, conexion);\n\n' +
+        '<span class="tok-comment">// ✅ Seguro: consulta parametrizada</span>\n' +
+        '<span class="tok-kw">var</span> bueno = <span class="tok-kw">new</span> MySqlCommand(\n' +
+        '  <span class="tok-string">"SELECT * FROM usuarios WHERE nombre = @nombre"</span>, conexion);\n' +
+        'bueno.Parameters.AddWithValue(<span class="tok-string">"@nombre"</span>, nombreIngresado);'
+    },
+    exercise: {
+      instructions: 'Analiza cada situación sobre seguridad en consultas SQL desde C#.',
+      variant: 'code',
+      questions: [
+        { code: 'string sql = "SELECT * FROM usuarios WHERE nombre = \'" + entrada + "\'";\nvar comando = new MySqlCommand(sql, conexion);', prompt: '¿Qué riesgo tiene este código si "entrada" viene directamente de lo que escribió un usuario?', options: ['Es vulnerable a inyección SQL, porque concatena texto sin validar', 'Ninguno, así se hace siempre en C#', 'Es más rápido que usar parámetros', 'No compila'], answer: 'Es vulnerable a inyección SQL, porque concatena texto sin validar' },
+        { code: 'var comando = new MySqlCommand("SELECT * FROM usuarios WHERE nombre = @nombre", conexion);\ncomando.Parameters.AddWithValue("@nombre", entrada);', prompt: '¿Por qué esta versión es segura aunque "entrada" contenga texto malicioso?', options: ['Porque el valor se envía por separado y nunca se interpreta como parte del código SQL', 'Porque @nombre elimina automáticamente las comillas', 'Porque MySqlCommand rechaza cualquier texto largo', 'No es más segura, da igual cuál uses'], answer: 'Porque el valor se envía por separado y nunca se interpreta como parte del código SQL' },
+        { code: 'comando.Parameters.AddWithValue("@precio", 19.99);', prompt: '¿Qué hace exactamente este método?', options: ['Asigna un valor al marcador de parámetro @precio de la consulta', 'Ejecuta la consulta inmediatamente', 'Crea una columna nueva llamada precio', 'Convierte el precio a texto'], answer: 'Asigna un valor al marcador de parámetro @precio de la consulta' },
+        { code: 'var comando = new MySqlCommand("INSERT INTO productos (nombre, precio) VALUES (@nombre, @precio)", conexion);\ncomando.Parameters.AddWithValue("@nombre", "Mouse");\ncomando.Parameters.AddWithValue("@precio", 15);', prompt: 'Además de la seguridad contra inyección SQL, ¿qué otra ventaja tienen los parámetros?', options: ['Evitan errores de formato con comillas, comas decimales o fechas dentro del texto SQL', 'Hacen que la tabla se cree automáticamente', 'Permiten usar cualquier nombre de tabla sin declararla', 'Eliminan la necesidad de abrir la conexión'], answer: 'Evitan errores de formato con comillas, comas decimales o fechas dentro del texto SQL' }
+      ]
+    }
+  },
+  {
+    id: 'csharp-44',
+    title: 'Mapear filas a objetos C#',
+    subtitle: 'Nivel 44',
+    xp: 146,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'En una aplicación real conviene no trabajar directamente con un <code>MySqlDataReader</code> por todo el programa: es más limpio convertir cada fila en un objeto C# (como el <code>record Producto</code> que ya viste) apenas se lee, y trabajar con esa <code>List&lt;Producto&gt;</code> en el resto del código.',
+        'Esto separa la capa de acceso a datos de la lógica del programa: si mañana cambia la consulta SQL, el resto del código que usa <code>List&lt;Producto&gt;</code> no se entera de nada.'
+      ],
+      code:
+        '<span class="tok-kw">record</span> Producto(<span class="tok-kw">int</span> Id, <span class="tok-kw">string</span> Nombre, <span class="tok-kw">double</span> Precio);\n\n' +
+        'List&lt;Producto&gt; productos = <span class="tok-kw">new</span> List&lt;Producto&gt;();\n' +
+        '<span class="tok-kw">using</span> (<span class="tok-kw">var</span> reader = comando.ExecuteReader()) {\n' +
+        '  <span class="tok-kw">while</span> (reader.Read()) {\n' +
+        '    productos.Add(<span class="tok-kw">new</span> Producto(\n' +
+        '      reader.GetInt32(<span class="tok-string">"id"</span>),\n' +
+        '      reader.GetString(<span class="tok-string">"nombre"</span>),\n' +
+        '      reader.GetDouble(<span class="tok-string">"precio"</span>)\n' +
+        '    ));\n' +
+        '  }\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto.',
+      variant: 'code',
+      questions: [
+        { code: 'record Producto(int Id, string Nombre, double Precio);\n\nList&lt;Producto&gt; productos = new List&lt;Producto&gt;();\nwhile (reader.Read()) {\n  productos.Add(new Producto(reader.GetInt32("id"), reader.GetString("nombre"), reader.GetDouble("precio")));\n}\nConsole.WriteLine(productos.Count);', prompt: 'Si la consulta devolvió 4 filas, ¿qué imprime la consola?', options: ['4', '1', '0', 'Error'], answer: '4' },
+        { code: 'record Producto(int Id, string Nombre, double Precio);\n\nvar p = new Producto(1, "Mouse", 15);\nConsole.WriteLine(p.Nombre);', prompt: '¿Qué imprime la consola?', options: ['Mouse', '1', '15', 'Error'], answer: 'Mouse' },
+        { code: 'List&lt;Producto&gt; productos = LeerProductosDesdeLaBaseDeDatos();\nvar caros = productos.Where(p => p.Precio > 10).ToList();\nConsole.WriteLine(caros.Count);', prompt: '¿Qué representa la variable "caros" en este código?', options: ['Una lista filtrada, en memoria, de los productos con precio mayor a 10', 'Una nueva tabla en la base de datos', 'El precio total de todos los productos', 'Una consulta SQL sin ejecutar'], answer: 'Una lista filtrada, en memoria, de los productos con precio mayor a 10' },
+        { code: 'MySqlDataReader reader = comando.ExecuteReader();\n// se usa reader.GetString(...) directamente en 10 lugares distintos del programa', prompt: '¿Cuál es la principal desventaja de usar el MySqlDataReader directamente en muchas partes del programa, en vez de mapear a objetos una sola vez?', options: ['El código queda acoplado a los detalles de la base de datos en muchos lugares, más difícil de mantener', 'MySqlDataReader no permite leer más de una columna', 'Es imposible de compilar', 'Los datos se leen en un orden aleatorio'], answer: 'El código queda acoplado a los detalles de la base de datos en muchos lugares, más difícil de mantener' }
       ]
     }
   },
   {
     id: 'csharp-45',
-    title: 'Extension methods',
+    title: 'Patrón repositorio para CRUD',
     subtitle: 'Nivel 45',
-    xp: 138,
+    xp: 150,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Un <strong>extension method</strong> permite "agregar" un método nuevo a un tipo ya existente (incluso tipos de .NET como <code>string</code>) sin modificar su código original ni heredar de él. Se define como un método <code>static</code> dentro de una clase <code>static</code>, con <code>this</code> antes del primer parámetro.',
-        'Una vez definido, se llama exactamente igual que un método normal de instancia: <code>"hola".EsPalindromo()</code>, aunque por detrás en realidad se está ejecutando un método static que recibió el string como argumento.'
+        'Un <strong>repositorio</strong> es una clase que agrupa todas las operaciones de acceso a datos de una entidad — por ejemplo <code>ProductoRepository</code> con los métodos <code>Crear</code>, <code>ObtenerTodos</code>, <code>Actualizar</code> y <code>Eliminar</code> — en vez de esparcir código SQL por todo el programa.',
+        'Cada método corresponde a una letra del CRUD y a una operación SQL: <strong>C</strong>rear→<code>INSERT</code>, <strong>R</strong>ead→<code>SELECT</code>, <strong>U</strong>pdate→<code>UPDATE</code>, <strong>D</strong>elete→<code>DELETE</code>. El resto del programa solo llama a estos métodos, sin preocuparse de conexiones ni de SQL.'
       ],
       code:
-        '<span class="tok-kw">static</span> <span class="tok-kw">class</span> StringExtensions {\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">static</span> <span class="tok-kw">bool</span> EsPalindromo(<span class="tok-kw">this</span> <span class="tok-kw">string</span> texto) {\n' +
-        '    <span class="tok-kw">string</span> invertido = <span class="tok-kw">new</span> <span class="tok-kw">string</span>(texto.Reverse().ToArray());\n' +
-        '    <span class="tok-kw">return</span> texto == invertido;\n' +
-        '  }\n' +
-        '}\n\n' +
-        'Console.WriteLine(<span class="tok-string">"ana"</span>.EsPalindromo()); <span class="tok-comment">// True</span>'
+        '<span class="tok-kw">class</span> ProductoRepository {\n' +
+        '  <span class="tok-kw">public</span> <span class="tok-kw">void</span> Crear(Producto p) { <span class="tok-comment">/* INSERT */</span> }\n' +
+        '  <span class="tok-kw">public</span> List&lt;Producto&gt; ObtenerTodos() { <span class="tok-comment">/* SELECT */</span> <span class="tok-kw">return</span> <span class="tok-kw">new</span> List&lt;Producto&gt;(); }\n' +
+        '  <span class="tok-kw">public</span> <span class="tok-kw">void</span> Actualizar(Producto p) { <span class="tok-comment">/* UPDATE */</span> }\n' +
+        '  <span class="tok-kw">public</span> <span class="tok-kw">void</span> Eliminar(<span class="tok-kw">int</span> id) { <span class="tok-comment">/* DELETE */</span> }\n' +
+        '}'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre extension methods.',
+      instructions: 'Responde estas preguntas sobre el patrón repositorio.',
       variant: 'plain',
       questions: [
-        { prompt: '¿Qué permite hacer un extension method?', options: ['Agregar un método nuevo a un tipo existente sin modificar su código original', 'Eliminar métodos de una clase ya compilada', 'Convertir cualquier clase en abstracta', 'Cambiar el tipo de retorno de un método heredado'], answer: 'Agregar un método nuevo a un tipo existente sin modificar su código original' },
-        { prompt: '¿Qué palabra clave se coloca antes del primer parámetro para indicar que un método es una extensión?', options: ['this', 'base', 'static', 'ref'], answer: 'this' },
-        { prompt: '¿Dónde debe declararse un extension method?', options: ['Dentro de una clase static', 'Dentro de una interfaz', 'Dentro del método Main', 'Dentro de un struct'], answer: 'Dentro de una clase static' },
-        { prompt: '¿Cómo se llama a un extension method una vez definido, por ejemplo EsPalindromo() para string?', options: ['Igual que un método normal de instancia, como texto.EsPalindromo()', 'Solo se puede llamar de forma static, escribiendo el nombre de la clase que lo contiene', 'Solo puede llamarse desde el método Main', 'No se puede invocar directamente, solo con reflection'], answer: 'Igual que un método normal de instancia, como texto.EsPalindromo()' }
+        { prompt: '¿Qué agrupa una clase repositorio como ProductoRepository?', options: ['Todas las operaciones de acceso a datos de una entidad, en un solo lugar', 'Solo la interfaz visual del programa', 'Las pruebas unitarias del proyecto', 'Los mensajes de error del sistema'], answer: 'Todas las operaciones de acceso a datos de una entidad, en un solo lugar' },
+        { prompt: '¿Qué operación SQL corresponde al método Crear de un repositorio?', options: ['INSERT', 'SELECT', 'UPDATE', 'DELETE'], answer: 'INSERT' },
+        { prompt: '¿Qué operación SQL corresponde al método ObtenerTodos de un repositorio?', options: ['SELECT', 'INSERT', 'UPDATE', 'DELETE'], answer: 'SELECT' },
+        { prompt: '¿Cuál es la principal ventaja de usar un repositorio en vez de escribir SQL directamente en cada parte del programa?', options: ['El resto del código no necesita conocer los detalles de la base de datos, solo llama a métodos claros', 'Hace que las consultas SQL se ejecuten más rápido', 'Elimina por completo la necesidad de una base de datos', 'Evita tener que usar MySqlConnection'], answer: 'El resto del código no necesita conocer los detalles de la base de datos, solo llama a métodos claros' }
       ]
     }
   },
   {
     id: 'csharp-46',
-    title: 'Namespaces y organización de un archivo',
+    title: 'Manejo de errores al conectar con la base de datos',
     subtitle: 'Nivel 46',
-    xp: 130,
-    type: 'order-builder',
+    xp: 154,
+    type: 'quiz',
     theory: {
       paragraphs: [
-        'Un archivo C# típico sigue un orden: primero las directivas <code>using</code> que importan funcionalidades externas, después la declaración del <code>namespace</code> que agrupa el código del proyecto, y dentro de él las clases.',
-        'Los <code>namespace</code> evitan choques de nombres entre clases de distintas partes de un proyecto (o de librerías distintas) que podrían llamarse igual, organizando el código en una especie de carpetas lógicas.'
+        'Muchas cosas pueden salir mal al hablar con una base de datos: el servidor puede estar apagado, las credenciales pueden ser incorrectas, o la red puede fallar. Por eso las operaciones de base de datos casi siempre van dentro de un <code>try/catch</code>.',
+        'El conector lanza excepciones de tipo <code>MySqlException</code> cuando algo falla del lado del servidor; es buena práctica capturarla específicamente (antes que una <code>Exception</code> genérica) para poder mostrar un mensaje más útil en vez de que el programa se cierre de golpe.'
       ],
       code:
-        '<span class="tok-kw">using</span> System;\n\n' +
-        '<span class="tok-kw">namespace</span> DevQuest.App {\n' +
-        '  <span class="tok-kw">class</span> Programa {\n' +
-        '    <span class="tok-kw">static</span> <span class="tok-kw">void</span> Main() {\n' +
-        '      Console.WriteLine(<span class="tok-string">"Hola"</span>);\n' +
-        '    }\n' +
+        '<span class="tok-kw">try</span> {\n' +
+        '  <span class="tok-kw">using</span> (<span class="tok-kw">var</span> conexion = <span class="tok-kw">new</span> MySqlConnection(cadena)) {\n' +
+        '    conexion.Open();\n' +
+        '    <span class="tok-comment">// ... operaciones CRUD ...</span>\n' +
         '  }\n' +
+        '} <span class="tok-kw">catch</span> (MySqlException ex) {\n' +
+        '  Console.WriteLine(<span class="tok-string">"Error de base de datos: "</span> + ex.Message);\n' +
+        '} <span class="tok-kw">catch</span> (Exception ex) {\n' +
+        '  Console.WriteLine(<span class="tok-string">"Error inesperado: "</span> + ex.Message);\n' +
         '}'
     },
     exercise: {
-      instructions: 'Ordena las piezas para armar un archivo C# válido, de arriba hacia abajo.',
-      items: [
-        { id: 'i1', code: 'using System;' },
-        { id: 'i2', code: 'namespace DevQuest.App {' },
-        { id: 'i3', code: 'class Programa {' },
-        { id: 'i4', code: 'static void Main() {' },
-        { id: 'i5', code: 'Console.WriteLine("Hola");' }
-      ],
-      correctOrder: ['i1', 'i2', 'i3', 'i4', 'i5']
+      instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto.',
+      variant: 'code',
+      questions: [
+        { code: 'try {\n  var conexion = new MySqlConnection("Server=noexiste;Database=x;User=root;Password=1234;");\n  conexion.Open();\n} catch (MySqlException ex) {\n  Console.WriteLine("Error de base de datos");\n}', prompt: 'Si el servidor "noexiste" no responde, ¿qué imprime la consola?', options: ['Error de base de datos', 'Nada, el programa se cierra sin avisar', 'Conexión abierta correctamente', 'Se reintenta automáticamente sin parar'], answer: 'Error de base de datos' },
+        { code: 'try {\n  // operaciones con la base de datos\n} catch (MySqlException ex) {\n  Console.WriteLine("Error de base de datos: " + ex.Message);\n} catch (Exception ex) {\n  Console.WriteLine("Error inesperado: " + ex.Message);\n}', prompt: '¿Por qué el catch de MySqlException va ANTES que el catch de Exception genérica?', options: ['Porque C# evalúa los catch en orden y necesita el más específico primero para que se use correctamente', 'El orden no importa en absoluto', 'Porque Exception no puede capturar errores de bases de datos', 'Porque MySqlException siempre debe ir al final'], answer: 'Porque C# evalúa los catch en orden y necesita el más específico primero para que se use correctamente' },
+        { code: 'try {\n  conexion.Open();\n  var comando = new MySqlCommand("INSERT INTO productos (nombre) VALUES (\'Mouse\')", conexion);\n  comando.ExecuteNonQuery();\n} catch (MySqlException) {\n  // no hace nada\n}', prompt: '¿Qué problema tiene capturar la excepción sin hacer nada dentro del catch?', options: ['El error queda oculto: nadie se entera de que la operación falló', 'No tiene ningún problema, es una buena práctica', 'Hace que el programa sea más rápido', 'MySqlException no se puede capturar así'], answer: 'El error queda oculto: nadie se entera de que la operación falló' },
+        { code: 'void GuardarProducto(Producto p) {\n  using (var conexion = new MySqlConnection(cadena)) {\n    conexion.Open();\n    // ... INSERT ...\n  }\n}', prompt: 'Si Open() lanza una excepción y este método NO tiene try/catch, ¿qué ocurre?', options: ['La excepción sube hasta quien llamó a GuardarProducto, que debería manejarla', 'El programa la ignora silenciosamente', 'Se guarda igual el producto', 'C# la convierte automáticamente en un mensaje en pantalla'], answer: 'La excepción sube hasta quien llamó a GuardarProducto, que debería manejarla' }
+      ]
     }
   },
   {
     id: 'csharp-47',
-    title: 'Manejo de archivos',
+    title: 'Organizar un proyecto CRUD',
     subtitle: 'Nivel 47',
-    xp: 145,
-    type: 'fill-tags',
+    xp: 158,
+    type: 'order-builder',
     theory: {
       paragraphs: [
-        'La clase <code>File</code> (del espacio de nombres <code>System.IO</code>) permite trabajar con archivos de texto de forma sencilla. <code>File.WriteAllText(ruta, contenido)</code> crea o sobrescribe un archivo con el texto indicado.',
-        'Para leer todo el contenido de un archivo existente se usa <code>File.ReadAllText(ruta)</code>, que devuelve un <code>string</code> con todo el texto. Si el archivo no existe, ambos métodos pueden lanzar una excepción, por lo que suele ser buena idea usar <code>try/catch</code> alrededor.'
+        'A medida que un proyecto crece, conviene separar el código en archivos con responsabilidades claras en vez de meter todo en <code>Program.cs</code>: por ejemplo <code>Models/Producto.cs</code> (el modelo de datos), <code>Data/ProductoRepository.cs</code> (el acceso a la base de datos), y <code>Program.cs</code> (el punto de entrada que los conecta).',
+        'Esta organización no cambia cómo funciona el programa, pero lo hace mucho más fácil de mantener — y es exactamente la estructura que vas a usar en el proyecto integrador de este módulo.'
       ],
       code:
-        '<span class="tok-kw">using</span> System.IO;\n\n' +
-        'File.WriteAllText(<span class="tok-string">"datos.txt"</span>, <span class="tok-string">"Hola DevQuest"</span>);\n' +
-        '<span class="tok-kw">string</span> contenido = File.ReadAllText(<span class="tok-string">"datos.txt"</span>);\n' +
-        'Console.WriteLine(contenido); <span class="tok-comment">// Hola DevQuest</span>'
+        'MiAppCRUD/\n' +
+        '├── Models/\n' +
+        '│   └── Producto.cs\n' +
+        '├── Data/\n' +
+        '│   └── ProductoRepository.cs\n' +
+        '└── Program.cs'
     },
     exercise: {
-      instructions: 'Completa el código que escribe y lee un archivo de texto.',
-      blanks: [
-        { id: 'b1', before: 'File.', after: '("datos.txt", "Hola DevQuest");', answer: 'WriteAllText', options: ['WriteAllText', 'Write', 'SaveText', 'CreateText'] },
-        { id: 'b2', before: 'string contenido = File.', after: '("datos.txt");', answer: 'ReadAllText', options: ['ReadAllText', 'Read', 'GetText', 'LoadText'] },
-        { id: 'b3', before: 'if (File.', after: '("datos.txt")) {\n  Console.WriteLine("El archivo existe");\n}', answer: 'Exists', options: ['Exists', 'Contains', 'Check', 'HasFile'] },
-        { id: 'b4', before: 'File.', after: '("datos.txt");', answer: 'Delete', options: ['Delete', 'Remove', 'Erase', 'Clear'] }
-      ]
+      instructions: 'Ordena los pasos en el orden lógico en que se construye un proyecto CRUD organizado.',
+      items: [
+        { id: 'i1', code: '1. Definir el modelo Producto en Models/Producto.cs (un record con Id, Nombre, Precio)' },
+        { id: 'i2', code: '2. Crear ProductoRepository en Data/, con los métodos Crear, ObtenerTodos, Actualizar y Eliminar' },
+        { id: 'i3', code: '3. Abrir la conexión a MySQL en Program.cs' },
+        { id: 'i4', code: '4. Usar el repositorio desde Program.cs para ejecutar las operaciones CRUD' }
+      ],
+      correctOrder: ['i1', 'i2', 'i3', 'i4']
     }
   },
   {
     id: 'csharp-48',
-    title: 'Testing básico: pruebas unitarias',
+    title: 'Construir un menú CRUD interactivo',
     subtitle: 'Nivel 48',
-    xp: 148,
-    type: 'quiz',
+    xp: 162,
+    type: 'order-builder',
     theory: {
       paragraphs: [
-        'Una <strong>prueba unitaria</strong> (unit test) verifica automáticamente que una pequeña parte del código (normalmente un método) se comporta como se espera, comparando el resultado obtenido con el resultado esperado.',
-        'El patrón habitual para escribir una prueba es <strong>Arrange-Act-Assert</strong>: preparar los datos de entrada, ejecutar el código que se quiere probar, y verificar (assert) que el resultado es el esperado. En .NET se suelen usar frameworks como xUnit, NUnit o MSTest.'
+        'Una app CRUD de consola típica muestra un menú en bucle: mientras el usuario no elija salir, se le muestran las opciones (Crear, Ver, Actualizar, Eliminar, Salir), se lee su elección con <code>Console.ReadLine()</code>, y con un <code>switch</code> se ejecuta la acción correspondiente antes de volver a mostrar el menú.',
+        'Este bucle es el "pegamento" que conecta todo lo que aprendiste: usa el repositorio para ejecutar cada operación sobre la base de datos, y usa la entrada de consola para saber qué quiere hacer el usuario.'
       ],
       code:
-        '<span class="tok-comment">// Arrange</span>\n' +
-        '<span class="tok-kw">int</span> a = <span class="tok-num">2</span>;\n' +
-        '<span class="tok-kw">int</span> b = <span class="tok-num">3</span>;\n\n' +
-        '<span class="tok-comment">// Act</span>\n' +
-        '<span class="tok-kw">int</span> resultado = Calculadora.Sumar(a, b);\n\n' +
-        '<span class="tok-comment">// Assert</span>\n' +
-        'Assert.AreEqual(<span class="tok-num">5</span>, resultado);'
-    },
-    exercise: {
-      instructions: 'Responde estas preguntas sobre pruebas unitarias.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué verifica una prueba unitaria?', options: ['Que una pequeña parte del código, como un método, se comporte como se espera', 'Que el programa completo no tenga ningún error visual', 'Que el usuario final esté satisfecho con la aplicación', 'Que el código compile más rápido'], answer: 'Que una pequeña parte del código, como un método, se comporte como se espera' },
-        { prompt: '¿Qué significan las tres partes del patrón Arrange-Act-Assert?', options: ['Preparar los datos, ejecutar el código, y verificar el resultado', 'Escribir, compilar y ejecutar el programa', 'Analizar, actuar y aprobar un pull request', 'Declarar, asignar y eliminar variables'], answer: 'Preparar los datos, ejecutar el código, y verificar el resultado' },
-        { prompt: '¿Por qué es útil tener pruebas automatizadas en un proyecto?', options: ['Permiten detectar rápidamente si un cambio rompe algo que antes funcionaba', 'Hacen que el código nunca tenga errores', 'Reemplazan por completo la necesidad de revisar el código', 'Son obligatorias para que el programa compile'], answer: 'Permiten detectar rápidamente si un cambio rompe algo que antes funcionaba' },
-        { prompt: '¿Qué hace normalmente un método como Assert.AreEqual(esperado, obtenido) en una prueba?', options: ['Falla la prueba si el valor esperado y el obtenido no coinciden', 'Imprime ambos valores en la consola sin comparar nada', 'Modifica el valor obtenido para que coincida con el esperado', 'Solo funciona con números, nunca con strings'], answer: 'Falla la prueba si el valor esperado y el obtenido no coinciden' }
-      ]
-    }
-  },
-  {
-    id: 'csharp-49',
-    title: 'Buenas prácticas y convenciones de código',
-    subtitle: 'Nivel 49',
-    xp: 150,
-    type: 'quiz',
-    theory: {
-      paragraphs: [
-        'C# tiene convenciones de nombres muy consistentes: <strong>PascalCase</strong> (cada palabra empieza en mayúscula) para clases, métodos y propiedades públicas; <strong>camelCase</strong> (la primera palabra en minúscula) para variables locales y parámetros.',
-        'Otras buenas prácticas: cada clase debería tener una responsabilidad clara, los métodos deberían ser cortos y hacer una sola cosa, y es preferible usar nombres descriptivos en vez de comentarios que expliquen código confuso.'
-      ],
-      code:
-        '<span class="tok-kw">class</span> CalculadoraDePrecios {\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">double</span> PrecioBase { <span class="tok-kw">get</span>; <span class="tok-kw">set</span>; }\n\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">double</span> CalcularTotal(<span class="tok-kw">double</span> impuesto) {\n' +
-        '    <span class="tok-kw">return</span> PrecioBase + impuesto;\n' +
+        '<span class="tok-kw">bool</span> salir = <span class="tok-kw">false</span>;\n' +
+        '<span class="tok-kw">while</span> (!salir) {\n' +
+        '  Console.WriteLine(<span class="tok-string">"1) Crear  2) Ver todos  3) Actualizar  4) Eliminar  5) Salir"</span>);\n' +
+        '  <span class="tok-kw">string</span> opcion = Console.ReadLine();\n' +
+        '  <span class="tok-kw">switch</span> (opcion) {\n' +
+        '    <span class="tok-kw">case</span> <span class="tok-string">"1"</span>: <span class="tok-comment">/* repo.Crear(...) */</span> <span class="tok-kw">break</span>;\n' +
+        '    <span class="tok-kw">case</span> <span class="tok-string">"5"</span>: salir = <span class="tok-kw">true</span>; <span class="tok-kw">break</span>;\n' +
         '  }\n' +
         '}'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre buenas prácticas y convenciones en C#.',
+      instructions: 'Ordena los pasos de UNA vuelta del bucle del menú CRUD.',
+      items: [
+        { id: 'i1', code: '1. Mostrar las opciones del menú en pantalla (Crear, Ver, Actualizar, Eliminar, Salir)' },
+        { id: 'i2', code: '2. Leer la opción elegida por el usuario con Console.ReadLine()' },
+        { id: 'i3', code: '3. Ejecutar la acción del repositorio correspondiente según la opción (switch)' },
+        { id: 'i4', code: '4. Repetir el bucle y volver a mostrar el menú, salvo que el usuario haya elegido salir' }
+      ],
+      correctOrder: ['i1', 'i2', 'i3', 'i4']
+    }
+  },
+  {
+    id: 'csharp-49',
+    title: 'Buenas prácticas para aplicaciones CRUD',
+    subtitle: 'Nivel 49',
+    xp: 166,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Cerrar siempre las conexiones (con <code>using</code>), usar <strong>siempre</strong> consultas parametrizadas, y no mostrarle al usuario final los mensajes de error técnicos exactos son prácticas básicas para una app CRUD confiable y segura.',
+        'También conviene <strong>validar los datos antes</strong> de enviarlos a la base de datos (por ejemplo, que un precio no sea negativo o que un nombre no esté vacío), en vez de confiar en que la base de datos rechace todo lo inválido.'
+      ],
+      code:
+        '<span class="tok-kw">if</span> (precio &lt; <span class="tok-num">0</span>) {\n' +
+        '  Console.WriteLine(<span class="tok-string">"El precio no puede ser negativo"</span>);\n' +
+        '  <span class="tok-kw">return</span>;\n' +
+        '}\n' +
+        '<span class="tok-comment">// recién acá se ejecuta el INSERT</span>'
+    },
+    exercise: {
+      instructions: 'Responde estas preguntas sobre buenas prácticas en aplicaciones CRUD.',
       variant: 'plain',
       questions: [
-        { prompt: '¿Qué convención de mayúsculas se usa normalmente para el nombre de una clase en C#?', options: ['PascalCase, como CalculadoraDePrecios', 'camelCase, como calculadoraDePrecios', 'snake_case, como calculadora_de_precios', 'Todo en mayúsculas, como CALCULADORADEPRECIOS'], answer: 'PascalCase, como CalculadoraDePrecios' },
-        { prompt: '¿Qué convención se usa normalmente para una variable local, como un contador dentro de un método?', options: ['camelCase, como totalVentas', 'PascalCase, como TotalVentas', 'Con guion bajo al inicio siempre, como _totalVentas', 'Todo en mayúsculas'], answer: 'camelCase, como totalVentas' },
-        { prompt: '¿Cuál de estas es una buena práctica al diseñar una clase?', options: ['Que tenga una responsabilidad clara y bien definida', 'Que haga tantas cosas distintas como sea posible', 'Que todos sus métodos sean private aunque se necesiten desde fuera', 'Que no tenga ningún método, solo campos'], answer: 'Que tenga una responsabilidad clara y bien definida' },
-        { prompt: '¿Por qué se prefieren los nombres descriptivos en vez de comentarios que expliquen código confuso?', options: ['Porque un buen nombre hace innecesaria la explicación y no se puede desactualizar como un comentario', 'Porque los comentarios están prohibidos en C#', 'Porque los nombres largos hacen que el programa compile más rápido', 'Porque el compilador ignora los nombres de variable'], answer: 'Porque un buen nombre hace innecesaria la explicación y no se puede desactualizar como un comentario' }
+        { prompt: '¿Por qué conviene validar los datos en C# antes de enviarlos a la base de datos?', options: ['Para detectar errores antes y dar un mensaje más claro, en vez de depender solo de la base de datos', 'Porque MySQL no puede rechazar datos inválidos', 'Porque hace que las consultas se ejecuten más rápido', 'No es necesario, es trabajo exclusivo del usuario'], answer: 'Para detectar errores antes y dar un mensaje más claro, en vez de depender solo de la base de datos' },
+        { prompt: '¿Qué práctica de seguridad NUNCA debería faltar en las operaciones CRUD de una app real?', options: ['Usar consultas parametrizadas para todos los datos que vienen del usuario', 'Concatenar los datos directamente en el texto SQL', 'Deshabilitar el manejo de errores para simplificar el código', 'Guardar la contraseña de la base de datos en el código sin protección'], answer: 'Usar consultas parametrizadas para todos los datos que vienen del usuario' },
+        { prompt: '¿Por qué es recomendable no mostrarle al usuario final el mensaje de error técnico exacto de la base de datos?', options: ['Puede revelar detalles internos del sistema y no es útil para alguien que no es programador', 'Porque los usuarios nunca cometen errores', 'Porque MySQL no permite mostrar errores', 'Porque siempre hace que el programa se cierre'], answer: 'Puede revelar detalles internos del sistema y no es útil para alguien que no es programador' },
+        { prompt: '¿Qué pasa si nunca cerrás las conexiones a la base de datos en una app que se usa por mucho tiempo?', options: ['Se pueden agotar las conexiones disponibles en el servidor, afectando a toda la aplicación', 'No pasa nada, MySQL las cierra apenas se abre otra', 'La aplicación se vuelve más rápida', 'Es obligatorio dejarlas abiertas para que funcione'], answer: 'Se pueden agotar las conexiones disponibles en el servidor, afectando a toda la aplicación' }
       ]
     }
   },
   {
     id: 'csharp-50',
-    title: 'Proyecto integrador: repaso general',
+    title: 'Proyecto integrador: tu app CRUD completa',
     subtitle: 'Nivel 50',
     xp: 170,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Has llegado al final del módulo de C#: desde variables y bucles hasta clases, interfaces, LINQ, genéricos y patrones de diseño. Este último nivel repasa varios de esos conceptos combinados, como se combinarían en un programa real.',
-        'Tómate este repaso con calma: cada pregunta mezcla conceptos de niveles distintos, igual que ocurre en un proyecto de verdad, donde pocas veces se usa una sola idea de forma aislada.'
+        'Llegaste al final del módulo de C#. Con todo lo aprendido —desde variables y programación orientada a objetos hasta conectar con MySQL— ya tenés todo lo necesario para construir una aplicación CRUD completa: un programa de consola que permite <strong>Crear</strong>, <strong>Leer</strong>, <strong>Actualizar</strong> y <strong>Eliminar</strong> registros de una tabla de tu base de datos.',
+        'Este repaso final combina esas piezas: el modelo de datos (record), el repositorio con consultas parametrizadas, y el menú interactivo — exactamente el mismo patrón que vas a usar en cualquier proyecto real que conecte C# con MySQL. Repasa también el módulo de MySQL: las consultas que escribas ahí son las que tu repositorio va a ejecutar.'
       ],
       code:
-        '<span class="tok-kw">class</span> Producto {\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">string</span> Nombre { <span class="tok-kw">get</span>; <span class="tok-kw">set</span>; }\n' +
-        '  <span class="tok-kw">public</span> <span class="tok-kw">double</span> Precio { <span class="tok-kw">get</span>; <span class="tok-kw">set</span>; }\n' +
-        '}\n\n' +
-        'List&lt;Producto&gt; productos = <span class="tok-kw">new</span> List&lt;Producto&gt;();\n' +
-        'productos.Add(<span class="tok-kw">new</span> Producto { Nombre = <span class="tok-string">"Mouse"</span>, Precio = <span class="tok-num">15</span> });\n' +
-        '<span class="tok-kw">var</span> caros = productos.Where(p =&gt; p.Precio &gt; <span class="tok-num">10</span>);'
+        '<span class="tok-kw">public</span> <span class="tok-kw">void</span> Crear(Producto p) {\n' +
+        '  <span class="tok-kw">using</span> (<span class="tok-kw">var</span> conexion = <span class="tok-kw">new</span> MySqlConnection(cadena)) {\n' +
+        '    conexion.Open();\n' +
+        '    <span class="tok-kw">var</span> comando = <span class="tok-kw">new</span> MySqlCommand(\n' +
+        '      <span class="tok-string">"INSERT INTO productos (nombre, precio) VALUES (@nombre, @precio)"</span>, conexion);\n' +
+        '    comando.Parameters.AddWithValue(<span class="tok-string">"@nombre"</span>, p.Nombre);\n' +
+        '    comando.Parameters.AddWithValue(<span class="tok-string">"@precio"</span>, p.Precio);\n' +
+        '    comando.ExecuteNonQuery();\n' +
+        '  }\n' +
+        '}'
     },
     exercise: {
-      instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto. Este repaso final combina varios conceptos del módulo.',
+      instructions: 'Analiza cada fragmento de código de una mini app CRUD y decide cuál es el resultado exacto. Este repaso final combina varios conceptos del módulo.',
       variant: 'code',
       questions: [
-        { code: 'class Producto {\n  public string Nombre { get; set; }\n  public double Precio { get; set; }\n}\n\nList&lt;Producto&gt; productos = new List&lt;Producto&gt;();\nproductos.Add(new Producto { Nombre = "Mouse", Precio = 15 });\nproductos.Add(new Producto { Nombre = "Teclado", Precio = 8 });\nvar caros = productos.Where(p => p.Precio > 10).ToList();\nConsole.WriteLine(caros.Count);', prompt: '¿Qué imprime la consola?', options: ['1', '2', '0', 'Error'], answer: '1' },
-        { code: 'abstract class Forma {\n  public abstract double Area();\n}\n\nclass Rectangulo : Forma {\n  public double Base, Altura;\n  public override double Area() {\n    return Base * Altura;\n  }\n}\n\nForma f = new Rectangulo { Base = 4, Altura = 3 };\nConsole.WriteLine(f.Area());', prompt: '¿Qué imprime la consola?', options: ['12', '7', 'Error', '0'], answer: '12' },
-        { code: 'int[] numeros = { 1, 2, 3 };\nint total = 0;\nforeach (int n in numeros) {\n  total += n;\n}\nConsole.WriteLine(total);', prompt: '¿Qué imprime la consola?', options: ['6', '3', '0', 'Error'], answer: '6' },
-        { code: 'try {\n  int[] numeros = { 1, 2, 3 };\n  Console.WriteLine(numeros[5]);\n} catch (IndexOutOfRangeException) {\n  Console.WriteLine("Índice inválido");\n} finally {\n  Console.WriteLine("Fin");\n}', prompt: '¿Qué imprime la consola, en orden?', options: ['Índice inválido, luego Fin', 'Fin, luego Índice inválido', 'Solo Índice inválido', 'Solo Fin'], answer: 'Índice inválido, luego Fin' }
+        { code: 'public void Crear(Producto p) {\n  using (var conexion = new MySqlConnection(cadena)) {\n    conexion.Open();\n    var comando = new MySqlCommand("INSERT INTO productos (nombre, precio) VALUES (@nombre, @precio)", conexion);\n    comando.Parameters.AddWithValue("@nombre", p.Nombre);\n    comando.Parameters.AddWithValue("@precio", p.Precio);\n    int filas = comando.ExecuteNonQuery();\n    Console.WriteLine(filas);\n  }\n}\n\nCrear(new Producto(0, "Mouse", 15));', prompt: '¿Qué imprime la consola tras insertar un único producto correctamente?', options: ['1', '0', 'Mouse', 'Error'], answer: '1' },
+        { code: 'public List&lt;Producto&gt; ObtenerTodos() {\n  var lista = new List&lt;Producto&gt;();\n  using (var conexion = new MySqlConnection(cadena)) {\n    conexion.Open();\n    var comando = new MySqlCommand("SELECT id, nombre, precio FROM productos", conexion);\n    using (var reader = comando.ExecuteReader()) {\n      while (reader.Read()) {\n        lista.Add(new Producto(reader.GetInt32("id"), reader.GetString("nombre"), reader.GetDouble("precio")));\n      }\n    }\n  }\n  return lista;\n}\n\nvar productos = ObtenerTodos();\nConsole.WriteLine(productos.Count);', prompt: 'Si la tabla productos tiene 3 filas, ¿qué imprime la consola?', options: ['3', '0', '1', 'Error'], answer: '3' },
+        { code: 'public void Actualizar(Producto p) {\n  using (var conexion = new MySqlConnection(cadena)) {\n    conexion.Open();\n    var comando = new MySqlCommand("UPDATE productos SET precio = @precio WHERE id = @id", conexion);\n    comando.Parameters.AddWithValue("@precio", p.Precio);\n    comando.Parameters.AddWithValue("@id", p.Id);\n    comando.ExecuteNonQuery();\n  }\n}', prompt: '¿Cuál de las 4 letras del CRUD implementa este método?', options: ['Update (actualizar)', 'Create (crear)', 'Read (leer)', 'Delete (eliminar)'], answer: 'Update (actualizar)' },
+        { code: 'while (!salir) {\n  Console.WriteLine("1) Crear  2) Ver  3) Actualizar  4) Eliminar  5) Salir");\n  string opcion = Console.ReadLine();\n  switch (opcion) {\n    case "2":\n      var productos = repo.ObtenerTodos();\n      foreach (var p in productos) Console.WriteLine(p.Nombre);\n      break;\n    case "5":\n      salir = true;\n      break;\n  }\n}', prompt: 'Si el usuario escribe "2" y luego "5", ¿qué ocurre en ese orden?', options: ['Se listan todos los productos y después el programa termina el bucle', 'El programa termina antes de listar nada', 'Se listan los productos infinitas veces', 'No compila porque falta un case "1"'], answer: 'Se listan todos los productos y después el programa termina el bucle' }
       ]
     }
   }

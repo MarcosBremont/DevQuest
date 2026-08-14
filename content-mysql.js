@@ -1350,14 +1350,14 @@ const MYSQL_LEVELS = [
   },
   {
     id: 'mysql-50',
-    title: 'Proyecto integrador: consulta compleja de repaso',
+    title: 'Proyecto integrador: las consultas de tu app CRUD',
     subtitle: 'Nivel 50',
     xp: 170,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Es hora de combinar todo lo aprendido: JOIN para relacionar tablas, WHERE para filtrar filas antes de agrupar, GROUP BY y una función de agregación, HAVING para filtrar grupos, y ORDER BY / LIMIT para el resultado final.',
-        'Recuerda el orden lógico: primero se combinan y filtran las filas (FROM, JOIN, WHERE), después se agrupan (GROUP BY) y se filtran los grupos (HAVING), y solo al final se decide qué mostrar y cómo ordenarlo (SELECT, ORDER BY, LIMIT).'
+        'Es hora de combinar todo lo aprendido: JOIN para relacionar tablas, WHERE para filtrar filas antes de agrupar, GROUP BY y una función de agregación, HAVING para filtrar grupos, y ORDER BY / LIMIT para el resultado final. Estas son exactamente las consultas SELECT, INSERT, UPDATE y DELETE que tu aplicación en C# va a ejecutar a través de MySqlCommand para completar su CRUD.',
+        'Recuerda el orden lógico: primero se combinan y filtran las filas (FROM, JOIN, WHERE), después se agrupan (GROUP BY) y se filtran los grupos (HAVING), y solo al final se decide qué mostrar y cómo ordenarlo (SELECT, ORDER BY, LIMIT). Si ya avanzaste en el módulo de C#, este es el mismo SQL que le pasarías a tu ProductoRepository.'
       ],
       code:
         '<span class="tok-kw">SELECT</span> c.nombre <span class="tok-kw">AS</span> cliente, <span class="tok-kw">COUNT</span>(p.id) <span class="tok-kw">AS</span> total_pedidos, <span class="tok-kw">SUM</span>(p.total) <span class="tok-kw">AS</span> gasto\n' +
