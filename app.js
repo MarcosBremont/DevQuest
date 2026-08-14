@@ -63,7 +63,10 @@ const MODULES = [
    como bloque de niveles), pero su finalización se registra igual que
    cualquier nivel para que sume XP, cuente para el progreso total y se
    sincronice con la nube sin necesitar ningún sistema nuevo. */
-const HARDWARE_LEVELS = [{ id: 'hardware-1', title: 'Desarma tu PC', xp: 200 }];
+const HARDWARE_LEVELS = [
+  { id: 'hardware-1', title: 'Desarma tu PC', xp: 200 },
+  { id: 'hardware-2', title: 'Misiones de diagnóstico', xp: 180 }
+];
 
 
 /* ==========================================================================
@@ -86,6 +89,7 @@ const BADGES = [
   { id: 'csharp-master', name: 'Maestro C#', desc: 'Completa el módulo de C#', icon: '🔷', check: (p) => isModuleCompleted('csharp', p) },
   { id: 'mysql-master', name: 'Maestro MySQL', desc: 'Completa el módulo de MySQL', icon: '🗄️', check: (p) => isModuleCompleted('mysql', p) },
   { id: 'hardware-tech', name: 'Técnico de hardware', desc: 'Desarma una PC completa, pieza por pieza', icon: '🔧', check: (p) => p.completedLevels.includes('hardware-1') },
+  { id: 'hardware-diagnostician', name: 'Detective de hardware', desc: 'Resuelve todas las misiones de diagnóstico', icon: '🩺', check: (p) => p.completedLevels.includes('hardware-2') },
   { id: 'streak-3', name: 'Racha de 3 días', desc: 'Practica 3 días seguidos', icon: '🔥', check: (p) => p.streak >= 3 },
   { id: 'streak-7', name: 'Racha de 7 días', desc: 'Practica 7 días seguidos', icon: '🔥', check: (p) => p.streak >= 7 },
   { id: 'full-stack', name: 'Full Stack Junior', desc: 'Completa todos los módulos de DevQuest', icon: '🚀', check: (p) => areAllModulesCompleted(p) }
@@ -342,6 +346,121 @@ const HARDWARE_STEPS = [
   }
 ];
 
+/* Misiones de diagnóstico: escenarios de fallas reales de PC, con
+   explicación técnica después de cada respuesta. Reutilizan el motor de
+   quiz genérico (renderQuizExercise) sin cambios — solo se le añadió
+   soporte opcional para mostrar una explicación antes de avanzar. */
+const HARDWARE_DIAGNOSTIC_MISSIONS = [
+  {
+    prompt: 'La computadora hace un pitido corto y repetitivo cada segundo al encenderla, y no muestra nada en pantalla. ¿Cuál es el diagnóstico más probable?',
+    options: ['Un módulo de RAM mal asentado o dañado', 'El mouse está desconectado', 'El disco duro está lleno', 'El monitor necesita una actualización'],
+    answer: 'Un módulo de RAM mal asentado o dañado',
+    explanation: 'Antes de que haya video, la placa madre usa "beep codes" (pitidos del altavoz interno) para avisar errores durante el POST. Un patrón repetitivo casi siempre apunta a la memoria RAM: hay que volver a asentarla firmemente en su ranura o probar con otro módulo.'
+  },
+  {
+    prompt: 'La PC enciende con normalidad (ventiladores girando, luces prendidas) pero el monitor se queda completamente negro, sin señal. ¿Qué revisarías primero?',
+    options: ['El cable de video y que la GPU esté bien asentada en su ranura', 'El teclado', 'La contraseña de Wi-Fi', 'El navegador web'],
+    answer: 'El cable de video y que la GPU esté bien asentada en su ranura',
+    explanation: 'Si la PC arranca pero no hay imagen, el problema suele estar en la cadena de video: el cable (HDMI/DisplayPort), el puerto correcto (algunas placas tienen salida integrada Y tarjeta gráfica, hay que usar la de la GPU), o que la GPU se haya salido parcialmente de su ranura PCIe.'
+  },
+  {
+    prompt: 'Durante juegos o tareas exigentes, la computadora se apaga sola de repente después de varios minutos, y luego enciende de nuevo sin problema. ¿Cuál es el diagnóstico más probable?',
+    options: ['Sobrecalentamiento (cooler sucio o pasta térmica seca)', 'Un virus en el navegador', 'El teclado está fallando', 'Falta actualizar el sistema operativo'],
+    answer: 'Sobrecalentamiento (cooler sucio o pasta térmica seca)',
+    explanation: 'Cuando el CPU o la GPU superan su temperatura límite, el sistema se apaga de golpe como protección (thermal shutdown). Las causas típicas son polvo acumulado en el disipador, ventiladores que dejaron de girar bien, o pasta térmica reseca que ya no transmite el calor.'
+  },
+  {
+    prompt: 'Aparece una pantalla azul (BSOD) con un código de error distinto cada vez que ocurre, sin un patrón claro. ¿Qué es lo primero que deberías sospechar?',
+    options: ['Un módulo de RAM defectuoso', 'El mouse es inalámbrico', 'La impresora está apagada', 'El monitor es muy viejo'],
+    answer: 'Un módulo de RAM defectuoso',
+    explanation: 'Cuando los códigos de error de un BSOD son inconsistentes (cambian cada vez), es una señal clásica de memoria RAM defectuosa: distintos programas usan distintas direcciones de memoria, así que fallan de formas distintas. Un test de memoria (como MemTest86) confirma el diagnóstico.'
+  },
+  {
+    prompt: 'El disco duro mecánico (HDD) empezó a hacer un clic repetitivo ("click of death") y el sistema tarda mucho en leer archivos. ¿Cuál es la acción más urgente?',
+    options: ['Hacer una copia de seguridad de los datos inmediatamente', 'Formatear el disco para que funcione más rápido', 'Ignorarlo, es normal en discos duros', 'Actualizar los drivers de audio'],
+    answer: 'Hacer una copia de seguridad de los datos inmediatamente',
+    explanation: 'Ese chasquido es un síntoma clásico de falla mecánica del cabezal de lectura del disco duro. El disco puede dejar de responder en cualquier momento, así que lo prioritario es salvar los datos antes de intentar cualquier otra cosa (el disco en sí probablemente ya no se pueda reparar).'
+  },
+  {
+    prompt: 'Ningún dispositivo USB funciona (ni mouse, ni teclado, ni pendrives), y probaste en varios puertos distintos con el mismo resultado. ¿Qué es lo más probable?',
+    options: ['Un problema del controlador USB de la placa madre o de la fuente de poder', 'El sistema operativo nunca tuvo soporte para USB', 'Los cables de todos los dispositivos se rompieron a la vez', 'Falta instalar un navegador'],
+    answer: 'Un problema del controlador USB de la placa madre o de la fuente de poder',
+    explanation: 'Que falle un solo puerto sugiere un cable o puerto dañado, pero que fallen TODOS a la vez apunta a algo más central: el controlador USB integrado en la placa madre, un problema de energía de la fuente de poder, o incluso una configuración de la BIOS que deshabilitó los puertos.'
+  },
+  {
+    prompt: 'Al presionar el botón de encendido no pasa absolutamente nada: ni luces, ni ventiladores, ni ningún sonido. ¿Qué revisarías primero?',
+    options: ['El interruptor de la fuente de poder y que el cable esté bien enchufado', 'La tarjeta gráfica', 'El navegador de internet', 'Los drivers de la impresora'],
+    answer: 'El interruptor de la fuente de poder y que el cable esté bien enchufado',
+    explanation: 'Cuando la PC no da ninguna señal de vida, lo más probable es que no esté llegando corriente: revisar que el interruptor trasero de la fuente de poder esté en "I" (encendido), que el cable esté bien conectado en ambos extremos, y probar el enchufe con otro aparato.'
+  },
+  {
+    prompt: 'La PC enciende, pero se queda en una pantalla negra con el mensaje "No bootable device found". ¿Cuál es el diagnóstico más probable?',
+    options: ['No detecta el disco de arranque (cable suelto, disco dañado o boot order mal configurado)', 'La tarjeta de sonido está desconectada', 'El monitor no admite alta resolución', 'El teclado tiene una tecla pegada'],
+    answer: 'No detecta el disco de arranque (cable suelto, disco dañado o boot order mal configurado)',
+    explanation: 'Ese mensaje significa que la placa madre terminó el POST correctamente pero no encontró ningún disco con un sistema operativo instalado para arrancar. Puede ser un cable SATA/de energía suelto, un disco dañado, o que el orden de arranque (boot order) en la BIOS apunte a un dispositivo equivocado.'
+  },
+  {
+    prompt: 'El ventilador de la PC suena muy fuerte todo el tiempo, incluso cuando la computadora está en reposo sin hacer nada exigente. ¿Qué es lo más probable?',
+    options: ['Acumulación de polvo o una mala curva de ventiladores por sobrecalentamiento base', 'El teclado está mal configurado', 'Es completamente normal y no indica ningún problema', 'Falta una actualización del navegador'],
+    answer: 'Acumulación de polvo o una mala curva de ventiladores por sobrecalentamiento base',
+    explanation: 'Un ventilador ruidoso en reposo suele indicar que el sistema ya está más caliente de lo normal incluso sin carga (por polvo acumulado en el disipador o mala ventilación del gabinete), o que la curva de ventiladores está configurada de forma demasiado agresiva.'
+  },
+  {
+    prompt: 'Al encender la computadora notas un olor a quemado. ¿Cuál es la acción correcta?',
+    options: ['Apagarla y desconectarla de inmediato', 'Seguir usándola, probablemente se pase solo', 'Subir el volumen para no notarlo', 'Reiniciar el sistema operativo'],
+    answer: 'Apagarla y desconectarla de inmediato',
+    explanation: 'Un olor a quemado es una señal de alarma seria: puede ser un componente electrónico (capacitor, VRM, fuente de poder) fallando. Lo correcto es apagar y desconectar la PC de inmediato para evitar un daño mayor o un riesgo de incendio, y revisar el interior antes de volver a encenderla.'
+  },
+  {
+    prompt: 'En los juegos aparecen colores distorsionados, líneas o figuras extrañas en la pantalla (artefactos gráficos). ¿Qué componente es el principal sospechoso?',
+    options: ['La tarjeta gráfica (GPU), por sobrecalentamiento o memoria de video defectuosa', 'El teclado', 'La fuente de poder', 'El disco duro'],
+    answer: 'La tarjeta gráfica (GPU), por sobrecalentamiento o memoria de video defectuosa',
+    explanation: 'Los artefactos gráficos (texturas rotas, líneas de colores, parpadeos) son un síntoma clásico de problemas en la GPU: puede estar sobrecalentándose, tener la memoria de video (VRAM) dañada, o simplemente necesitar una actualización de drivers si el problema es reciente.'
+  },
+  {
+    prompt: 'El reloj del sistema se atrasa o se resetea a una fecha antigua cada vez que apagas la PC por completo. ¿Cuál es la causa más probable?',
+    options: ['La batería CMOS de la placa madre está agotada', 'El disco duro está fragmentado', 'Falta espacio en la memoria RAM', 'El cable de red está desconectado'],
+    answer: 'La batería CMOS de la placa madre está agotada',
+    explanation: 'La placa madre tiene una pequeña batería (tipo botón, CR2032) que mantiene la hora y la configuración de la BIOS incluso sin corriente. Cuando se agota, el reloj se resetea cada vez que la PC pierde alimentación por completo. La solución es reemplazar esa batería.'
+  },
+  {
+    prompt: 'La PC funciona bien en todo, pero la conexión Wi-Fi se desconecta constantemente. ¿Qué es lo más probable?',
+    options: ['El driver o el adaptador de red inalámbrica, no un componente interno crítico', 'El procesador está fallando', 'La fuente de poder no alcanza', 'El disco duro está dañado'],
+    answer: 'El driver o el adaptador de red inalámbrica, no un componente interno crítico',
+    explanation: 'Los problemas de Wi-Fi casi siempre están aislados a la tarjeta de red (interna o USB), su driver, o interferencia del entorno — no suelen ser señal de una falla grave en el resto del hardware. Actualizar el driver o probar otro adaptador suele resolverlo.'
+  },
+  {
+    prompt: 'Conectas unos audífonos y no se escucha ningún sonido, pero los parlantes de la PC sí funcionan normalmente. ¿Qué revisarías primero?',
+    options: ['El dispositivo de salida de audio predeterminado en la configuración del sistema', 'La tarjeta gráfica', 'La fuente de poder', 'El disco duro'],
+    answer: 'El dispositivo de salida de audio predeterminado en la configuración del sistema',
+    explanation: 'Cuando el sonido funciona por un canal (parlantes) pero no por otro (audífonos), el problema casi siempre es de configuración: el sistema operativo puede seguir enviando el audio a los parlantes en vez de cambiar automáticamente al nuevo dispositivo conectado.'
+  },
+  {
+    prompt: 'La computadora tarda varios minutos en terminar de iniciar el sistema operativo, mucho más que antes. ¿Cuál es una causa muy común?',
+    options: ['Usa un disco duro mecánico (HDD) viejo en vez de un SSD, o hay demasiados programas de inicio', 'El monitor tiene mala resolución', 'El mouse es inalámbrico', 'El teclado no tiene luces RGB'],
+    answer: 'Usa un disco duro mecánico (HDD) viejo en vez de un SSD, o hay demasiados programas de inicio',
+    explanation: 'Un HDD mecánico es mucho más lento que un SSD leyendo los miles de archivos pequeños que necesita el sistema para iniciar. Sumado a demasiados programas configurados para abrirse automáticamente, esto puede alargar el inicio a varios minutos.'
+  },
+  {
+    prompt: 'Abres el gabinete y ves que uno de los capacitores (esos cilindros metálicos pequeños) de la placa madre está hinchado o abombado en la parte de arriba. ¿Qué significa esto?',
+    options: ['Es una señal clásica de falla inminente de la placa madre', 'Es completamente normal y decorativo', 'Significa que la placa está sobrecargada de RAM', 'Indica que falta actualizar el sistema operativo'],
+    answer: 'Es una señal clásica de falla inminente de la placa madre',
+    explanation: 'Un capacitor hinchado o con fugas es un signo físico inconfundible de que ese componente está fallando (o ya falló). Cuando pasa, la placa madre puede volverse inestable o dejar de funcionar por completo; la solución real es reemplazar la placa (repararla soldando capacitores nuevos es posible pero requiere experiencia).'
+  },
+  {
+    prompt: 'La pantalla parpadea de forma intermitente sin ningún patrón claro, incluso solo con el escritorio abierto. ¿Qué revisarías primero?',
+    options: ['El cable de video (que esté bien conectado y sin daños) y los drivers de la GPU', 'El disco duro', 'El teclado', 'La batería CMOS'],
+    answer: 'El cable de video (que esté bien conectado y sin daños) y los drivers de la GPU',
+    explanation: 'Un parpadeo intermitente casi siempre viene de la cadena de video: un cable flojo o dañado, un puerto sucio, o un driver de la tarjeta gráfica corrupto o desactualizado. Revisar y volver a conectar el cable, o reinstalar el driver, resuelve la mayoría de estos casos.'
+  },
+  {
+    prompt: 'Acabas de instalar módulos de RAM nuevos y ahora la PC no enciende del todo: los ventiladores giran un segundo y se detiene, sin llegar a mostrar nada. ¿Cuál es el diagnóstico más probable?',
+    options: ['La RAM nueva no está bien asentada o no es compatible con la placa madre', 'El monitor se rompió al mismo tiempo por casualidad', 'El teclado necesita pilas nuevas', 'Es necesario reinstalar el sistema operativo'],
+    answer: 'La RAM nueva no está bien asentada o no es compatible con la placa madre',
+    explanation: 'Que el problema empiece justo después de instalar RAM nueva es una pista muy fuerte: puede no estar completamente encajada en la ranura (hay que presionar hasta escuchar el clic de los seguros), o puede no ser compatible en tipo/velocidad con lo que soporta esa placa madre.'
+  }
+];
+
 let hardwareStepIndex = 0;
 let hardwareMistakeOccurred = false;
 let hardwareAwaitingContinue = false;
@@ -541,7 +660,40 @@ function buildHardwareSvg() {
   `;
 }
 
+/* ---- Menú de la sección: elegir entre desarmar la PC o las misiones ---- */
 function renderHardwareScreen() {
+  const container = document.getElementById('hardware-container');
+  const progress = state.progress;
+  const disassemblyDone = progress.completedLevels.includes('hardware-1');
+  const diagnosticsDone = progress.completedLevels.includes('hardware-2');
+
+  container.innerHTML = `
+    <div class="hardware-hub">
+      <button type="button" class="hardware-hub-card" id="hardware-hub-disassembly">
+        <span class="hardware-hub-icon">🔧</span>
+        <span class="hardware-hub-body">
+          <span class="hardware-hub-title">Desarma tu PC ${disassemblyDone ? '<span class="hardware-hub-check">✓</span>' : ''}</span>
+          <span class="hardware-hub-desc">Simulación paso a paso: quita cada pieza en el orden correcto y aprende qué hace.</span>
+        </span>
+        <span class="hardware-hub-xp">+${HARDWARE_LEVELS[0].xp} XP</span>
+      </button>
+      <button type="button" class="hardware-hub-card" id="hardware-hub-diagnostics">
+        <span class="hardware-hub-icon">🩺</span>
+        <span class="hardware-hub-body">
+          <span class="hardware-hub-title">Misiones de diagnóstico ${diagnosticsDone ? '<span class="hardware-hub-check">✓</span>' : ''}</span>
+          <span class="hardware-hub-desc">Situaciones reales de fallas ("la PC pita cada segundo"...): analiza los síntomas y elige el diagnóstico correcto.</span>
+        </span>
+        <span class="hardware-hub-xp">+${HARDWARE_LEVELS[1].xp} XP</span>
+      </button>
+    </div>
+  `;
+
+  document.getElementById('hardware-hub-disassembly').addEventListener('click', renderHardwareDisassembly);
+  document.getElementById('hardware-hub-diagnostics').addEventListener('click', renderHardwareDiagnostics);
+}
+
+/* ---- Actividad 1: simulador de desarme ---- */
+function renderHardwareDisassembly() {
   const container = document.getElementById('hardware-container');
   const alreadyDone = state.progress.completedLevels.includes('hardware-1');
 
@@ -550,6 +702,7 @@ function renderHardwareScreen() {
   hardwareAwaitingContinue = false;
 
   container.innerHTML = `
+    <button type="button" class="hardware-back-link" id="hardware-back-to-hub">← Elegir otra actividad</button>
     <div class="card hardware-card">
       ${alreadyDone ? '<p class="hardware-done-note">✅ Ya completaste este desarme antes. Puedes repetirlo para repasar.</p>' : ''}
       <div class="hardware-progress">
@@ -568,8 +721,30 @@ function renderHardwareScreen() {
     </div>
   `;
 
+  document.getElementById('hardware-back-to-hub').addEventListener('click', renderHardwareScreen);
   wireHardwareInteraction();
   renderHardwareStep();
+}
+
+/* ---- Actividad 2: misiones de diagnóstico (reutiliza el motor de quiz) ---- */
+function renderHardwareDiagnostics() {
+  const container = document.getElementById('hardware-container');
+  const level = {
+    ...HARDWARE_LEVELS[1],
+    type: 'quiz',
+    exercise: {
+      instructions: 'Analiza cada situación y elige el diagnóstico más probable. Cada respuesta viene con una explicación.',
+      variant: 'plain',
+      questions: HARDWARE_DIAGNOSTIC_MISSIONS
+    }
+  };
+
+  container.innerHTML = `
+    <button type="button" class="hardware-back-link" id="hardware-back-to-hub">← Elegir otra actividad</button>
+    <div class="card exercise-card" id="hardware-diagnostics-exercise"></div>
+  `;
+  document.getElementById('hardware-back-to-hub').addEventListener('click', renderHardwareScreen);
+  renderQuizExercise(level, document.getElementById('hardware-diagnostics-exercise'));
 }
 
 function wireHardwareInteraction() {
@@ -856,9 +1031,11 @@ function renderQuizExercise(level, container) {
     <div class="exercise-instructions">${exercise.instructions}</div>
     <div class="quiz-progress-dots" id="quiz-dots"></div>
     <div id="quiz-question-area"></div>
+    <div id="quiz-explanation" class="hardware-part-info hidden"></div>
   `;
   const dotsEl = container.querySelector('#quiz-dots');
   const questionArea = container.querySelector('#quiz-question-area');
+  const explanationEl = container.querySelector('#quiz-explanation');
   const checkBtn = mountCheckButton(container, handleCheck);
 
   function renderDots() {
@@ -872,6 +1049,8 @@ function renderQuizExercise(level, container) {
     selected = null;
     answered = false;
     checkBtn.disabled = true;
+    checkBtn.classList.remove('hidden');
+    explanationEl.classList.add('hidden');
 
     const q = questions[currentIndex];
     let codeBlockHtml = '';
@@ -935,14 +1114,30 @@ function renderQuizExercise(level, container) {
     showFeedback(correct, correct ? pickPraise() : `La respuesta correcta era: ${q.answer}`);
     playSound(correct);
 
-    setTimeout(() => {
-      if (currentIndex < questions.length - 1) {
+    const isLast = currentIndex >= questions.length - 1;
+    const advance = () => {
+      if (isLast) {
+        finishLevel(level, mistakesOccurred);
+      } else {
         currentIndex++;
         renderQuestion();
-      } else {
-        finishLevel(level, mistakesOccurred);
       }
-    }, correct ? 1100 : 1700);
+    };
+
+    // Si la pregunta trae una explicación (ej. misiones de diagnóstico),
+    // se muestra en una tarjeta y el usuario avanza cuando quiera, en vez
+    // de pasar solo tras un temporizador — así hay tiempo de leerla.
+    if (q.explanation) {
+      checkBtn.classList.add('hidden');
+      explanationEl.innerHTML = `
+        <p class="hardware-part-info-text">${q.explanation}</p>
+        <button type="button" id="quiz-explanation-continue" class="btn btn-primary btn-block">${isLast ? 'Terminar' : 'Siguiente misión →'}</button>
+      `;
+      explanationEl.classList.remove('hidden');
+      explanationEl.querySelector('#quiz-explanation-continue').addEventListener('click', advance);
+    } else {
+      setTimeout(advance, correct ? 1100 : 1700);
+    }
   }
 }
 

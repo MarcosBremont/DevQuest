@@ -6,7 +6,7 @@
 
 // Sube este número cada vez que cambies el contenido cacheado para forzar
 // la limpieza de la caché antigua en el evento "activate".
-const CACHE_VERSION = 'v1.7.1';
+const CACHE_VERSION = 'v1.8.0';
 const CACHE_NAME = `devquest-cache-${CACHE_VERSION}`;
 
 // App shell: todo lo necesario para que la app arranque sin conexión.
