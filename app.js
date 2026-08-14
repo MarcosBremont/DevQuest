@@ -346,9 +346,71 @@ let hardwareStepIndex = 0;
 let hardwareMistakeOccurred = false;
 let hardwareAwaitingContinue = false;
 
+/* Genera las aspas de un ventilador como pétalos repetidos alrededor de un
+   centro, en vez de líneas simples — se reutiliza para los 2 fans de la
+   GPU y el del disipador. */
+function hwFanBlades(cx, cy, r, count) {
+  let blades = '';
+  for (let i = 0; i < count; i++) {
+    const angle = (360 / count) * i;
+    const tipY = cy - r * 0.92;
+    const curveY = cy - r * 1.05;
+    blades += `<path class="hw-fan-blade" d="M${cx},${cy} L${cx + r * 0.16},${tipY} Q${cx},${curveY} ${cx - r * 0.16},${tipY} Z" transform="rotate(${angle} ${cx} ${cy})"></path>`;
+  }
+  return blades;
+}
+
+function hwScrew(cx, cy) {
+  return `<circle class="hw-screw" cx="${cx}" cy="${cy}" r="4"></circle><line class="hw-screw-slot" x1="${cx - 2.5}" y1="${cy}" x2="${cx + 2.5}" y2="${cy}"></line>`;
+}
+
 function buildHardwareSvg() {
   return `
     <svg viewBox="0 0 640 520" class="hardware-svg" id="hardware-svg" role="img" aria-label="Ilustración de una computadora de escritorio abierta">
+      <defs>
+        <linearGradient id="hwGradMetal" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5a6780"/>
+          <stop offset="55%" stop-color="#2d3748"/>
+          <stop offset="100%" stop-color="#161c28"/>
+        </linearGradient>
+        <linearGradient id="hwGradPanel" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#404d64"/>
+          <stop offset="100%" stop-color="#1f2733"/>
+        </linearGradient>
+        <linearGradient id="hwGradMotherboard" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#1f4a3e"/>
+          <stop offset="100%" stop-color="#0a1815"/>
+        </linearGradient>
+        <linearGradient id="hwGradPlastic" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#2e3a4f"/>
+          <stop offset="100%" stop-color="#0b0e16"/>
+        </linearGradient>
+        <linearGradient id="hwGradGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ffe2a3"/>
+          <stop offset="100%" stop-color="#b8842f"/>
+        </linearGradient>
+        <linearGradient id="hwGradGreenStick" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#7cf5bb"/>
+          <stop offset="100%" stop-color="#1f8f66"/>
+        </linearGradient>
+        <linearGradient id="hwGradBlueStick" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#8fe3ff"/>
+          <stop offset="100%" stop-color="#2489ad"/>
+        </linearGradient>
+        <linearGradient id="hwGradGlass" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#3d5772" stop-opacity="0.82"/>
+          <stop offset="100%" stop-color="#0e141c" stop-opacity="0.94"/>
+        </linearGradient>
+        <radialGradient id="hwGradFanHub" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#54627a"/>
+          <stop offset="100%" stop-color="#1a202c"/>
+        </radialGradient>
+        <linearGradient id="hwGradRgb" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--accent-green)"/>
+          <stop offset="100%" stop-color="var(--accent-blue)"/>
+        </linearGradient>
+      </defs>
+
       <g class="hw-part" data-part-id="power-cable">
         <title>Cable de alimentación</title>
         <rect class="hw-hit-area" x="0" y="440" width="68" height="50"></rect>
@@ -359,75 +421,121 @@ function buildHardwareSvg() {
       </g>
 
       <rect class="hw-case-frame" x="70" y="40" width="520" height="440" rx="16"></rect>
+      ${hwScrew(82, 52)}${hwScrew(578, 52)}${hwScrew(82, 468)}${hwScrew(578, 468)}
 
       <g class="hw-part" data-part-id="motherboard">
         <title>Placa madre</title>
         <rect class="hw-motherboard" x="310" y="70" width="250" height="380" rx="6"></rect>
+        <rect class="hw-mb-slot" x="372" y="92" width="104" height="104" rx="4"></rect>
+        <rect class="hw-mb-slot" x="493" y="86" width="16" height="8"></rect>
+        <rect class="hw-mb-slot" x="513" y="86" width="16" height="8"></rect>
+        <rect class="hw-mb-slot" x="318" y="283" width="224" height="10"></rect>
+        <rect class="hw-mb-chip" x="520" y="350" width="16" height="16"></rect>
+        <rect class="hw-mb-chip" x="336" y="378" width="12" height="12"></rect>
+        <rect class="hw-mb-chip" x="478" y="418" width="20" height="12"></rect>
         <path class="hw-trace" d="M330,420 h60 v-30 h40"></path>
         <path class="hw-trace" d="M540,100 h-40 v40"></path>
         <path class="hw-trace" d="M330,100 h30 v20"></path>
+        <path class="hw-trace" d="M528,358 h-20 v40 h-30"></path>
+        <path class="hw-trace" d="M342,384 v20 h60"></path>
+        <circle class="hw-mb-hole" cx="322" cy="82" r="3"></circle>
+        <circle class="hw-mb-hole" cx="548" cy="82" r="3"></circle>
+        <circle class="hw-mb-hole" cx="322" cy="438" r="3"></circle>
+        <circle class="hw-mb-hole" cx="548" cy="438" r="3"></circle>
       </g>
 
       <g class="hw-part" data-part-id="psu">
         <title>Fuente de poder</title>
         <rect class="hw-psu-body" x="100" y="330" width="150" height="120" rx="4"></rect>
-        <circle class="hw-psu-fan" cx="175" cy="390" r="30"></circle>
-        <circle class="hw-psu-fan" cx="175" cy="390" r="14"></circle>
+        <rect class="hw-psu-face" x="108" y="338" width="134" height="80" rx="3"></rect>
+        <circle class="hw-psu-fan-ring" cx="175" cy="378" r="32"></circle>
+        <circle class="hw-psu-fan-hub" cx="175" cy="378" r="8"></circle>
+        <line class="hw-psu-grille" x1="175" y1="346" x2="175" y2="410"></line>
+        <line class="hw-psu-grille" x1="143" y1="378" x2="207" y2="378"></line>
+        <line class="hw-psu-grille" x1="152" y1="355" x2="198" y2="401"></line>
+        <line class="hw-psu-grille" x1="152" y1="401" x2="198" y2="355"></line>
+        <rect class="hw-psu-label" x="112" y="426" width="60" height="16" rx="2"></rect>
+        ${hwScrew(110, 340)}${hwScrew(240, 340)}${hwScrew(110, 440)}${hwScrew(240, 440)}
       </g>
 
       <g class="hw-part" data-part-id="storage">
         <title>Unidad de almacenamiento</title>
         <rect class="hw-storage-body" x="100" y="90" width="120" height="80" rx="4"></rect>
-        <circle class="hw-storage-led" cx="112" cy="102" r="3"></circle>
-        <line class="hw-vent-line" x1="115" y1="130" x2="205" y2="130"></line>
-        <line class="hw-vent-line" x1="115" y1="145" x2="205" y2="145"></line>
+        <rect class="hw-storage-band" x="104" y="94" width="112" height="22" rx="2"></rect>
+        <circle class="hw-storage-led" cx="112" cy="105" r="3"></circle>
+        <line class="hw-vent-line" x1="115" y1="140" x2="205" y2="140"></line>
+        <line class="hw-vent-line" x1="115" y1="153" x2="205" y2="153"></line>
+        <rect class="hw-storage-connector" x="214" y="108" width="6" height="16"></rect>
+        <rect class="hw-storage-connector" x="214" y="138" width="6" height="12"></rect>
+        ${hwScrew(108, 164)}${hwScrew(212, 164)}
       </g>
 
       <g class="hw-part" data-part-id="cables">
         <title>Cables de la fuente de poder</title>
         <rect class="hw-hit-area" x="145" y="160" width="175" height="250"></rect>
+        <path class="hw-cable-sleeve" d="M250,380 C280,380 280,400 310,400"></path>
         <path class="hw-cable" d="M250,380 C280,380 280,400 310,400"></path>
+        <path class="hw-cable-sleeve" d="M170,330 C160,250 160,220 165,170"></path>
         <path class="hw-cable-alt" d="M170,330 C160,250 160,220 165,170"></path>
+        <rect class="hw-cable-connector" x="245" y="374" width="10" height="14" rx="2"></rect>
+        <rect class="hw-cable-connector" x="304" y="393" width="12" height="10" rx="2"></rect>
+        <rect class="hw-cable-connector" x="160" y="322" width="16" height="10" rx="2"></rect>
+        <rect class="hw-cable-connector" x="159" y="163" width="14" height="10" rx="2"></rect>
       </g>
 
       <g class="hw-part" data-part-id="gpu">
         <title>Tarjeta gráfica (GPU)</title>
-        <rect class="hw-gpu-body" x="320" y="280" width="220" height="55" rx="4"></rect>
-        <circle class="hw-gpu-fan" cx="365" cy="307" r="18"></circle>
-        <circle class="hw-gpu-fan" cx="425" cy="307" r="18"></circle>
+        <rect class="hw-gpu-body" x="320" y="280" width="220" height="55" rx="6"></rect>
+        <rect class="hw-gpu-rgb" x="320" y="280" width="220" height="4" rx="2"></rect>
+        <rect class="hw-gpu-bracket-tooth" x="316" y="285" width="4" height="6"></rect>
+        <rect class="hw-gpu-bracket-tooth" x="316" y="295" width="4" height="6"></rect>
+        <rect class="hw-gpu-bracket-tooth" x="316" y="305" width="4" height="6"></rect>
+        <rect class="hw-gpu-bracket-tooth" x="316" y="315" width="4" height="6"></rect>
+        <circle class="hw-fan-ring" cx="365" cy="307" r="19"></circle>
+        <g class="hw-fan-blades hw-fan-blades-gpu1">${hwFanBlades(365, 307, 15, 7)}</g>
+        <circle class="hw-fan-hub" cx="365" cy="307" r="4"></circle>
+        <circle class="hw-fan-ring" cx="425" cy="307" r="19"></circle>
+        <g class="hw-fan-blades hw-fan-blades-gpu2">${hwFanBlades(425, 307, 15, 7)}</g>
+        <circle class="hw-fan-hub" cx="425" cy="307" r="4"></circle>
       </g>
 
       <g class="hw-part" data-part-id="ram">
         <title>Módulos de memoria RAM</title>
         <rect class="hw-hit-area" x="488" y="82" width="46" height="126"></rect>
-        <rect class="hw-ram-stick" x="495" y="90" width="12" height="110" rx="2"></rect>
-        <rect class="hw-ram-stick" x="515" y="90" width="12" height="110" rx="2"></rect>
+        <rect class="hw-ram-stick-a" x="495" y="90" width="12" height="106" rx="2"></rect>
+        <rect class="hw-ram-contact" x="496" y="192" width="10" height="6"></rect>
+        <line class="hw-ram-notch" x1="495" y1="102" x2="507" y2="102"></line>
+        <rect class="hw-ram-stick-b" x="515" y="90" width="12" height="106" rx="2"></rect>
+        <rect class="hw-ram-contact" x="516" y="192" width="10" height="6"></rect>
+        <line class="hw-ram-notch" x1="515" y1="102" x2="527" y2="102"></line>
       </g>
 
       <g class="hw-part" data-part-id="cooler">
         <title>Disipador del procesador</title>
+        <line class="hw-cooler-fin" x1="366" y1="106" x2="366" y2="184"></line>
+        <line class="hw-cooler-fin" x1="374" y1="102" x2="374" y2="188"></line>
+        <line class="hw-cooler-fin" x1="436" y1="102" x2="436" y2="188"></line>
+        <line class="hw-cooler-fin" x1="444" y1="106" x2="444" y2="184"></line>
         <rect class="hw-cooler-base" x="360" y="100" width="90" height="90" rx="8"></rect>
-        <circle class="hw-cooler-fan-ring" cx="405" cy="145" r="36"></circle>
-        <g class="hw-fan-blades">
-          <line class="hw-vent-line" x1="405" y1="112" x2="405" y2="178"></line>
-          <line class="hw-vent-line" x1="372" y1="145" x2="438" y2="145"></line>
-          <line class="hw-vent-line" x1="382" y1="122" x2="428" y2="168"></line>
-          <line class="hw-vent-line" x1="382" y1="168" x2="428" y2="122"></line>
-        </g>
+        <circle class="hw-fan-ring" cx="405" cy="145" r="37"></circle>
+        <g class="hw-fan-blades hw-fan-blades-cooler">${hwFanBlades(405, 145, 32, 7)}</g>
+        <circle class="hw-fan-hub" cx="405" cy="145" r="8"></circle>
+        <path class="hw-cord" d="M450,120 C465,120 465,105 465,95"></path>
       </g>
 
       <g class="hw-part is-hidden-part" data-part-id="cpu" id="hw-part-cpu">
         <title>Procesador (CPU)</title>
         <rect class="hw-cpu-body" x="378" y="118" width="54" height="54" rx="4"></rect>
-        <polygon points="382,122 392,122 382,132"></polygon>
+        <rect class="hw-cpu-die" x="392" y="132" width="26" height="26" rx="2"></rect>
+        <polygon class="hw-cpu-notch" points="382,122 392,122 382,132"></polygon>
       </g>
 
       <g class="hw-part" data-part-id="side-panel">
-        <title>Panel lateral</title>
+        <title>Panel lateral (vidrio templado)</title>
         <rect class="hw-side-panel" x="74" y="44" width="512" height="432" rx="14"></rect>
-        <line class="hw-vent-line" x1="120" y1="90" x2="120" y2="430"></line>
-        <line class="hw-vent-line" x1="150" y1="90" x2="150" y2="430"></line>
-        <line class="hw-vent-line" x1="180" y1="90" x2="180" y2="430"></line>
+        <polygon class="hw-glass-glare" points="110,44 190,44 90,476 60,476"></polygon>
+        <polygon class="hw-glass-glare hw-glass-glare-soft" points="220,44 260,44 170,476 138,476"></polygon>
+        ${hwScrew(94, 60)}${hwScrew(566, 60)}${hwScrew(94, 460)}${hwScrew(566, 460)}
       </g>
     </svg>
   `;

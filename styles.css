@@ -875,32 +875,68 @@ code { font-family: var(--font-mono); }
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(2); }
 }
-.hw-fan-blades { transform-origin: 405px 145px; animation: hw-spin 4s linear infinite; }
 @keyframes hw-spin { to { transform: rotate(360deg); } }
+.hw-fan-blades-gpu1 { transform-origin: 365px 307px; animation: hw-spin 3s linear infinite; }
+.hw-fan-blades-gpu2 { transform-origin: 425px 307px; animation: hw-spin 3s linear infinite; }
+.hw-fan-blades-cooler { transform-origin: 405px 145px; animation: hw-spin 2.2s linear infinite; }
 
-.hw-case-frame { fill: #0b0f17; stroke: var(--border-color); stroke-width: 2; }
 /* Zona de clic invisible pero más grande que el dibujo real, para piezas
    finas (cables, RAM) que serían difíciles de tocar con precisión,
    especialmente en pantallas táctiles. */
 .hw-hit-area { fill: transparent; stroke: none; }
-.hw-motherboard { fill: #12241f; stroke: var(--accent-green); stroke-width: 1.5; stroke-opacity: 0.6; }
+
+.hw-case-frame { fill: #0b0f17; stroke: url(#hwGradMetal); stroke-width: 3; }
+.hw-screw { fill: #11151c; stroke: var(--border-color); stroke-width: 1; }
+.hw-screw-slot { stroke: #05070a; stroke-width: 1; }
+
+.hw-motherboard { fill: url(#hwGradMotherboard); stroke: var(--accent-green); stroke-width: 1.5; stroke-opacity: 0.6; filter: drop-shadow(0 4px 8px rgba(0,0,0,.35)); }
+.hw-mb-slot { fill: #05080d; }
+.hw-mb-chip { fill: #0d1a17; stroke: var(--accent-green); stroke-width: 0.75; stroke-opacity: 0.5; }
+.hw-mb-hole { fill: #05080d; stroke: var(--border-color); stroke-width: 0.75; }
 .hw-trace { stroke: var(--accent-green); stroke-opacity: 0.35; stroke-width: 1.5; fill: none; }
-.hw-psu-body { fill: #171f2c; stroke: var(--border-color); stroke-width: 1.5; }
-.hw-psu-fan { fill: none; stroke: var(--accent-yellow); stroke-width: 1.5; }
-.hw-storage-body { fill: #171f2c; stroke: var(--border-color); stroke-width: 1.5; }
-.hw-storage-led { fill: var(--accent-green); }
-.hw-cable { fill: none; stroke: var(--accent-blue); stroke-width: 4; stroke-linecap: round; }
-.hw-cable-alt { fill: none; stroke: var(--accent-yellow); stroke-width: 4; stroke-linecap: round; }
-.hw-gpu-body { fill: #0f1622; stroke: var(--accent-blue); stroke-width: 1.5; }
-.hw-gpu-fan { fill: none; stroke: var(--text-muted); stroke-width: 1.5; }
-.hw-ram-stick { fill: var(--accent-green); opacity: 0.85; }
-.hw-cooler-base { fill: #3a4557; stroke: var(--border-color); stroke-width: 1.5; }
-.hw-cooler-fan-ring { fill: #232d3d; stroke: var(--text-muted); stroke-width: 1.5; }
-.hw-cpu-body { fill: #caa15a; stroke: #8a6a2f; stroke-width: 1.5; }
-.hw-cpu-body ~ polygon { fill: #8a6a2f; }
-.hw-side-panel { fill: var(--bg-elevated); stroke: var(--border-color); stroke-width: 2; opacity: 0.97; }
+
+.hw-psu-body { fill: url(#hwGradMetal); stroke: var(--border-color); stroke-width: 1.5; filter: drop-shadow(0 4px 8px rgba(0,0,0,.35)); }
+.hw-psu-face { fill: url(#hwGradPanel); }
+.hw-psu-fan-ring { fill: none; stroke: var(--accent-yellow); stroke-width: 1.5; opacity: 0.8; }
+.hw-psu-fan-hub { fill: #11151c; stroke: var(--accent-yellow); stroke-width: 1; }
+.hw-psu-grille { stroke: var(--accent-yellow); stroke-width: 1; opacity: 0.55; }
+.hw-psu-label { fill: #e8edf3; opacity: 0.12; }
+
+.hw-storage-body { fill: url(#hwGradMetal); stroke: var(--border-color); stroke-width: 1.5; filter: drop-shadow(0 4px 8px rgba(0,0,0,.35)); }
+.hw-storage-band { fill: url(#hwGradPanel); }
+.hw-storage-led { fill: var(--accent-green); filter: drop-shadow(0 0 3px var(--accent-green)); }
+.hw-storage-connector { fill: #0a0e14; }
 .hw-vent-line { stroke: var(--border-color-soft); stroke-width: 1; }
-.hw-plug-body { fill: #232d3d; stroke: var(--border-color); stroke-width: 1.5; }
+
+.hw-cable-sleeve { fill: none; stroke: #11151c; stroke-width: 7; stroke-linecap: round; }
+.hw-cable { fill: none; stroke: var(--accent-blue); stroke-width: 3; stroke-linecap: round; }
+.hw-cable-alt { fill: none; stroke: var(--accent-yellow); stroke-width: 3; stroke-linecap: round; }
+.hw-cable-connector { fill: #171f2c; stroke: var(--border-color); stroke-width: 1; }
+
+.hw-gpu-body { fill: url(#hwGradPlastic); stroke: var(--accent-blue); stroke-width: 1.2; stroke-opacity: 0.5; filter: drop-shadow(0 5px 10px rgba(0,0,0,.4)); }
+.hw-gpu-rgb { fill: url(#hwGradRgb); }
+.hw-gpu-bracket-tooth { fill: url(#hwGradGold); }
+.hw-fan-ring { fill: url(#hwGradFanHub); stroke: var(--text-muted); stroke-width: 1; }
+.hw-fan-blade { fill: #4a5568; }
+.hw-fan-hub { fill: #232d3d; stroke: var(--border-color); stroke-width: 0.75; }
+
+.hw-ram-stick-a { fill: url(#hwGradGreenStick); }
+.hw-ram-stick-b { fill: url(#hwGradBlueStick); }
+.hw-ram-contact { fill: url(#hwGradGold); }
+.hw-ram-notch { stroke: #05080d; stroke-width: 2; }
+
+.hw-cooler-fin { stroke: #4a5568; stroke-width: 2; opacity: 0.55; }
+.hw-cooler-base { fill: url(#hwGradMetal); stroke: var(--border-color); stroke-width: 1.5; filter: drop-shadow(0 5px 10px rgba(0,0,0,.4)); }
+
+.hw-cpu-body { fill: url(#hwGradGold); stroke: #8a6a2f; stroke-width: 1.5; }
+.hw-cpu-die { fill: #7a5a22; opacity: 0.5; }
+.hw-cpu-notch { fill: #8a6a2f; }
+
+.hw-side-panel { fill: url(#hwGradGlass); stroke: var(--border-color); stroke-width: 2; }
+.hw-glass-glare { fill: #ffffff; opacity: 0.05; }
+.hw-glass-glare-soft { opacity: 0.03; }
+
+.hw-plug-body { fill: url(#hwGradPlastic); stroke: var(--border-color); stroke-width: 1.5; }
 .hw-plug-prong { fill: var(--accent-yellow); }
 .hw-cord { fill: none; stroke: var(--text-muted); stroke-width: 3; stroke-linecap: round; }
 
