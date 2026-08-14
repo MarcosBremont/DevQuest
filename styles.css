@@ -841,6 +841,87 @@ code { font-family: var(--font-mono); }
 .account-profile .btn { margin-top: 4px; }
 
 /* ==========================================================================
+   Desarma tu PC (hardware interactivo)
+   ========================================================================== */
+.hardware-container { max-width: 560px; }
+.hardware-card { display: flex; flex-direction: column; gap: 16px; }
+
+.hardware-done-note {
+  background: var(--success-bg);
+  border: 1px solid var(--success);
+  color: var(--success);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 0.85rem;
+}
+
+.hardware-progress { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.hardware-step-count { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; white-space: nowrap; }
+
+.hardware-illustration-wrap {
+  background: #05080d;
+  border: 1px solid var(--border-color-soft);
+  border-radius: var(--radius-lg);
+  padding: 10px;
+}
+.hardware-svg { width: 100%; height: auto; display: block; }
+
+.hw-part { cursor: pointer; transition: opacity 0.5s ease, transform 0.5s ease; transform-origin: center; touch-action: manipulation; }
+.hw-part:active { transform: scale(0.96); }
+.hw-part.is-removed { opacity: 0; transform: scale(0.7); pointer-events: none; }
+.hw-part.is-hidden-part { opacity: 0; pointer-events: none; }
+.hw-part.is-hint { animation: hw-pulse 0.55s ease-in-out 3; }
+@keyframes hw-pulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(2); }
+}
+.hw-fan-blades { transform-origin: 405px 145px; animation: hw-spin 4s linear infinite; }
+@keyframes hw-spin { to { transform: rotate(360deg); } }
+
+.hw-case-frame { fill: #0b0f17; stroke: var(--border-color); stroke-width: 2; }
+/* Zona de clic invisible pero más grande que el dibujo real, para piezas
+   finas (cables, RAM) que serían difíciles de tocar con precisión,
+   especialmente en pantallas táctiles. */
+.hw-hit-area { fill: transparent; stroke: none; }
+.hw-motherboard { fill: #12241f; stroke: var(--accent-green); stroke-width: 1.5; stroke-opacity: 0.6; }
+.hw-trace { stroke: var(--accent-green); stroke-opacity: 0.35; stroke-width: 1.5; fill: none; }
+.hw-psu-body { fill: #171f2c; stroke: var(--border-color); stroke-width: 1.5; }
+.hw-psu-fan { fill: none; stroke: var(--accent-yellow); stroke-width: 1.5; }
+.hw-storage-body { fill: #171f2c; stroke: var(--border-color); stroke-width: 1.5; }
+.hw-storage-led { fill: var(--accent-green); }
+.hw-cable { fill: none; stroke: var(--accent-blue); stroke-width: 4; stroke-linecap: round; }
+.hw-cable-alt { fill: none; stroke: var(--accent-yellow); stroke-width: 4; stroke-linecap: round; }
+.hw-gpu-body { fill: #0f1622; stroke: var(--accent-blue); stroke-width: 1.5; }
+.hw-gpu-fan { fill: none; stroke: var(--text-muted); stroke-width: 1.5; }
+.hw-ram-stick { fill: var(--accent-green); opacity: 0.85; }
+.hw-cooler-base { fill: #3a4557; stroke: var(--border-color); stroke-width: 1.5; }
+.hw-cooler-fan-ring { fill: #232d3d; stroke: var(--text-muted); stroke-width: 1.5; }
+.hw-cpu-body { fill: #caa15a; stroke: #8a6a2f; stroke-width: 1.5; }
+.hw-cpu-body ~ polygon { fill: #8a6a2f; }
+.hw-side-panel { fill: var(--bg-elevated); stroke: var(--border-color); stroke-width: 2; opacity: 0.97; }
+.hw-vent-line { stroke: var(--border-color-soft); stroke-width: 1; }
+.hw-plug-body { fill: #232d3d; stroke: var(--border-color); stroke-width: 1.5; }
+.hw-plug-prong { fill: var(--accent-yellow); }
+.hw-cord { fill: none; stroke: var(--text-muted); stroke-width: 3; stroke-linecap: round; }
+
+.hardware-step-info { text-align: center; }
+.hardware-step-title { font-weight: 800; font-size: 1.05rem; margin-bottom: 4px; }
+.hardware-step-desc { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.5; }
+
+.hardware-part-info {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.hardware-part-info-text { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0; }
+
+.hardware-actions { display: flex; }
+
+/* ==========================================================================
    Feedback overlay (acierto / error)
    ========================================================================== */
 .feedback-overlay {

@@ -59,6 +59,12 @@ const MODULES = [
   { id: 'mysql', title: 'MySQL', icon: '🗄️', levels: MYSQL_LEVELS }
 ];
 
+/* "Desarma tu PC" no es un módulo de lenguaje (no aparece en el dashboard
+   como bloque de niveles), pero su finalización se registra igual que
+   cualquier nivel para que sume XP, cuente para el progreso total y se
+   sincronice con la nube sin necesitar ningún sistema nuevo. */
+const HARDWARE_LEVELS = [{ id: 'hardware-1', title: 'Desarma tu PC', xp: 200 }];
+
 
 /* ==========================================================================
    3. INSIGNIAS (BADGES)
@@ -79,6 +85,7 @@ const BADGES = [
   { id: 'js-master', name: 'Maestro JS', desc: 'Completa el módulo de JavaScript', icon: '⚡', check: (p) => isModuleCompleted('js', p) },
   { id: 'csharp-master', name: 'Maestro C#', desc: 'Completa el módulo de C#', icon: '🔷', check: (p) => isModuleCompleted('csharp', p) },
   { id: 'mysql-master', name: 'Maestro MySQL', desc: 'Completa el módulo de MySQL', icon: '🗄️', check: (p) => isModuleCompleted('mysql', p) },
+  { id: 'hardware-tech', name: 'Técnico de hardware', desc: 'Desarma una PC completa, pieza por pieza', icon: '🔧', check: (p) => p.completedLevels.includes('hardware-1') },
   { id: 'streak-3', name: 'Racha de 3 días', desc: 'Practica 3 días seguidos', icon: '🔥', check: (p) => p.streak >= 3 },
   { id: 'streak-7', name: 'Racha de 7 días', desc: 'Practica 7 días seguidos', icon: '🔥', check: (p) => p.streak >= 7 },
   { id: 'full-stack', name: 'Full Stack Junior', desc: 'Completa todos los módulos de DevQuest', icon: '🚀', check: (p) => areAllModulesCompleted(p) }
@@ -92,7 +99,7 @@ let pendingBadgeToasts = [];
 let feedbackTimer = null;
 
 function getAllLevels() {
-  return MODULES.flatMap((m) => m.levels);
+  return MODULES.flatMap((m) => m.levels).concat(HARDWARE_LEVELS);
 }
 function findLevel(levelId) {
   for (const module of MODULES) {
@@ -252,6 +259,285 @@ function renderBadges() {
         <div class="badge-desc">${b.desc}</div>
       </div>`;
   }).join('');
+}
+
+/* ==========================================================================
+   5b. DESARMA TU PC — simulador interactivo de hardware
+   Es un solo "nivel" especial (no forma parte de ningún módulo de lenguaje):
+   una ilustración SVG de una PC abierta donde cada pieza se desarma en el
+   orden correcto, con una explicación de qué es cada componente. Reutiliza
+   el mismo sistema de XP/insignias/sincronización que el resto de la app
+   llamando a finishLevel() con el nivel sintético HARDWARE_LEVELS[0].
+   ========================================================================== */
+const HARDWARE_STEPS = [
+  {
+    id: 'power-cable',
+    title: 'Desconecta la corriente',
+    icon: '🔌',
+    description: 'Antes de abrir cualquier computadora, desconéctala de la corriente eléctrica. Trabajar con la fuente enchufada puede dañar los componentes o darte una descarga.',
+    info: 'El cable de alimentación lleva corriente alterna (AC) desde el enchufe hasta la fuente de poder. Desconectarlo siempre es el primer paso de seguridad, incluso antes de tocar cualquier tornillo.'
+  },
+  {
+    id: 'side-panel',
+    title: 'Quita el panel lateral',
+    icon: '🧰',
+    description: 'La mayoría de los gabinetes tienen tornillos en la parte trasera que sujetan el panel lateral. Al quitarlos, el panel se desliza hacia atrás y se separa.',
+    info: 'El panel lateral protege los componentes del polvo y golpes, y ayuda a dirigir el flujo de aire de los ventiladores dentro del gabinete.'
+  },
+  {
+    id: 'cables',
+    title: 'Desconecta los cables',
+    icon: '🔗',
+    description: 'Antes de sacar cualquier pieza, desconecta los cables de datos y de alimentación que van desde la fuente de poder hacia la placa madre y las unidades.',
+    info: 'Los cables llevan energía (identificados normalmente en rojo, amarillo y negro) y datos —como los cables SATA— entre la fuente, la placa madre y los discos.'
+  },
+  {
+    id: 'gpu',
+    title: 'Quita la tarjeta gráfica',
+    icon: '🎮',
+    description: 'Suelta el seguro de la ranura PCIe y el tornillo que la sujeta al gabinete, y retírala con cuidado tirando hacia afuera.',
+    info: 'La GPU (tarjeta gráfica) procesa las imágenes y los gráficos. Los modelos más potentes suelen ser grandes y tener varios ventiladores propios.'
+  },
+  {
+    id: 'ram',
+    title: 'Quita los módulos de RAM',
+    icon: '💾',
+    description: 'Abre los seguros a los costados de cada ranura de memoria; el módulo salta ligeramente hacia arriba y ya se puede retirar.',
+    info: 'La RAM (memoria de acceso aleatorio) guarda temporalmente los datos que el procesador está usando en ese momento. Se borra por completo al apagar la PC.'
+  },
+  {
+    id: 'storage',
+    title: 'Quita el almacenamiento',
+    icon: '💿',
+    description: 'Desatornilla la bahía o desliza el seguro que sujeta el disco duro o SSD, y sácalo de su compartimento.',
+    info: 'Aquí se guardan de forma permanente el sistema operativo, los programas y tus archivos, incluso cuando la computadora está apagada.'
+  },
+  {
+    id: 'cooler',
+    title: 'Quita el disipador del procesador',
+    icon: '🌀',
+    description: 'Desconecta el cable del ventilador y libera las palancas o tornillos que sujetan el disipador a la placa madre.',
+    info: 'El disipador (cooler) evita que el procesador se sobrecaliente, transfiriendo su calor hacia un ventilador o un radiador.'
+  },
+  {
+    id: 'cpu',
+    title: 'Quita el procesador',
+    icon: '🧠',
+    description: 'Levanta la palanca del zócalo con cuidado y retira el procesador tomándolo por los bordes, sin tocar los contactos dorados.',
+    info: 'El CPU (procesador) es el "cerebro" de la computadora: ejecuta las instrucciones de todos los programas que corren en ella.'
+  },
+  {
+    id: 'psu',
+    title: 'Quita la fuente de poder',
+    icon: '⚡',
+    description: 'Desatornilla la fuente de poder de la parte trasera del gabinete y sácala con cuidado; suele pesar más de lo que parece.',
+    info: 'La fuente de poder (PSU) convierte la corriente alterna del enchufe en la corriente continua estable que necesitan los demás componentes.'
+  },
+  {
+    id: 'motherboard',
+    title: 'Quita la placa madre',
+    icon: '🔲',
+    description: 'Desatornilla los separadores que sujetan la placa al gabinete y retírala con cuidado sosteniéndola por los bordes.',
+    info: '¡Listo! La placa madre (motherboard) es la que conecta entre sí a todos los demás componentes: CPU, RAM, GPU, almacenamiento y fuente de poder.'
+  }
+];
+
+let hardwareStepIndex = 0;
+let hardwareMistakeOccurred = false;
+let hardwareAwaitingContinue = false;
+
+function buildHardwareSvg() {
+  return `
+    <svg viewBox="0 0 640 520" class="hardware-svg" id="hardware-svg" role="img" aria-label="Ilustración de una computadora de escritorio abierta">
+      <g class="hw-part" data-part-id="power-cable">
+        <title>Cable de alimentación</title>
+        <rect class="hw-hit-area" x="0" y="440" width="68" height="50"></rect>
+        <path class="hw-cord" d="M20,470 C40,470 40,450 60,450"></path>
+        <rect class="hw-plug-body" x="8" y="458" width="20" height="24" rx="3"></rect>
+        <rect class="hw-plug-prong" x="12" y="454" width="3" height="8"></rect>
+        <rect class="hw-plug-prong" x="21" y="454" width="3" height="8"></rect>
+      </g>
+
+      <rect class="hw-case-frame" x="70" y="40" width="520" height="440" rx="16"></rect>
+
+      <g class="hw-part" data-part-id="motherboard">
+        <title>Placa madre</title>
+        <rect class="hw-motherboard" x="310" y="70" width="250" height="380" rx="6"></rect>
+        <path class="hw-trace" d="M330,420 h60 v-30 h40"></path>
+        <path class="hw-trace" d="M540,100 h-40 v40"></path>
+        <path class="hw-trace" d="M330,100 h30 v20"></path>
+      </g>
+
+      <g class="hw-part" data-part-id="psu">
+        <title>Fuente de poder</title>
+        <rect class="hw-psu-body" x="100" y="330" width="150" height="120" rx="4"></rect>
+        <circle class="hw-psu-fan" cx="175" cy="390" r="30"></circle>
+        <circle class="hw-psu-fan" cx="175" cy="390" r="14"></circle>
+      </g>
+
+      <g class="hw-part" data-part-id="storage">
+        <title>Unidad de almacenamiento</title>
+        <rect class="hw-storage-body" x="100" y="90" width="120" height="80" rx="4"></rect>
+        <circle class="hw-storage-led" cx="112" cy="102" r="3"></circle>
+        <line class="hw-vent-line" x1="115" y1="130" x2="205" y2="130"></line>
+        <line class="hw-vent-line" x1="115" y1="145" x2="205" y2="145"></line>
+      </g>
+
+      <g class="hw-part" data-part-id="cables">
+        <title>Cables de la fuente de poder</title>
+        <rect class="hw-hit-area" x="145" y="160" width="175" height="250"></rect>
+        <path class="hw-cable" d="M250,380 C280,380 280,400 310,400"></path>
+        <path class="hw-cable-alt" d="M170,330 C160,250 160,220 165,170"></path>
+      </g>
+
+      <g class="hw-part" data-part-id="gpu">
+        <title>Tarjeta gráfica (GPU)</title>
+        <rect class="hw-gpu-body" x="320" y="280" width="220" height="55" rx="4"></rect>
+        <circle class="hw-gpu-fan" cx="365" cy="307" r="18"></circle>
+        <circle class="hw-gpu-fan" cx="425" cy="307" r="18"></circle>
+      </g>
+
+      <g class="hw-part" data-part-id="ram">
+        <title>Módulos de memoria RAM</title>
+        <rect class="hw-hit-area" x="488" y="82" width="46" height="126"></rect>
+        <rect class="hw-ram-stick" x="495" y="90" width="12" height="110" rx="2"></rect>
+        <rect class="hw-ram-stick" x="515" y="90" width="12" height="110" rx="2"></rect>
+      </g>
+
+      <g class="hw-part" data-part-id="cooler">
+        <title>Disipador del procesador</title>
+        <rect class="hw-cooler-base" x="360" y="100" width="90" height="90" rx="8"></rect>
+        <circle class="hw-cooler-fan-ring" cx="405" cy="145" r="36"></circle>
+        <g class="hw-fan-blades">
+          <line class="hw-vent-line" x1="405" y1="112" x2="405" y2="178"></line>
+          <line class="hw-vent-line" x1="372" y1="145" x2="438" y2="145"></line>
+          <line class="hw-vent-line" x1="382" y1="122" x2="428" y2="168"></line>
+          <line class="hw-vent-line" x1="382" y1="168" x2="428" y2="122"></line>
+        </g>
+      </g>
+
+      <g class="hw-part is-hidden-part" data-part-id="cpu" id="hw-part-cpu">
+        <title>Procesador (CPU)</title>
+        <rect class="hw-cpu-body" x="378" y="118" width="54" height="54" rx="4"></rect>
+        <polygon points="382,122 392,122 382,132"></polygon>
+      </g>
+
+      <g class="hw-part" data-part-id="side-panel">
+        <title>Panel lateral</title>
+        <rect class="hw-side-panel" x="74" y="44" width="512" height="432" rx="14"></rect>
+        <line class="hw-vent-line" x1="120" y1="90" x2="120" y2="430"></line>
+        <line class="hw-vent-line" x1="150" y1="90" x2="150" y2="430"></line>
+        <line class="hw-vent-line" x1="180" y1="90" x2="180" y2="430"></line>
+      </g>
+    </svg>
+  `;
+}
+
+function renderHardwareScreen() {
+  const container = document.getElementById('hardware-container');
+  const alreadyDone = state.progress.completedLevels.includes('hardware-1');
+
+  hardwareStepIndex = 0;
+  hardwareMistakeOccurred = false;
+  hardwareAwaitingContinue = false;
+
+  container.innerHTML = `
+    <div class="card hardware-card">
+      ${alreadyDone ? '<p class="hardware-done-note">✅ Ya completaste este desarme antes. Puedes repetirlo para repasar.</p>' : ''}
+      <div class="hardware-progress">
+        <div class="quiz-progress-dots" id="hardware-dots"></div>
+        <span class="hardware-step-count" id="hardware-step-count"></span>
+      </div>
+      <div class="hardware-illustration-wrap">${buildHardwareSvg()}</div>
+      <div class="hardware-step-info">
+        <div class="hardware-step-title" id="hardware-step-title"></div>
+        <p class="hardware-step-desc" id="hardware-step-desc"></p>
+      </div>
+      <div id="hardware-part-info" class="hardware-part-info hidden"></div>
+      <div class="hardware-actions">
+        <button type="button" id="hardware-hint-btn" class="btn btn-secondary btn-block">💡 Pista</button>
+      </div>
+    </div>
+  `;
+
+  wireHardwareInteraction();
+  renderHardwareStep();
+}
+
+function wireHardwareInteraction() {
+  const svg = document.getElementById('hardware-svg');
+  svg.addEventListener('click', (e) => {
+    const part = e.target.closest('.hw-part');
+    if (part) handleHardwarePartClick(part);
+  });
+  document.getElementById('hardware-hint-btn').addEventListener('click', showHardwareHint);
+}
+
+function renderHardwareStep() {
+  const step = HARDWARE_STEPS[hardwareStepIndex];
+  document.getElementById('hardware-dots').innerHTML = HARDWARE_STEPS.map((_, i) =>
+    `<span class="quiz-dot ${i < hardwareStepIndex ? 'is-done' : ''} ${i === hardwareStepIndex ? 'is-current' : ''}"></span>`
+  ).join('');
+  document.getElementById('hardware-step-count').textContent = `Paso ${hardwareStepIndex + 1} de ${HARDWARE_STEPS.length}`;
+  document.getElementById('hardware-step-title').textContent = `${step.icon} ${step.title}`;
+  document.getElementById('hardware-step-desc').textContent = step.description;
+  document.getElementById('hardware-part-info').classList.add('hidden');
+  hardwareAwaitingContinue = false;
+}
+
+function handleHardwarePartClick(partEl) {
+  if (hardwareAwaitingContinue) return;
+  if (partEl.classList.contains('is-removed')) return;
+
+  const step = HARDWARE_STEPS[hardwareStepIndex];
+  const clickedId = partEl.dataset.partId;
+
+  if (clickedId !== step.id) {
+    hardwareMistakeOccurred = true;
+    showFeedback(false, `Todavía no — primero: ${step.title}`);
+    playSound(false);
+    return;
+  }
+
+  partEl.classList.add('is-removed');
+  if (clickedId === 'cooler') {
+    document.getElementById('hw-part-cpu').classList.remove('is-hidden-part');
+  }
+  showFeedback(true, pickPraise());
+  playSound(true);
+
+  const infoEl = document.getElementById('hardware-part-info');
+  const isLast = hardwareStepIndex === HARDWARE_STEPS.length - 1;
+  infoEl.innerHTML = `
+    <p class="hardware-part-info-text">${step.info}</p>
+    <button type="button" id="hardware-continue-btn" class="btn btn-primary btn-block">${isLast ? 'Terminar' : 'Siguiente paso →'}</button>
+  `;
+  infoEl.classList.remove('hidden');
+  hardwareAwaitingContinue = true;
+
+  document.getElementById('hardware-continue-btn').addEventListener('click', () => {
+    if (isLast) {
+      finishHardwareDisassembly();
+    } else {
+      hardwareStepIndex++;
+      renderHardwareStep();
+    }
+  });
+}
+
+function showHardwareHint() {
+  const step = HARDWARE_STEPS[hardwareStepIndex];
+  const target = document.querySelector(`.hw-part[data-part-id="${step.id}"]`);
+  if (!target) return;
+  target.classList.remove('is-hint');
+  // Forzar reflow para poder reiniciar la animación si ya se usó antes.
+  void target.getBoundingClientRect();
+  target.classList.add('is-hint');
+  setTimeout(() => target.classList.remove('is-hint'), 1900);
+}
+
+function finishHardwareDisassembly() {
+  finishLevel(HARDWARE_LEVELS[0], hardwareMistakeOccurred);
 }
 
 /* ==========================================================================
@@ -1210,6 +1496,7 @@ function handleSignOut() {
 function wireStaticEvents() {
   document.getElementById('btn-start').addEventListener('click', enterApp);
   document.getElementById('btn-badges').addEventListener('click', () => { renderBadges(); goTo('achievements'); });
+  document.getElementById('btn-hardware').addEventListener('click', () => { renderHardwareScreen(); goTo('hardware'); });
   document.getElementById('btn-account').addEventListener('click', () => {
     dqlog('Clic en el icono de cuenta. state.user =', state.user ? state.user.email : null, '| state.firebaseReady =', state.firebaseReady);
     renderAccountScreen();
