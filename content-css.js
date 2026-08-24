@@ -938,63 +938,63 @@ const CSS_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'css-32',
-    title: 'Float y clear (código legado)',
+    title: 'Header y navegación con Flexbox',
     subtitle: 'Nivel 32',
     xp: 111,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Antes de Flexbox y Grid, <code>float</code> se usaba para crear layouts, haciendo que un elemento "flote" a la izquierda o derecha y el texto lo rodee. Hoy se sigue viendo en código antiguo.',
-        'Cuando un elemento flota, puede sacar a su contenedor padre del flujo normal (colapsando su altura). La propiedad <code>clear</code> evita que un elemento se acomode junto a los flotantes anteriores.'
+        'El header de tu portafolio necesita alinear el nombre/logo a la izquierda y el menú a la derecha. <code>display: flex</code> junto con <code>justify-content: space-between</code> en el header logra esto en una sola línea de código.',
+        'Los enlaces del menú suelen espaciarse con <code>gap</code> y cambiar de color al pasar el mouse (<code>:hover</code>), dando feedback visual claro sin necesidad de JavaScript.'
       ],
       code:
-        '<span class="tok-prop">.imagen</span> {\n' +
-        '  <span class="tok-prop">float</span>: <span class="tok-val">left</span>;\n' +
-        '  <span class="tok-prop">margin-right</span>: <span class="tok-val">16px</span>;\n' +
+        '<span class="tok-prop">header</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">flex</span>;\n' +
+        '  <span class="tok-prop">justify-content</span>: <span class="tok-val">space-between</span>;\n' +
+        '  <span class="tok-prop">align-items</span>: <span class="tok-val">center</span>;\n' +
         '}\n' +
-        '<span class="tok-prop">.footer</span> {\n' +
-        '  <span class="tok-prop">clear</span>: <span class="tok-val">both</span>;\n' +
-        '}'
+        '<span class="tok-prop">nav ul</span> { <span class="tok-prop">display</span>: <span class="tok-val">flex</span>; <span class="tok-prop">gap</span>: <span class="tok-val">1.5rem</span>; <span class="tok-prop">list-style</span>: <span class="tok-val">none</span>; }\n' +
+        '<span class="tok-prop">nav a:hover</span> { <span class="tok-prop">color</span>: <span class="tok-val">var(--color-primario)</span>; }'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre float y clear.',
+      instructions: 'Responde estas preguntas sobre cómo maquetar el header y la navegación de tu portafolio.',
       variant: 'plain',
       questions: [
-        { prompt: '¿Qué propiedad hacía que un elemento "flotara" a un lado y el texto lo rodeara?', options: ['float', 'clear', 'position', 'display'], answer: 'float' },
-        { prompt: '¿Qué propiedad evita que un elemento se ubique junto a elementos flotantes anteriores?', options: ['clear', 'float', 'overflow', 'position'], answer: 'clear' },
-        { prompt: '¿Qué problema común genera el uso de float en un contenedor padre?', options: ['El contenedor puede colapsar su altura', 'El contenedor se vuelve invisible', 'El navegador ignora el float', 'El contenido se centra automáticamente'], answer: 'El contenedor puede colapsar su altura' },
-        { prompt: 'Hoy en día, ¿qué técnicas se prefieren en vez de float para crear layouts?', options: ['Flexbox y CSS Grid', 'Solo tablas HTML', 'position: fixed', 'clear: both en todos los elementos'], answer: 'Flexbox y CSS Grid' }
+        { prompt: '¿Qué propiedad de flexbox separa el logo a la izquierda y el menú a la derecha dentro del header?', options: ['justify-content: space-between', 'align-items: center', 'flex-direction: column', 'gap'], answer: 'justify-content: space-between' },
+        { prompt: '¿Qué hace la pseudo-clase :hover en un enlace del menú?', options: ['Aplica un estilo mientras el mouse está encima del elemento', 'Aplica un estilo solo la primera vez que carga la página', 'Solo funciona en botones, nunca en enlaces', 'Cambia el href del enlace'], answer: 'Aplica un estilo mientras el mouse está encima del elemento' },
+        { prompt: '¿Qué propiedad usarías para dar espacio entre los ítems del menú sin poner margin en cada uno?', options: ['gap', 'padding', 'border-spacing', 'line-height'], answer: 'gap' },
+        { prompt: 'Para que desaparezcan los puntos de una lista &lt;ul&gt; usada como menú, ¿qué valor usás?', options: ['list-style: none', 'list-style: hidden', 'display: none', 'list-style: 0'], answer: 'list-style: none' }
       ]
     }
   },
-  {
+    {
     id: 'css-33',
-    title: 'Diseño con múltiples columnas',
+    title: 'Grid de tarjetas de proyectos',
     subtitle: 'Nivel 33',
     xp: 113,
-    type: 'quiz',
+    type: 'fill-tags',
     theory: {
       paragraphs: [
-        'La propiedad <code>column-count</code> (o <code>columns</code>) distribuye el contenido de un elemento en varias columnas, como en un periódico.',
-        '<code>column-gap</code> controla el espacio entre columnas, y <code>column-rule</code> agrega una línea divisoria entre ellas, similar a <code>border</code>.'
+        'La sección de proyectos necesita mostrar varias tarjetas (<code>.tarjeta-proyecto</code>) en una cuadrícula que se adapte al ancho de pantalla. <code>display: grid</code> junto con <code>grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))</code> logra columnas automáticas, sin necesidad de escribir media queries.',
+        '<code>gap</code> controla el espacio entre tarjetas, tanto horizontal como verticalmente, con una sola propiedad.'
       ],
       code:
-        '<span class="tok-prop">.articulo</span> {\n' +
-        '  <span class="tok-prop">column-count</span>: <span class="tok-val">3</span>;\n' +
-        '  <span class="tok-prop">column-gap</span>: <span class="tok-val">24px</span>;\n' +
-        '  <span class="tok-prop">column-rule</span>: <span class="tok-val">1px solid #ccc</span>;\n' +
-        '}'
+        '<span class="tok-prop">#proyectos</span> {\n' +
+        '  <span class="tok-prop">display</span>: <span class="tok-val">grid</span>;\n' +
+        '  <span class="tok-prop">grid-template-columns</span>: <span class="tok-val">repeat(auto-fit, minmax(250px, 1fr))</span>;\n' +
+        '  <span class="tok-prop">gap</span>: <span class="tok-val">1.5rem</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">.tarjeta-proyecto</span> { <span class="tok-prop">background</span>: <span class="tok-val">#1a1a2e</span>; <span class="tok-prop">border-radius</span>: <span class="tok-val">12px</span>; <span class="tok-prop">padding</span>: <span class="tok-val">1.5rem</span>; }'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre el diseño con múltiples columnas.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué propiedad divide el contenido de un elemento en varias columnas de texto?', options: ['column-count', 'column-gap', 'column-rule', 'flex-direction'], answer: 'column-count' },
-        { prompt: '¿Qué propiedad controla el espacio entre columnas?', options: ['column-gap', 'column-count', 'gap-column', 'margin'], answer: 'column-gap' },
-        { prompt: '¿Qué propiedad agrega una línea divisoria visual entre columnas?', options: ['column-rule', 'column-border', 'border', 'column-divider'], answer: 'column-rule' },
-        { prompt: '¿Para qué tipo de contenido suele usarse el diseño en columnas tipo periódico?', options: ['Bloques largos de texto, como artículos', 'Menús de navegación', 'Formularios cortos', 'Galerías de imágenes en grilla'], answer: 'Bloques largos de texto, como artículos' }
+      instructions: 'Completa cada línea del grid de proyectos con la propiedad o el valor correcto.',
+      blanks: [
+        { id: 'b1', before: '#proyectos { ', after: ': grid;', answer: 'display', options: ['display', 'position', 'grid', 'flex'] },
+        { id: 'b2', before: '  grid-template-columns: repeat(auto-fit, ', after: '(250px, 1fr));', answer: 'minmax', options: ['minmax', 'maxmin', 'clamp', 'calc'] },
+        { id: 'b3', before: '  ', after: ': 1.5rem; }', answer: 'gap', options: ['gap', 'margin', 'spacing', 'padding'] },
+        { id: 'b4', before: '.tarjeta-proyecto { background: #1a1a2e; border-radius: ', after: '; }', answer: '12px', options: ['12px', '12%', '12', '12deg'] }
       ]
     }
   },
@@ -1089,34 +1089,34 @@ const CSS_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'css-37',
-    title: 'Transformaciones 3D',
+    title: 'Efectos hover en las tarjetas',
     subtitle: 'Nivel 37',
     xp: 119,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Para lograr efectos 3D se usan funciones como <code>rotateX()</code>, <code>rotateY()</code> y <code>rotateZ()</code>, que giran un elemento sobre cada eje.',
-        'La propiedad <code>perspective</code>, aplicada al contenedor padre, define la distancia del "ojo" del espectador y da profundidad a las transformaciones 3D de sus hijos. Sin ella, las rotaciones 3D se ven planas.'
+        'Un pequeño efecto al pasar el mouse sobre una tarjeta de proyecto (elevarse unos píxeles y agrandar la sombra) hace que el portafolio se sienta interactivo. Se logra combinando <code>transform: translateY()</code> con <code>transition</code> para que el cambio sea suave y no instantáneo.',
+        '<code>transition</code> debe declararse en el estado normal del elemento (no dentro de <code>:hover</code>), para que tanto la entrada como la salida del hover queden animadas.'
       ],
       code:
-        '<span class="tok-prop">.escena</span> {\n' +
-        '  <span class="tok-prop">perspective</span>: <span class="tok-val">800px</span>;\n' +
+        '<span class="tok-prop">.tarjeta-proyecto</span> {\n' +
+        '  <span class="tok-prop">transition</span>: <span class="tok-val">transform 0.2s ease, box-shadow 0.2s ease</span>;\n' +
         '}\n' +
-        '<span class="tok-prop">.carta</span> {\n' +
-        '  <span class="tok-prop">transform</span>: <span class="tok-val">rotateY(180deg)</span>;\n' +
-        '  <span class="tok-prop">transform-style</span>: <span class="tok-val">preserve-3d</span>;\n' +
+        '<span class="tok-prop">.tarjeta-proyecto:hover</span> {\n' +
+        '  <span class="tok-prop">transform</span>: <span class="tok-val">translateY(-6px)</span>;\n' +
+        '  <span class="tok-prop">box-shadow</span>: <span class="tok-val">0 12px 24px rgba(0,0,0,0.3)</span>;\n' +
         '}'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre transformaciones 3D en CSS.',
+      instructions: 'Responde estas preguntas sobre cómo animar el hover de las tarjetas de proyecto.',
       variant: 'plain',
       questions: [
-        { prompt: '¿Qué función de transform gira un elemento sobre el eje vertical (Y)?', options: ['rotateY()', 'rotateX()', 'rotateZ()', 'translateY()'], answer: 'rotateY()' },
-        { prompt: '¿Qué propiedad, aplicada al contenedor padre, da sensación de profundidad a las transformaciones 3D de sus hijos?', options: ['perspective', 'transform-style', 'depth', 'z-index'], answer: 'perspective' },
-        { prompt: '¿Qué función de transform gira un elemento sobre el eje horizontal (X)?', options: ['rotateX()', 'rotateY()', 'rotateZ()', 'translateX()'], answer: 'rotateX()' },
-        { prompt: 'Sin la propiedad perspective definida, ¿cómo se ven las rotaciones 3D?', options: ['Planas, sin sensación real de profundidad', 'Igual que con perspective', 'El navegador genera un error', 'No se aplican'], answer: 'Planas, sin sensación real de profundidad' }
+        { prompt: '¿En qué selector debe declararse la propiedad transition para que el efecto de :hover se anime tanto al entrar como al salir?', options: ['En el selector base (.tarjeta-proyecto), no dentro de :hover', 'Solo dentro de :hover', 'En ambos, con valores distintos', 'No hace falta declararla, es automático'], answer: 'En el selector base (.tarjeta-proyecto), no dentro de :hover' },
+        { prompt: '¿Qué función de transform elevaría visualmente la tarjeta unos píxeles hacia arriba?', options: ['translateY(-6px)', 'translateX(-6px)', 'scale(-6px)', 'rotate(-6px)'], answer: 'translateY(-6px)' },
+        { prompt: '¿Qué tipo de unidad usa la duración de una transition típicamente?', options: ['Segundos (s) o milisegundos (ms)', 'Píxeles (px)', 'Porcentaje (%)', 'Grados (deg)'], answer: 'Segundos (s) o milisegundos (ms)' },
+        { prompt: '¿Qué propiedad crea la sombra que aparece al pasar el mouse sobre la tarjeta?', options: ['box-shadow', 'text-shadow', 'filter', 'outline'], answer: 'box-shadow' }
       ]
     }
   },
@@ -1211,34 +1211,35 @@ const CSS_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'css-41',
-    title: 'Container queries (concepto)',
+    title: 'Navegación responsive con hamburguesa',
     subtitle: 'Nivel 41',
     xp: 135,
-    type: 'quiz',
+    type: 'order-builder',
     theory: {
       paragraphs: [
-        'A diferencia de las media queries, que responden al tamaño del <strong>viewport</strong>, las <em>container queries</em> permiten que un elemento cambie de estilo según el tamaño de su <strong>contenedor</strong>, sin importar el tamaño de la pantalla.',
-        'Para usarlas, primero se declara un elemento como contenedor con <code>container-type: inline-size;</code>, y luego se escriben reglas con <code>@container</code> en vez de <code>@media</code>.'
+        'En pantallas chicas, el menú completo no entra cómodo en el header: se oculta detrás de un botón "hamburguesa" (☰) que el usuario toca para desplegarlo. En CSS eso se resuelve ocultando el &lt;ul&gt; del menú con <code>display: none</code> por defecto en mobile, y mostrando el botón <code>.nav-toggle</code>.',
+        'Cuando el menú tenga la clase <code>.is-open</code> (que vas a agregar con JavaScript en el próximo módulo), CSS lo muestra con <code>display: flex</code>. Este patrón —CSS define los dos estados, JavaScript solo cambia una clase— es el más común para interactividad simple.'
       ],
       code:
-        '<span class="tok-prop">.tarjeta-wrapper</span> {\n' +
-        '  <span class="tok-prop">container-type</span>: <span class="tok-val">inline-size</span>;\n' +
-        '}\n\n' +
-        '<span class="tok-kw">@container</span> (min-width: 400px) {\n' +
-        '  <span class="tok-prop">.tarjeta</span> { <span class="tok-prop">display</span>: <span class="tok-val">flex</span>; }\n' +
+        '<span class="tok-prop">.nav-toggle</span> { <span class="tok-prop">display</span>: <span class="tok-val">none</span>; }\n\n' +
+        '<span class="tok-at">@media</span> (<span class="tok-prop">max-width</span>: <span class="tok-val">640px</span>) {\n' +
+        '  <span class="tok-prop">.nav-toggle</span> { <span class="tok-prop">display</span>: <span class="tok-val">block</span>; }\n' +
+        '  <span class="tok-prop">nav ul</span> { <span class="tok-prop">display</span>: <span class="tok-val">none</span>; }\n' +
+        '  <span class="tok-prop">nav ul.is-open</span> { <span class="tok-prop">display</span>: <span class="tok-val">flex</span>; <span class="tok-prop">flex-direction</span>: <span class="tok-val">column</span>; }\n' +
         '}'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre container queries.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿En qué se diferencian las container queries de las media queries?', options: ['Responden al tamaño del contenedor, no al del viewport', 'Solo funcionan en móviles', 'No permiten usar min-width', 'Son exactamente lo mismo'], answer: 'Responden al tamaño del contenedor, no al del viewport' },
-        { prompt: '¿Qué propiedad convierte un elemento en un "contenedor" que puede usarse con container queries?', options: ['container-type', 'display: container', 'position: container', 'query-type'], answer: 'container-type' },
-        { prompt: '¿Qué regla se usa para escribir una container query?', options: ['@container', '@media', '@query', '@contain'], answer: '@container' },
-        { prompt: '¿Por qué son útiles las container queries para componentes reutilizables?', options: ['Porque el componente se adapta a su contenedor, sin importar dónde se coloque en la página', 'Porque eliminan la necesidad de escribir CSS', 'Porque solo funcionan con Flexbox', 'Porque reemplazan a las variables CSS'], answer: 'Porque el componente se adapta a su contenedor, sin importar dónde se coloque en la página' }
-      ]
+      instructions: 'Ordená las reglas para armar la navegación responsive con botón hamburguesa.',
+      items: [
+        { id: 'i1', code: '.nav-toggle { display: none; }' },
+        { id: 'i2', code: '@media (max-width: 640px) {' },
+        { id: 'i3', code: '  .nav-toggle { display: block; }' },
+        { id: 'i4', code: '  nav ul { display: none; }' },
+        { id: 'i5', code: '  nav ul.is-open { display: flex; flex-direction: column; }\n}' }
+      ],
+      correctOrder: ['i1', 'i2', 'i3', 'i4', 'i5']
     }
   },
   {
@@ -1275,31 +1276,30 @@ const CSS_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'css-43',
-    title: 'Metodologías CSS: BEM',
+    title: 'Organizar las clases de tu portafolio (BEM)',
     subtitle: 'Nivel 43',
     xp: 143,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'BEM (<em>Block, Element, Modifier</em>) es una convención para nombrar clases CSS de forma clara y evitar conflictos: <code>bloque__elemento--modificador</code>.',
-        'Por ejemplo, en <code>tarjeta__titulo--destacado</code>, <code>tarjeta</code> es el bloque, <code>titulo</code> es un elemento dentro del bloque, y <code>destacado</code> es una variante (modificador) de ese elemento.'
+        'Cuando tu portafolio crece, nombrar las clases de forma consistente evita confusiones. Un patrón simple: <code>bloque__elemento</code> para una parte interna de un componente (<code>.tarjeta-proyecto__titulo</code>) y <code>bloque--modificador</code> para una variante (<code>.tarjeta-proyecto--destacada</code>).',
+        'Este patrón se llama <strong>BEM</strong> (Block, Element, Modifier) y hace que, con solo leer el nombre de la clase, sepas exactamente qué representa y a qué componente pertenece — muy útil cuando tu portafolio tenga muchas tarjetas de proyecto con pequeñas variaciones.'
       ],
       code:
-        '<span class="tok-prop">.tarjeta</span> { ... }\n' +
-        '<span class="tok-prop">.tarjeta__titulo</span> { ... }\n' +
-        '<span class="tok-prop">.tarjeta__titulo--destacado</span> { ... }\n' +
-        '<span class="tok-prop">.tarjeta__boton</span> { ... }'
+        '<span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-string">"tarjeta-proyecto tarjeta-proyecto--destacada"</span><span class="tok-tag">&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;h3</span> <span class="tok-attr">class</span>=<span class="tok-string">"tarjeta-proyecto__titulo"</span><span class="tok-tag">&gt;</span>Mi Proyecto<span class="tok-tag">&lt;/h3&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/div&gt;</span>'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre la metodología BEM.',
+      instructions: 'Responde estas preguntas sobre cómo nombrar las clases CSS de tu portafolio con BEM.',
       variant: 'plain',
       questions: [
-        { prompt: '¿Qué significa la sigla BEM?', options: ['Block, Element, Modifier', 'Basic Element Method', 'Build, Extend, Modify', 'Block, Extend, Merge'], answer: 'Block, Element, Modifier' },
-        { prompt: 'En la clase tarjeta__titulo, ¿qué separador se usa entre el bloque y el elemento?', options: ['Doble guion bajo (__)', 'Un solo guion (-)', 'Doble guion (--)', 'Un punto (.)'], answer: 'Doble guion bajo (__)' },
-        { prompt: 'En la clase tarjeta__titulo--destacado, ¿qué representa --destacado?', options: ['Un modificador o variante del elemento', 'El nombre del bloque', 'Un pseudo-elemento', 'Un id único'], answer: 'Un modificador o variante del elemento' },
-        { prompt: '¿Cuál es el objetivo principal de usar una metodología como BEM?', options: ['Mantener nombres de clases claros y evitar conflictos de estilos', 'Reducir el tamaño del archivo CSS', 'Reemplazar a Flexbox y Grid', 'Evitar el uso de selectores de id'], answer: 'Mantener nombres de clases claros y evitar conflictos de estilos' }
+        { prompt: 'En BEM, ¿qué representa la clase tarjeta-proyecto__titulo?', options: ['Un elemento interno del bloque tarjeta-proyecto', 'Una variante del bloque', 'Un bloque completamente independiente', 'Un selector de estado como :hover'], answer: 'Un elemento interno del bloque tarjeta-proyecto' },
+        { prompt: '¿Qué representa la clase tarjeta-proyecto--destacada?', options: ['Una variante (modificador) del bloque tarjeta-proyecto', 'Un elemento interno del bloque', 'Un id único del elemento', 'Una pseudo-clase'], answer: 'Una variante (modificador) del bloque tarjeta-proyecto' },
+        { prompt: '¿Cuál es la principal ventaja de nombrar las clases con un patrón como BEM?', options: ['Con solo leer el nombre de la clase entendés qué representa y a qué pertenece', 'Hace que el CSS cargue más rápido en el navegador', 'Es un requisito obligatorio del navegador', 'Reemplaza la necesidad de usar selectores'], answer: 'Con solo leer el nombre de la clase entendés qué representa y a qué pertenece' },
+        { prompt: '¿Cuántos guiones bajos separan el bloque del elemento en BEM?', options: ['Dos (__)', 'Uno (_)', 'Ninguno', 'Tres (___)'], answer: 'Dos (__)' }
       ]
     }
   },
@@ -1335,34 +1335,33 @@ const CSS_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'css-45',
-    title: 'Scroll snap',
+    title: 'Chips de habilidades',
     subtitle: 'Nivel 45',
     xp: 151,
     type: 'fill-tags',
     theory: {
       paragraphs: [
-        '<code>scroll-snap-type</code>, aplicado al contenedor con scroll, hace que el desplazamiento se "enganche" a puntos específicos en vez de quedar en cualquier posición intermedia.',
-        'Cada hijo que debe funcionar como punto de enganche necesita <code>scroll-snap-align</code>, indicando si se alinea al inicio, centro o final del contenedor visible.'
+        'Para que la lista de habilidades se vea como una fila de "chips" en vez de una lista vertical, el contenedor &lt;ul&gt; necesita <code>display: flex</code> y <code>flex-wrap: wrap</code> (para que pasen a la siguiente línea si no entran todas).',
+        'Cada <code>.habilidad</code> (los &lt;li&gt;) se estiliza con <code>padding</code>, un <code>border-radius</code> grande (para las puntas bien redondeadas típicas de un chip) y un fondo de color.'
       ],
       code:
-        '<span class="tok-prop">.carrusel</span> {\n' +
+        '<span class="tok-prop">#habilidades ul</span> {\n' +
         '  <span class="tok-prop">display</span>: <span class="tok-val">flex</span>;\n' +
-        '  <span class="tok-prop">overflow-x</span>: <span class="tok-val">auto</span>;\n' +
-        '  <span class="tok-prop">scroll-snap-type</span>: <span class="tok-val">x mandatory</span>;\n' +
+        '  <span class="tok-prop">flex-wrap</span>: <span class="tok-val">wrap</span>;\n' +
+        '  <span class="tok-prop">gap</span>: <span class="tok-val">0.5rem</span>;\n' +
+        '  <span class="tok-prop">list-style</span>: <span class="tok-val">none</span>;\n' +
         '}\n' +
-        '<span class="tok-prop">.carrusel .slide</span> {\n' +
-        '  <span class="tok-prop">scroll-snap-align</span>: <span class="tok-val">start</span>;\n' +
-        '}'
+        '<span class="tok-prop">.habilidad</span> { <span class="tok-prop">padding</span>: <span class="tok-val">0.4rem 1rem</span>; <span class="tok-prop">border-radius</span>: <span class="tok-val">999px</span>; <span class="tok-prop">background</span>: <span class="tok-val">var(--color-primario)</span>; }'
     },
     exercise: {
-      instructions: 'Completa cada línea con la propiedad correcta.',
+      instructions: 'Completa cada línea del estilo de los chips de habilidades.',
       blanks: [
-        { id: 'b1', before: '.carrusel {\n  overflow-x: auto;\n  ', after: ': x mandatory;\n}', answer: 'scroll-snap-type', options: ['scroll-snap-type', 'scroll-behavior', 'snap-type', 'scroll-type'] },
-        { id: 'b2', before: '.slide {\n  ', after: ': start;\n}', answer: 'scroll-snap-align', options: ['scroll-snap-align', 'scroll-align', 'snap-align', 'scroll-snap-position'] },
-        { id: 'b3', before: '.carrusel {\n  ', after: ': auto;\n}', answer: 'overflow-x', options: ['overflow-x', 'overflow-y', 'overflow', 'scroll-x'] },
-        { id: 'b4', before: 'html {\n  ', after: ': smooth;\n}', answer: 'scroll-behavior', options: ['scroll-behavior', 'scroll-snap-type', 'scroll-smooth', 'behavior'] }
+        { id: 'b1', before: '#habilidades ul { display: flex; flex-wrap: ', after: '; gap: 0.5rem; }', answer: 'wrap', options: ['wrap', 'nowrap', 'wrap-reverse', 'none'] },
+        { id: 'b2', before: '.habilidad { padding: 0.4rem 1rem; border-radius: ', after: '; background: var(--color-primario); }', answer: '999px', options: ['999px', '0px', '50%', '1px'] },
+        { id: 'b3', before: '#habilidades ul { display: ', after: '; flex-wrap: wrap; }', answer: 'flex', options: ['flex', 'grid', 'block', 'inline'] },
+        { id: 'b4', before: '.habilidad { padding: 0.4rem 1rem; border-radius: 999px; ', after: ': var(--color-primario); }', answer: 'background', options: ['background', 'color', 'border', 'outline'] }
       ]
     }
   },
@@ -1428,95 +1427,93 @@ const CSS_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'css-48',
-    title: 'Rendimiento CSS: will-change y reflow',
+    title: 'Modo oscuro con variables CSS',
     subtitle: 'Nivel 48',
     xp: 163,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Un <strong>reflow</strong> ocurre cuando el navegador recalcula la posición y el tamaño de los elementos, algo costoso si pasa muchas veces (por ejemplo, animando width o top). Animar <code>transform</code> y <code>opacity</code> es más eficiente porque no provoca reflow.',
-        'La propiedad <code>will-change</code> avisa al navegador con anticipación que una propiedad va a cambiar, para que pueda optimizar el renderizado, pero abusar de ella puede consumir más memoria.'
+        'Definir los colores de tu portafolio como variables CSS en <code>:root</code> (<code>--color-fondo</code>, <code>--color-texto</code>) te permite cambiar el tema completo modificando solo esas variables, sin tocar el resto del CSS.',
+        'Un modo claro/oscuro se logra redefiniendo esas mismas variables dentro de un selector condicional, por ejemplo <code>body.tema-claro { --color-fondo: #fff; }</code>. JavaScript solo necesita alternar esa clase en el &lt;body&gt; — el cambio de color lo hace CSS solo.'
       ],
       code:
-        '<span class="tok-prop">.tarjeta</span> {\n' +
-        '  <span class="tok-prop">will-change</span>: <span class="tok-val">transform</span>;\n' +
-        '  <span class="tok-prop">transition</span>: <span class="tok-val">transform 0.3s ease</span>;\n' +
+        '<span class="tok-prop">:root</span> {\n' +
+        '  <span class="tok-prop">--color-fondo</span>: <span class="tok-val">#0d0d1a</span>;\n' +
+        '  <span class="tok-prop">--color-texto</span>: <span class="tok-val">#f4f4f4</span>;\n' +
         '}\n' +
-        '<span class="tok-prop">.tarjeta:hover</span> {\n' +
-        '  <span class="tok-prop">transform</span>: <span class="tok-val">translateY(-8px)</span>;\n' +
-        '}'
+        '<span class="tok-prop">body</span> { <span class="tok-prop">background</span>: <span class="tok-val">var(--color-fondo)</span>; <span class="tok-prop">color</span>: <span class="tok-val">var(--color-texto)</span>; }\n' +
+        '<span class="tok-prop">body.tema-claro</span> { <span class="tok-prop">--color-fondo</span>: <span class="tok-val">#ffffff</span>; <span class="tok-prop">--color-texto</span>: <span class="tok-val">#111111</span>; }'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre rendimiento en CSS.',
+      instructions: 'Responde estas preguntas sobre cómo armar un modo oscuro/claro con variables CSS.',
       variant: 'plain',
       questions: [
-        { prompt: '¿Qué es un reflow en el navegador?', options: ['El recálculo de la posición y el tamaño de los elementos en la página', 'Un error de sintaxis en el CSS', 'La descarga de una imagen', 'Un tipo de animación con keyframes'], answer: 'El recálculo de la posición y el tamaño de los elementos en la página' },
-        { prompt: '¿Qué dos propiedades se recomiendan animar por ser más eficientes y no causar reflow?', options: ['transform y opacity', 'width y height', 'top y left', 'margin y padding'], answer: 'transform y opacity' },
-        { prompt: '¿Qué hace la propiedad will-change?', options: ['Avisa al navegador con anticipación que una propiedad va a cambiar, para optimizar el renderizado', 'Cambia el valor de una propiedad automáticamente', 'Anima un elemento sin necesitar keyframes', 'Elimina el reflow por completo siempre'], answer: 'Avisa al navegador con anticipación que una propiedad va a cambiar, para optimizar el renderizado' },
-        { prompt: '¿Qué riesgo tiene abusar de will-change en muchos elementos?', options: ['Puede consumir más memoria de la necesaria', 'Bloquea el CSS por completo', 'Elimina las animaciones', 'No tiene ningún riesgo'], answer: 'Puede consumir más memoria de la necesaria' }
+        { prompt: '¿Dónde conviene declarar las variables de color por defecto de un sitio?', options: ['En :root, para que estén disponibles en toda la página', 'Solo dentro de body', 'Dentro de cada componente por separado', 'En el archivo HTML, no en CSS'], answer: 'En :root, para que estén disponibles en toda la página' },
+        { prompt: '¿Cómo se usa una variable CSS llamada --color-fondo dentro de una propiedad?', options: ['background: var(--color-fondo);', 'background: --color-fondo;', 'background: $color-fondo;', 'background: color-fondo;'], answer: 'background: var(--color-fondo);' },
+        { prompt: 'Si body.tema-claro redefine --color-fondo, ¿qué necesita hacer JavaScript para activar el modo claro?', options: ['Agregar la clase tema-claro al body', 'Cambiar directamente el archivo CSS', 'Recargar la página completa', 'Nada, cambia solo'], answer: 'Agregar la clase tema-claro al body' },
+        { prompt: '¿Cuál es la ventaja principal de usar variables CSS para los colores del tema?', options: ['Cambiar el tema completo modificando solo esas variables, sin tocar el resto del CSS', 'Hace que el sitio cargue instantáneamente', 'Es obligatorio para que el modo oscuro funcione', 'Evita tener que usar clases en HTML'], answer: 'Cambiar el tema completo modificando solo esas variables, sin tocar el resto del CSS' }
       ]
     }
   },
-  {
+    {
     id: 'css-49',
-    title: 'Preprocesadores CSS: introducción a Sass',
+    title: 'Estilos del formulario de contacto',
     subtitle: 'Nivel 49',
     xp: 166,
-    type: 'quiz',
+    type: 'fill-tags',
     theory: {
       paragraphs: [
-        'Sass es un preprocesador que añade funciones al CSS "normal", como variables (<code>$color: #39ffb0;</code>), anidamiento (<em>nesting</em>) de selectores y mixins reutilizables. El código Sass se compila a CSS estándar antes de llegar al navegador.',
-        'El anidamiento permite escribir selectores hijos dentro de su selector padre, reflejando la estructura del HTML y evitando repetir nombres de clases.'
+        'Un formulario prolijo necesita que cada input y textarea tengan un ancho consistente (<code>width: 100%</code>) y un padding cómodo para tocar o hacer clic. <code>border-radius</code> suaviza las esquinas para que combine con el resto del portafolio.',
+        'El estado <code>:focus</code> (cuando el campo está seleccionado) es una buena oportunidad para cambiar el color del borde y dar feedback visual de que ahí se puede escribir.'
       ],
       code:
-        '<span class="tok-val">$color-primario</span>: <span class="tok-val">#39ffb0</span>;\n\n' +
-        '<span class="tok-prop">.tarjeta</span> {\n' +
-        '  <span class="tok-prop">color</span>: <span class="tok-val">$color-primario</span>;\n\n' +
-        '  <span class="tok-prop">.titulo</span> {\n' +
-        '    <span class="tok-prop">font-weight</span>: <span class="tok-val">bold</span>;\n' +
-        '  }\n' +
-        '}'
+        '<span class="tok-prop">#contacto input, #contacto textarea</span> {\n' +
+        '  <span class="tok-prop">width</span>: <span class="tok-val">100%</span>;\n' +
+        '  <span class="tok-prop">padding</span>: <span class="tok-val">0.75rem</span>;\n' +
+        '  <span class="tok-prop">border-radius</span>: <span class="tok-val">8px</span>;\n' +
+        '  <span class="tok-prop">border</span>: <span class="tok-val">1px solid #333</span>;\n' +
+        '}\n' +
+        '<span class="tok-prop">#contacto input:focus</span> { <span class="tok-prop">border-color</span>: <span class="tok-val">var(--color-primario)</span>; <span class="tok-prop">outline</span>: <span class="tok-val">none</span>; }'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre Sass como preprocesador CSS.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué es Sass respecto al CSS?', options: ['Un preprocesador que añade funciones extra y se compila a CSS estándar', 'Un framework de JavaScript', 'Una nueva versión oficial de CSS3', 'Un motor de renderizado del navegador'], answer: 'Un preprocesador que añade funciones extra y se compila a CSS estándar' },
-        { prompt: '¿Cómo se declara una variable en Sass?', options: ['$nombre: valor;', '--nombre: valor;', '@nombre: valor;', 'var nombre = valor;'], answer: '$nombre: valor;' },
-        { prompt: '¿Qué característica de Sass permite escribir selectores hijos dentro de su selector padre?', options: ['Nesting (anidamiento)', 'Mixins', 'Herencia (extend)', 'Variables'], answer: 'Nesting (anidamiento)' },
-        { prompt: '¿El navegador puede interpretar directamente un archivo .scss sin compilar?', options: ['No, primero debe compilarse a CSS estándar', 'Sí, todos los navegadores lo soportan nativamente', 'Solo en Chrome', 'Solo si se usa una etiqueta especial'], answer: 'No, primero debe compilarse a CSS estándar' }
+      instructions: 'Completa cada línea del estilo del formulario de contacto.',
+      blanks: [
+        { id: 'b1', before: '#contacto input, #contacto textarea { width: ', after: '; padding: 0.75rem; }', answer: '100%', options: ['100%', '100px', 'full', 'auto'] },
+        { id: 'b2', before: '#contacto input { border-radius: ', after: '; border: 1px solid #333; }', answer: '8px', options: ['8px', '8', '8em', '8pt'] },
+        { id: 'b3', before: '#contacto input:', after: ' { border-color: var(--color-primario); }', answer: 'focus', options: ['focus', 'hover', 'active', 'visited'] },
+        { id: 'b4', before: '#contacto input:focus { border-color: var(--color-primario); ', after: ': none; }', answer: 'outline', options: ['outline', 'border', 'box-shadow', 'background'] }
       ]
     }
   },
-  {
+    {
     id: 'css-50',
-    title: 'Proyecto integrador: maquetar una landing page',
+    title: 'Proyecto integrador: el estilo de tu portafolio',
     subtitle: 'Nivel 50',
     xp: 170,
     type: 'order-builder',
     theory: {
       paragraphs: [
-        'Una landing page típica se organiza de arriba hacia abajo: primero la estructura general con Grid o Flexbox, luego el header, el contenido principal (hero, secciones) y finalmente el footer.',
-        'Un buen orden de trabajo evita reescribir código: definir el reset y las variables globales primero, después el layout general, y por último los detalles visuales de cada componente.'
+        'Ya estilizaste cada pieza de tu portafolio por separado: header, hero, tarjetas de proyecto, chips de habilidades, formulario y modo oscuro. Ahora falta darle un orden de trabajo a todo eso, igual que hiciste con el HTML.',
+        'Un buen orden evita reescribir código: primero el reset y las variables globales (colores, tipografía), después el layout general de la página, y por último los detalles visuales y las animaciones de cada componente.'
       ],
       code:
         '<span class="tok-prop">:root</span> { <span class="tok-prop">--color-primario</span>: <span class="tok-val">#39ffb0</span>; }\n' +
         '<span class="tok-prop">*</span> { <span class="tok-prop">margin</span>: <span class="tok-val">0</span>; <span class="tok-prop">box-sizing</span>: <span class="tok-val">border-box</span>; }\n\n' +
-        '<span class="tok-prop">.pagina</span> {\n' +
-        '  <span class="tok-prop">display</span>: <span class="tok-val">grid</span>;\n' +
-        '  <span class="tok-prop">grid-template-rows</span>: <span class="tok-val">auto 1fr auto</span>;\n' +
+        '<span class="tok-prop">body</span> {\n' +
+        '  <span class="tok-prop">font-family</span>: <span class="tok-val">sans-serif</span>;\n' +
+        '  <span class="tok-prop">background</span>: <span class="tok-val">var(--color-fondo)</span>;\n' +
         '}'
     },
     exercise: {
-      instructions: 'Ordená estos pasos en el orden lógico para maquetar una landing page completa, de principio a fin.',
+      instructions: 'Ordená estos pasos en el orden lógico para maquetar y estilizar tu portafolio completo, de principio a fin.',
       items: [
         { id: 'a', code: 'Definir variables CSS y un reset básico (:root, *)' },
-        { id: 'b', code: 'Armar el layout general de la página (grid-template-rows)' },
-        { id: 'c', code: 'Maquetar el header con su navegación (flex)' },
-        { id: 'd', code: 'Maquetar el contenido principal (hero, secciones)' },
-        { id: 'e', code: 'Maquetar el footer y ajustar detalles responsive' }
+        { id: 'b', code: 'Estilizar el header y la navegación (flex, sticky)' },
+        { id: 'c', code: 'Maquetar el grid de tarjetas de proyectos y los chips de habilidades' },
+        { id: 'd', code: 'Agregar transiciones y efectos hover a los componentes' },
+        { id: 'e', code: 'Estilizar el formulario de contacto y ajustar el modo oscuro/responsive' }
       ],
       correctOrder: ['a', 'b', 'c', 'd', 'e']
     }

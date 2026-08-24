@@ -1147,89 +1147,97 @@ const JS_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'js-42',
-    title: 'Expresiones regulares básicas',
+    title: 'Renderizar tarjetas de proyecto dinámicamente',
     subtitle: 'Nivel 42',
     xp: 136,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Una expresión regular (RegExp) describe un patrón de texto, escrita entre barras: <code>/patron/</code>. El método <code>.test(texto)</code> devuelve <code>true</code> o <code>false</code> según si el patrón coincide.',
-        'El método <code>.match()</code> de un string busca coincidencias con una expresión regular y devuelve un array con lo encontrado (o <code>null</code> si no hay coincidencias).'
+        'En vez de escribir cada tarjeta de proyecto a mano en el HTML, es mejor guardar los proyectos como un array de objetos en JavaScript y generar el HTML dinámicamente con <code>map()</code> y <code>join("")</code>. Así, agregar un proyecto nuevo es solo agregar un objeto al array.',
+        'Los <em>template literals</em> (con backticks) hacen que insertar variables dentro del HTML generado sea mucho más legible que concatenar strings con <code>+</code>.'
       ],
       code:
-        '<span class="tok-kw">const</span> patron = /^\\d+$/;\n' +
-        'console.log(patron.test(<span class="tok-string">"123"</span>)); <span class="tok-comment">// true</span>'
+        '<span class="tok-kw">const</span> proyectos = [\n' +
+        '  { titulo: <span class="tok-string">\'Portafolio\'</span>, descripcion: <span class="tok-string">\'Mi sitio personal\'</span> }\n' +
+        '];\n' +
+        'document.querySelector(<span class="tok-string">\'#proyectos .grid\'</span>).innerHTML = proyectos\n' +
+        '  .map(p =&gt; <span class="tok-string">`&lt;article class="tarjeta-proyecto"&gt;&lt;h3&gt;${p.titulo}&lt;/h3&gt;&lt;/article&gt;`</span>)\n' +
+        '  .join(<span class="tok-string">\'\'</span>);'
     },
     exercise: {
-      instructions: 'Resuelve el desafío en la consola simulada: predice el resultado de cada expresión regular.',
-      variant: 'console',
+      instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto.',
+      variant: 'code',
       questions: [
-        { code: 'const patron = /^\\d+$/;\nconsole.log(patron.test("123"));', prompt: '¿Qué imprime la consola?', options: ['true', 'false', '"123"', 'NaN'], answer: 'true' },
-        { code: 'const patron = /^\\d+$/;\nconsole.log(patron.test("abc"));', prompt: '¿Qué imprime la consola?', options: ['false', 'true', 'undefined', 'NaN'], answer: 'false' },
-        { code: 'const email = "ana@mail.com";\nconsole.log(/@/.test(email));', prompt: '¿Qué imprime la consola?', options: ['true', 'false', 'undefined', 'Error'], answer: 'true' },
-        { code: 'const texto = "Tengo 25 años";\nconsole.log(texto.match(/\\d+/)[0]);', prompt: '¿Qué imprime la consola?', options: ['"25"', '25', 'null', '"Tengo 25 años"'], answer: '"25"' }
+        { code: 'const proyectos = [{ titulo: \'A\' }, { titulo: \'B\' }];\nconst html = proyectos.map(p =&gt; `&lt;h3&gt;${p.titulo}&lt;/h3&gt;`).join(\'\');\nconsole.log(html);', prompt: '¿Qué imprime la consola?', options: ['<h3>A</h3><h3>B</h3>', '<h3>A</h3>, <h3>B</h3>', 'A, B', 'undefined'], answer: '<h3>A</h3><h3>B</h3>' },
+        { code: 'const proyectos = [];\nconst html = proyectos.map(p =&gt; p.titulo).join(\'\');\nconsole.log(html.length);', prompt: '¿Qué imprime la consola si el array proyectos está vacío?', options: ['0', 'undefined', 'null', 'Error'], answer: '0' },
+        { code: 'const p = { titulo: \'Blog\', url: \'https://x.com\' };\nconsole.log(`&lt;a href="${p.url}"&gt;${p.titulo}&lt;/a&gt;`);', prompt: '¿Qué imprime la consola?', options: ['<a href="https://x.com">Blog</a>', '<a href="${p.url}">${p.titulo}</a>', 'undefined', 'Error de sintaxis'], answer: '<a href="https://x.com">Blog</a>' },
+        { code: 'document.querySelector(\'#proyectos .grid\').innerHTML = [\'&lt;p&gt;Uno&lt;/p&gt;\', \'&lt;p&gt;Dos&lt;/p&gt;\'].join(\'\');', prompt: '¿Qué le pasa al contenido del elemento con clase .grid dentro de #proyectos?', options: ['Se reemplaza por dos párrafos: "Uno" y "Dos"', 'No pasa nada, join no afecta el DOM', 'Se produce un error porque innerHTML no acepta arrays', 'El elemento se elimina de la página'], answer: 'Se reemplaza por dos párrafos: "Uno" y "Dos"' }
       ]
     }
   },
-  {
+    {
     id: 'js-43',
-    title: 'Módulos ES6: import y export',
+    title: 'Menú hamburguesa: alternar clases',
     subtitle: 'Nivel 43',
     xp: 140,
     type: 'order-builder',
     theory: {
       paragraphs: [
-        'Los módulos ES6 permiten dividir el código en varios archivos. Con <code>export</code> haces que una función, variable o clase esté disponible fuera del archivo donde se define.',
-        'En otro archivo, <code>import { nombre } from "./archivo.js"</code> trae esa pieza de código para poder usarla. Así se organiza mejor un proyecto grande en piezas reutilizables.'
+        'El botón <code>.nav-toggle</code> necesita un event listener de tipo <code>\'click\'</code> que alterne (agregue o quite) la clase <code>is-open</code> en la lista del menú. <code>classList.toggle()</code> hace exactamente eso: si la clase está, la quita; si no está, la agrega.',
+        'Guardar una referencia al menú (<code>document.querySelector(\'nav ul\')</code>) antes de agregar el listener evita tener que buscarlo en el DOM cada vez que se hace clic.'
       ],
       code:
-        '<span class="tok-comment">// archivo utils.js</span>\n' +
-        '<span class="tok-kw">export function</span> sumar(a, b) {\n' +
-        '  <span class="tok-kw">return</span> a + b;\n' +
-        '}\n\n' +
-        '<span class="tok-comment">// archivo main.js</span>\n' +
-        '<span class="tok-kw">import</span> { sumar } <span class="tok-kw">from</span> <span class="tok-string">"./utils.js"</span>;'
+        '<span class="tok-kw">const</span> menu = document.querySelector(<span class="tok-string">\'nav ul\'</span>);\n' +
+        '<span class="tok-kw">const</span> toggle = document.querySelector(<span class="tok-string">\'.nav-toggle\'</span>);\n' +
+        'toggle.addEventListener(<span class="tok-string">\'click\'</span>, () =&gt; {\n' +
+        '  menu.classList.toggle(<span class="tok-string">\'is-open\'</span>);\n' +
+        '});'
     },
     exercise: {
-      instructions: 'Ordena estos fragmentos como aparecerían en un flujo típico de módulos ES6: primero se define y exporta la función, luego se importa en otro archivo y finalmente se usa.',
+      instructions: 'Ordená las líneas para hacer que el botón hamburguesa abra y cierre el menú.',
       items: [
-        { id: 'a', code: 'export function sumar(a, b) {' },
-        { id: 'b', code: '  return a + b;' },
-        { id: 'c', code: '}' },
-        { id: 'd', code: 'import { sumar } from "./utils.js";' },
-        { id: 'e', code: 'console.log(sumar(2, 3));' }
+        { id: 'i1', code: 'const menu = document.querySelector(\'nav ul\');' },
+        { id: 'i2', code: 'const toggle = document.querySelector(\'.nav-toggle\');' },
+        { id: 'i3', code: 'toggle.addEventListener(\'click\', () =&gt; {' },
+        { id: 'i4', code: '  menu.classList.toggle(\'is-open\');' },
+        { id: 'i5', code: '});' }
       ],
-      correctOrder: ['a', 'b', 'c', 'd', 'e']
+      correctOrder: ['i1', 'i2', 'i3', 'i4', 'i5']
     }
   },
-  {
+    {
     id: 'js-44',
-    title: 'El bucle de eventos (event loop)',
+    title: 'Scroll suave al hacer clic en el menú',
     subtitle: 'Nivel 44',
     xp: 144,
     type: 'order-builder',
     theory: {
       paragraphs: [
-        'JavaScript es de un solo hilo: primero ejecuta todo el código síncrono. Después, procesa la cola de <strong>microtareas</strong> (como las Promises), y solo al final las <strong>macrotareas</strong> (como setTimeout).',
-        'Por eso, aunque un <code>setTimeout</code> tenga 0 milisegundos de retraso, siempre se ejecuta después del código síncrono y de cualquier Promise pendiente.'
+        'Cuando el menú tiene enlaces como <code>&lt;a href="#proyectos"&gt;</code>, el navegador salta de golpe a esa sección. Para que el scroll sea suave, hay que interceptar el clic con <code>preventDefault()</code> y mover la vista manualmente con <code>scrollIntoView({ behavior: \'smooth\' })</code>.',
+        '<code>document.querySelectorAll(\'nav a\')</code> selecciona todos los enlaces del menú, y <code>forEach</code> permite agregarles el mismo event listener a cada uno sin repetir código.'
       ],
       code:
-        'console.log(<span class="tok-string">"1"</span>);\n' +
-        'setTimeout(() =&gt; console.log(<span class="tok-string">"2"</span>), <span class="tok-num">0</span>);\n' +
-        'Promise.resolve().then(() =&gt; console.log(<span class="tok-string">"3"</span>));\n' +
-        'console.log(<span class="tok-string">"4"</span>); <span class="tok-comment">// orden real: 1, 4, 3, 2</span>'
+        'document.querySelectorAll(<span class="tok-string">\'nav a\'</span>).forEach(link =&gt; {\n' +
+        '  link.addEventListener(<span class="tok-string">\'click\'</span>, (e) =&gt; {\n' +
+        '    e.preventDefault();\n' +
+        '    <span class="tok-kw">const</span> destino = document.querySelector(link.getAttribute(<span class="tok-string">\'href\'</span>));\n' +
+        '    destino.scrollIntoView({ behavior: <span class="tok-string">\'smooth\'</span> });\n' +
+        '  });\n' +
+        '});'
     },
     exercise: {
-      instructions: 'Este código se ejecuta de arriba a abajo, pero no todo se imprime en ese orden. Ordena las piezas según el orden REAL en que aparecen en la consola.',
+      instructions: 'Ordená las líneas para que los enlaces del menú hagan scroll suave hacia cada sección.',
       items: [
-        { id: 'sync1', code: 'console.log("1"); // código síncrono' },
-        { id: 'timeout', code: 'setTimeout(() => console.log("2")); // macrotarea' },
-        { id: 'promise', code: 'Promise.resolve().then(() => console.log("3")); // microtarea' },
-        { id: 'sync2', code: 'console.log("4"); // código síncrono' }
+        { id: 'i1', code: 'document.querySelectorAll(\'nav a\').forEach(link =&gt; {' },
+        { id: 'i2', code: '  link.addEventListener(\'click\', (e) =&gt; {' },
+        { id: 'i3', code: '    e.preventDefault();' },
+        { id: 'i4', code: '    const destino = document.querySelector(link.getAttribute(\'href\'));' },
+        { id: 'i5', code: '    destino.scrollIntoView({ behavior: \'smooth\' });' },
+        { id: 'i6', code: '  });\n});' }
       ],
-      correctOrder: ['sync1', 'sync2', 'promise', 'timeout']
+      correctOrder: ['i1', 'i2', 'i3', 'i4', 'i5', 'i6']
     }
   },
   {
@@ -1289,116 +1297,126 @@ const JS_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'js-47',
-    title: 'Programación funcional: composición',
+    title: 'Validar el formulario de contacto',
     subtitle: 'Nivel 47',
     xp: 156,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'La composición de funciones consiste en combinar varias funciones simples para crear una más compleja, donde la salida de una es la entrada de la siguiente.',
-        'Una función <strong>pura</strong> es aquella que, dado el mismo input, siempre devuelve el mismo output y no modifica nada fuera de sí misma. Escribir funciones puras hace el código más predecible.'
+        'Antes de "enviar" el formulario de contacto, conviene validar en JavaScript que los campos no estén vacíos y que el correo tenga al menos un formato básico válido (por ejemplo, que contenga un <code>@</code>).',
+        'Interceptar el evento <code>submit</code> del &lt;form&gt; con <code>preventDefault()</code> evita que la página se recargue, dándote tiempo para validar y mostrar mensajes de error antes de continuar.'
       ],
       code:
-        '<span class="tok-kw">const</span> doblar = n =&gt; n * <span class="tok-num">2</span>;\n' +
-        '<span class="tok-kw">const</span> sumarUno = n =&gt; n + <span class="tok-num">1</span>;\n' +
-        'console.log(sumarUno(doblar(<span class="tok-num">5</span>))); <span class="tok-comment">// 11</span>'
-    },
-    exercise: {
-      instructions: 'Responde estas preguntas conceptuales sobre programación funcional.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué es la composición de funciones?', options: ['Combinar varias funciones simples para crear una más compleja, donde la salida de una es la entrada de la siguiente', 'Escribir todas las funciones en un solo archivo', 'Usar solo funciones flecha', 'Ejecutar funciones en paralelo'], answer: 'Combinar varias funciones simples para crear una más compleja, donde la salida de una es la entrada de la siguiente' },
-        { prompt: '¿Qué significa que una función sea "pura" en programación funcional?', options: ['Que dado el mismo input siempre devuelve el mismo output y no modifica nada fuera de sí misma', 'Que no puede recibir parámetros', 'Que siempre devuelve undefined', 'Que solo se puede llamar una vez'], answer: 'Que dado el mismo input siempre devuelve el mismo output y no modifica nada fuera de sí misma' },
-        { prompt: '¿Qué son las "funciones de orden superior" (higher-order functions)?', options: ['Funciones que reciben otras funciones como argumento o devuelven una función', 'Funciones que solo trabajan con números', 'Funciones declaradas dentro de una clase', 'Funciones que se ejecutan antes que las demás'], answer: 'Funciones que reciben otras funciones como argumento o devuelven una función' },
-        { prompt: '¿Por qué se prefiere evitar mutar (modificar directamente) los datos en programación funcional?', options: ['Porque hace el código más predecible y evita efectos secundarios inesperados', 'Porque JavaScript no permite modificar variables', 'Porque hace que el programa sea más lento siempre', 'Porque los arrays no se pueden modificar en JavaScript'], answer: 'Porque hace el código más predecible y evita efectos secundarios inesperados' }
-      ]
-    }
-  },
-  {
-    id: 'js-48',
-    title: 'Patrones de diseño: Module Pattern',
-    subtitle: 'Nivel 48',
-    xp: 160,
-    type: 'quiz',
-    theory: {
-      paragraphs: [
-        'El Module Pattern agrupa código relacionado y oculta sus detalles internos, evitando contaminar el ámbito global con muchas variables sueltas.',
-        'Clásicamente se implementa con una función que se ejecuta inmediatamente (IIFE) y devuelve un objeto con solo lo que se quiere hacer público, dejando el resto como variables privadas.'
-      ],
-      code:
-        '<span class="tok-kw">const</span> Contador = (<span class="tok-kw">function</span>() {\n' +
-        '  <span class="tok-kw">let</span> valor = <span class="tok-num">0</span>; <span class="tok-comment">// privada</span>\n' +
-        '  <span class="tok-kw">return</span> {\n' +
-        '    incrementar: () =&gt; ++valor\n' +
-        '  };\n' +
-        '})();'
-    },
-    exercise: {
-      instructions: 'Responde estas preguntas conceptuales sobre patrones de diseño.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué problema resuelve el Module Pattern en JavaScript?', options: ['Evita contaminar el ámbito global agrupando código relacionado y ocultando detalles internos', 'Hace que el código se ejecute más rápido', 'Elimina la necesidad de usar funciones', 'Convierte el código en HTML automáticamente'], answer: 'Evita contaminar el ámbito global agrupando código relacionado y ocultando detalles internos' },
-        { prompt: '¿Cómo se suele implementar el Module Pattern de forma clásica en JavaScript?', options: ['Con una función que se ejecuta inmediatamente (IIFE) y devuelve un objeto con lo que se quiere hacer público', 'Con un bucle for que recorre todas las variables', 'Con la palabra clave "module" obligatoria', 'No se puede implementar sin frameworks'], answer: 'Con una función que se ejecuta inmediatamente (IIFE) y devuelve un objeto con lo que se quiere hacer público' },
-        { prompt: 'En el Module Pattern, ¿qué son las variables "privadas"?', options: ['Variables internas del módulo que no son accesibles desde fuera de él', 'Variables que solo puede ver el usuario final', 'Variables que cambian de nombre automáticamente', 'Variables que solo existen en un archivo HTML'], answer: 'Variables internas del módulo que no son accesibles desde fuera de él' },
-        { prompt: 'Hoy en día, ¿qué alternativa moderna a este patrón ofrecen los módulos ES6 (import/export)?', options: ['Encapsulación nativa del lenguaje sin necesidad de funciones autoejecutables', 'Ninguna, los módulos ES6 no tienen relación con esto', 'Los módulos ES6 solo sirven para CSS', 'Los módulos ES6 eliminan la necesidad de variables'], answer: 'Encapsulación nativa del lenguaje sin necesidad de funciones autoejecutables' }
-      ]
-    }
-  },
-  {
-    id: 'js-49',
-    title: 'Depuración: console.table y debugger',
-    subtitle: 'Nivel 49',
-    xp: 164,
-    type: 'quiz',
-    theory: {
-      paragraphs: [
-        '<code>console.table()</code> muestra un array de objetos organizado en una tabla, mucho más fácil de leer que <code>console.log()</code> para datos con muchas filas.',
-        'La palabra clave <code>debugger</code> pausa la ejecución en ese punto exacto si las herramientas de desarrollador están abiertas, permitiendo inspeccionar el valor de las variables paso a paso.'
-      ],
-      code:
-        '<span class="tok-kw">const</span> usuarios = [{ nombre: <span class="tok-string">"Ana"</span> }, { nombre: <span class="tok-string">"Luis"</span> }];\n' +
-        'console.table(usuarios);'
-    },
-    exercise: {
-      instructions: 'Responde estas preguntas conceptuales sobre depuración y buenas prácticas.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué ventaja tiene console.table() frente a console.log() para mostrar un array de objetos?', options: ['Muestra los datos organizados en una tabla, más fácil de leer', 'Es la única forma de imprimir un array', 'Convierte los datos en un archivo CSV automáticamente', 'Ejecuta el código más rápido'], answer: 'Muestra los datos organizados en una tabla, más fácil de leer' },
-        { prompt: '¿Qué hace la palabra clave debugger dentro del código?', options: ['Pausa la ejecución en ese punto si las herramientas de desarrollador están abiertas, permitiendo inspeccionar variables', 'Borra todas las variables del programa', 'Es un comentario que no hace nada', 'Reinicia la página automáticamente'], answer: 'Pausa la ejecución en ese punto si las herramientas de desarrollador están abiertas, permitiendo inspeccionar variables' },
-        { prompt: '¿Cuál es una buena práctica al depurar un error en el código?', options: ['Leer el mensaje de error completo y ubicar la línea exacta donde ocurre', 'Ignorar el mensaje de error y probar cosas al azar', 'Borrar el código que da error sin entenderlo', 'Reiniciar el ordenador cada vez que hay un error'], answer: 'Leer el mensaje de error completo y ubicar la línea exacta donde ocurre' },
-        { prompt: '¿Por qué no es recomendable dejar muchos console.log() olvidados en el código final?', options: ['Porque ensucian la consola y pueden exponer información innecesaria en producción', 'Porque hacen que el código no funcione', 'Porque JavaScript los prohíbe', 'Porque solo se puede usar console.log() una vez por archivo'], answer: 'Porque ensucian la consola y pueden exponer información innecesaria en producción' }
-      ]
-    }
-  },
-  {
-    id: 'js-50',
-    title: 'Proyecto integrador: repaso general',
-    subtitle: 'Nivel 50',
-    xp: 170,
-    type: 'quiz',
-    theory: {
-      paragraphs: [
-        'Has llegado al último nivel del módulo de JavaScript. Aquí combinamos varias piezas que ya conoces: clases, arrays, funciones y lógica condicional, tal como se combinan en una app real.',
-        'Este repaso final junta ideas de todo el módulo, desde las variables más básicas hasta patrones más avanzados como clases y métodos de array encadenados.'
-      ],
-      code:
-        '<span class="tok-kw">const</span> tareas = [\n' +
-        '  { texto: <span class="tok-string">"Aprender JS"</span>, hecha: <span class="tok-kw">true</span> },\n' +
-        '  { texto: <span class="tok-string">"Practicar"</span>, hecha: <span class="tok-kw">false</span> }\n' +
-        '];\n' +
-        '<span class="tok-kw">const</span> pendientes = tareas.filter(t =&gt; !t.hecha);\n' +
-        'console.log(pendientes.length); <span class="tok-comment">// 1</span>'
+        'form.addEventListener(<span class="tok-string">\'submit\'</span>, (e) =&gt; {\n' +
+        '  e.preventDefault();\n' +
+        '  <span class="tok-kw">if</span> (!nombre.value || !email.value.includes(<span class="tok-string">\'@\'</span>)) {\n' +
+        '    mostrarError(<span class="tok-string">\'Completa todos los campos correctamente.\'</span>);\n' +
+        '    <span class="tok-kw">return</span>;\n' +
+        '  }\n' +
+        '  mostrarExito(<span class="tok-string">\'¡Mensaje enviado!\'</span>);\n' +
+        '});'
     },
     exercise: {
       instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto.',
       variant: 'code',
       questions: [
-        { code: 'const tareas = [\n  { texto: "Aprender JS", hecha: true },\n  { texto: "Practicar", hecha: false },\n  { texto: "Repasar", hecha: false }\n];\nconst pendientes = tareas.filter(t => !t.hecha);\nconsole.log(pendientes.length);', prompt: '¿Qué imprime la consola?', options: ['2', '1', '3', '0'], answer: '2' },
-        { code: 'function calcularProgreso(tareas) {\n  const hechas = tareas.filter(t => t.hecha).length;\n  return Math.round((hechas / tareas.length) * 100);\n}\nconst tareas = [\n  { hecha: true }, { hecha: true }, { hecha: false }, { hecha: false }\n];\nconsole.log(calcularProgreso(tareas) + "%");', prompt: '¿Qué imprime la consola?', options: ['50%', '25%', '75%', '100%'], answer: '50%' },
-        { code: 'class Tarea {\n  constructor(texto) {\n    this.texto = texto;\n    this.hecha = false;\n  }\n  completar() {\n    this.hecha = true;\n  }\n}\nconst t = new Tarea("Estudiar");\nt.completar();\nconsole.log(t.hecha);', prompt: '¿Qué imprime la consola?', options: ['true', 'false', 'undefined', '"hecha"'], answer: 'true' },
-        { code: 'const tareas = ["Comprar pan", "Estudiar JS", "Hacer ejercicio"];\nconst resumen = tareas.map((t, i) => `${i + 1}. ${t}`).join(" | ");\nconsole.log(resumen);', prompt: '¿Qué imprime la consola?', options: ['1. Comprar pan | 2. Estudiar JS | 3. Hacer ejercicio', 'Comprar pan, Estudiar JS, Hacer ejercicio', 'undefined', 'Error'], answer: '1. Comprar pan | 2. Estudiar JS | 3. Hacer ejercicio' }
+        { code: 'const email = \'ana@mail.com\';\nconsole.log(email.includes(\'@\'));', prompt: '¿Qué imprime la consola?', options: ['true', 'false', 'undefined', 'Error'], answer: 'true' },
+        { code: 'function validar(nombre, email) {\n  if (!nombre || !email.includes(\'@\')) return false;\n  return true;\n}\nconsole.log(validar(\'\', \'ana@mail.com\'));', prompt: '¿Qué imprime la consola?', options: ['false', 'true', 'undefined', "''"], answer: 'false' },
+        { code: 'form.addEventListener(\'submit\', (e) =&gt; {\n  e.preventDefault();\n  console.log(\'interceptado\');\n});', prompt: '¿Qué evita e.preventDefault() en este caso?', options: ['Que la página se recargue al enviar el formulario', 'Que el formulario se muestre en pantalla', 'Que el usuario pueda escribir en los campos', 'Que se dispare el evento submit'], answer: 'Que la página se recargue al enviar el formulario' },
+        { code: 'const nombre = \'   \';\nconsole.log(Boolean(nombre));', prompt: '¿Qué imprime la consola? (pista: un string con solo espacios no está "vacío" para JavaScript)', options: ['true', 'false', 'undefined', 'Error'], answer: 'true' }
+      ]
+    }
+  },
+    {
+    id: 'js-48',
+    title: 'Modo oscuro con localStorage',
+    subtitle: 'Nivel 48',
+    xp: 160,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Alternar el modo oscuro/claro es simple: un botón agrega o quita la clase <code>tema-claro</code> del &lt;body&gt; con <code>classList.toggle()</code>. Pero para que la preferencia se recuerde entre visitas, hay que guardarla en <code>localStorage</code>.',
+        'Al cargar la página conviene leer <code>localStorage.getItem(\'tema\')</code> y, si dice <code>\'claro\'</code>, aplicar la clase de inmediato — así evitás el "parpadeo" de un tema que cambia recién después de cargar.'
+      ],
+      code:
+        'btnTema.addEventListener(<span class="tok-string">\'click\'</span>, () =&gt; {\n' +
+        '  document.body.classList.toggle(<span class="tok-string">\'tema-claro\'</span>);\n' +
+        '  <span class="tok-kw">const</span> tema = document.body.classList.contains(<span class="tok-string">\'tema-claro\'</span>) ? <span class="tok-string">\'claro\'</span> : <span class="tok-string">\'oscuro\'</span>;\n' +
+        '  localStorage.setItem(<span class="tok-string">\'tema\'</span>, tema);\n' +
+        '});\n' +
+        '<span class="tok-kw">if</span> (localStorage.getItem(<span class="tok-string">\'tema\'</span>) === <span class="tok-string">\'claro\'</span>) {\n' +
+        '  document.body.classList.add(<span class="tok-string">\'tema-claro\'</span>);\n' +
+        '}'
+    },
+    exercise: {
+      instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto.',
+      variant: 'code',
+      questions: [
+        { code: "localStorage.setItem('tema', 'claro');\nconsole.log(localStorage.getItem('tema'));", prompt: '¿Qué imprime la consola?', options: ["'claro'", 'null', 'undefined', "'oscuro'"], answer: "'claro'" },
+        { code: "document.body.classList.toggle('tema-claro');\nconsole.log(document.body.classList.contains('tema-claro'));", prompt: 'Si body no tenía la clase tema-claro antes de este código, ¿qué imprime la consola?', options: ['true', 'false', 'undefined', 'Error'], answer: 'true' },
+        { code: "const tema = document.body.classList.contains('tema-claro') ? 'claro' : 'oscuro';\nconsole.log(tema);", prompt: 'Si document.body NO tiene la clase tema-claro, ¿qué imprime la consola?', options: ["'oscuro'", "'claro'", 'undefined', 'false'], answer: "'oscuro'" },
+        { prompt: '¿Por qué conviene leer localStorage.getItem(\'tema\') apenas carga la página, antes de mostrar el contenido?', options: ['Para aplicar el tema guardado antes de que el usuario vea un "parpadeo" de tema incorrecto', 'Porque localStorage solo funciona al inicio de la página', 'Porque classList.toggle() lo requiere obligatoriamente', 'No hay ninguna razón real, es solo una convención'], answer: 'Para aplicar el tema guardado antes de que el usuario vea un "parpadeo" de tema incorrecto' }
+      ]
+    }
+  },
+    {
+    id: 'js-49',
+    title: 'Animar al hacer scroll: IntersectionObserver',
+    subtitle: 'Nivel 49',
+    xp: 164,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Para que las secciones o tarjetas de tu portafolio aparezcan suavemente cuando el usuario llega a ellas al hacer scroll, <code>IntersectionObserver</code> es la herramienta ideal: observa un elemento y ejecuta una función cuando entra (o sale) de la pantalla, sin necesidad de escuchar el evento scroll manualmente.',
+        'El callback del observer recibe una lista de "entradas"; <code>entrada.isIntersecting</code> indica si ese elemento está actualmente visible en pantalla.'
+      ],
+      code:
+        '<span class="tok-kw">const</span> observer = <span class="tok-kw">new</span> IntersectionObserver((entradas) =&gt; {\n' +
+        '  entradas.forEach(entrada =&gt; {\n' +
+        '    <span class="tok-kw">if</span> (entrada.isIntersecting) {\n' +
+        '      entrada.target.classList.add(<span class="tok-string">\'visible\'</span>);\n' +
+        '    }\n' +
+        '  });\n' +
+        '});\n' +
+        'document.querySelectorAll(<span class="tok-string">\'.tarjeta-proyecto\'</span>).forEach(tarjeta =&gt; observer.observe(tarjeta));'
+    },
+    exercise: {
+      instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto.',
+      variant: 'code',
+      questions: [
+        { code: "const observer = new IntersectionObserver((entradas) =&gt; {\n  entradas.forEach(e =&gt; console.log(e.isIntersecting));\n});\nobserver.observe(document.querySelector('.tarjeta-proyecto'));", prompt: '¿Qué representa el valor que imprime e.isIntersecting?', options: ['Si el elemento observado está actualmente visible en la pantalla', 'El número de píxeles que scrolleó la página', 'La posición horizontal (X) del elemento', 'Si el elemento tiene la clase "visible"'], answer: 'Si el elemento observado está actualmente visible en la pantalla' },
+        { code: "document.querySelectorAll('.tarjeta-proyecto').forEach(t =&gt; observer.observe(t));", prompt: '¿Qué hace este código?', options: ['Le dice al observer que vigile cada tarjeta de proyecto individualmente', 'Oculta todas las tarjetas de proyecto de la página', 'Elimina el observer de cada tarjeta', 'Cuenta cuántas tarjetas hay en la página'], answer: 'Le dice al observer que vigile cada tarjeta de proyecto individualmente' },
+        { code: "if (entrada.isIntersecting) {\n  entrada.target.classList.add('visible');\n}", prompt: '¿Qué elemento recibe la clase "visible"?', options: ['entrada.target: el elemento que está siendo observado y entró en pantalla', 'Todos los elementos de la página', 'document.body únicamente', 'Ninguno, classList.add no afecta el DOM'], answer: 'entrada.target: el elemento que está siendo observado y entró en pantalla' },
+        { prompt: '¿Cuál es la ventaja de IntersectionObserver frente a escuchar el evento "scroll" manualmente?', options: ['Es más eficiente porque el navegador solo avisa cuando el elemento realmente entra o sale de pantalla', 'Es la única forma de detectar el scroll que existe en JavaScript', 'Funciona sin necesidad de escribir nada de CSS', 'Reemplaza por completo a querySelectorAll'], answer: 'Es más eficiente porque el navegador solo avisa cuando el elemento realmente entra o sale de pantalla' }
+      ]
+    }
+  },
+    {
+    id: 'js-50',
+    title: 'Proyecto integrador: la interactividad de tu portafolio',
+    subtitle: 'Nivel 50',
+    xp: 170,
+    type: 'quiz',
+    theory: {
+      paragraphs: [
+        'Llegaste al último nivel del módulo de JavaScript. Aquí combinamos varias piezas que ya construiste: renderizar proyectos dinámicamente, alternar el menú, validar el formulario y recordar el tema con localStorage — tal como se combinan en tu portafolio real.',
+        'Este repaso final junta ideas de todo el módulo de JavaScript, aplicadas directamente a la interactividad de la página que armaste en HTML y CSS.'
+      ],
+      code:
+        '<span class="tok-kw">const</span> proyectos = [{ titulo: <span class="tok-string">\'Portafolio\'</span> }];\n' +
+        '<span class="tok-kw">const</span> html = proyectos.map(p =&gt; <span class="tok-string">`&lt;h3&gt;${p.titulo}&lt;/h3&gt;`</span>).join(<span class="tok-string">\'\'</span>);\n' +
+        'console.log(html); <span class="tok-comment">// &lt;h3&gt;Portafolio&lt;/h3&gt;</span>'
+    },
+    exercise: {
+      instructions: 'Analiza cada fragmento de código y decide cuál es el resultado exacto.',
+      variant: 'code',
+      questions: [
+        { code: "const proyectos = [{ titulo: 'Uno' }, { titulo: 'Dos' }, { titulo: 'Tres' }];\nconst html = proyectos.map(p =&gt; `&lt;h3&gt;${p.titulo}&lt;/h3&gt;`).join('');\nconsole.log(html.split('&lt;/h3&gt;').length - 1);", prompt: '¿Qué imprime la consola? (pista: cuántas veces aparece "&lt;/h3&gt;" en el resultado)', options: ['3', '2', '4', '0'], answer: '3' },
+        { code: "const menu = { abierto: false };\nfunction toggleMenu() { menu.abierto = !menu.abierto; }\ntoggleMenu();\ntoggleMenu();\ntoggleMenu();\nconsole.log(menu.abierto);", prompt: '¿Qué imprime la consola después de llamar a toggleMenu() tres veces?', options: ['true', 'false', 'undefined', 'Error'], answer: 'true' },
+        { code: "function validarContacto(nombre, email) {\n  if (!nombre.trim() || !email.includes('@')) return false;\n  return true;\n}\nconsole.log(validarContacto('Ana', 'ana@mail.com'), validarContacto('  ', 'ana@mail.com'));", prompt: '¿Qué imprime la consola?', options: ["'true false'", "'true true'", "'false false'", "'false true'"], answer: "'true false'" },
+        { code: "localStorage.setItem('tema', 'oscuro');\nfunction cargarTema() {\n  return localStorage.getItem('tema') === 'claro' ? 'claro' : 'oscuro';\n}\nconsole.log(cargarTema());", prompt: '¿Qué imprime la consola?', options: ["'oscuro'", "'claro'", 'null', 'undefined'], answer: "'oscuro'" }
       ]
     }
   }

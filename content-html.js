@@ -741,30 +741,37 @@ const HTML_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'html-28',
-    title: 'Introducción a Canvas',
+    title: 'Header y sección de inicio (hero)',
     subtitle: 'Nivel 28',
-    xp: 100,
-    type: 'quiz',
+    xp: 88,
+    type: 'order-builder',
     theory: {
       paragraphs: [
-        'La etiqueta <code>&lt;canvas&gt;</code> crea un lienzo en blanco donde se puede dibujar mediante JavaScript: formas, gráficos, animaciones e incluso juegos, píxel a píxel.',
-        'Por sí sola, <code>&lt;canvas&gt;</code> no dibuja nada; necesita atributos <code>width</code>/<code>height</code> y código JavaScript que use su <strong>contexto de dibujo</strong> para pintar sobre ella.'
+        'El <code>&lt;header&gt;</code> de un portafolio suele contener el nombre/logo y la navegación; justo debajo va la sección "hero" (<code>id="inicio"</code>), la primera que ve cualquier visitante: tu nombre, tu título profesional, y un enlace hacia tus proyectos o tu contacto.',
+        'Usar <code>&lt;header&gt;</code> y una sección con <code>id="inicio"</code> facilita enlazar el menú de navegación directamente a esa parte de la página con <code>&lt;a href="#inicio"&gt;</code>. A partir de este nivel vas a ir armando, pieza por pieza, tu propio portafolio.'
       ],
       code:
-        '<span class="tok-tag">&lt;canvas</span> <span class="tok-attr">id</span>=<span class="tok-string">"lienzo"</span> <span class="tok-attr">width</span>=<span class="tok-string">"300"</span> <span class="tok-attr">height</span>=<span class="tok-string">"150"</span><span class="tok-tag">&gt;&lt;/canvas&gt;</span>\n' +
-        '<span class="tok-comment">// const ctx = lienzo.getContext("2d");</span>'
+        '<span class="tok-tag">&lt;header&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;nav&gt;</span><span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-string">"#proyectos"</span><span class="tok-tag">&gt;</span>Proyectos<span class="tok-tag">&lt;/a&gt;&lt;/nav&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/header&gt;</span>\n' +
+        '<span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span>=<span class="tok-string">"inicio"</span><span class="tok-tag">&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;h1&gt;</span>Ana Torres<span class="tok-tag">&lt;/h1&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;p&gt;</span>Desarrolladora Frontend<span class="tok-tag">&lt;/p&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/section&gt;</span>'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre la etiqueta canvas.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Para qué se usa la etiqueta canvas?', options: ['Para dibujar gráficos y animaciones con JavaScript', 'Para insertar vídeos', 'Para crear formularios', 'Para mostrar tablas de datos'], answer: 'Para dibujar gráficos y animaciones con JavaScript' },
-        { prompt: '¿Qué se necesita además de la etiqueta canvas para poder dibujar algo?', options: ['JavaScript, usando su contexto de dibujo', 'Solo CSS', 'Un atributo src', 'Nada más, dibuja automáticamente'], answer: 'JavaScript, usando su contexto de dibujo' },
-        { prompt: '¿Qué atributos definen el tamaño del lienzo de canvas?', options: ['width y height', 'size y scale', 'w y h', 'rows y cols'], answer: 'width y height' },
-        { prompt: '¿Qué método se usa en JavaScript para obtener el contexto de dibujo 2D de un canvas?', options: ['getContext(&quot;2d&quot;)', 'getDrawing()', 'draw2d()', 'getCanvas()'], answer: 'getContext(&quot;2d&quot;)' }
-      ]
+      instructions: 'Ordena las piezas para construir el header y la sección de inicio de tu portafolio.',
+      items: [
+        { id: 'i1', code: '&lt;header&gt;' },
+        { id: 'i2', code: '&lt;nav&gt;&lt;a href="#proyectos"&gt;Proyectos&lt;/a&gt;&lt;/nav&gt;' },
+        { id: 'i3', code: '&lt;/header&gt;' },
+        { id: 'i4', code: '&lt;section id="inicio"&gt;' },
+        { id: 'i5', code: '&lt;h1&gt;Ana Torres&lt;/h1&gt;&lt;p&gt;Desarrolladora Frontend&lt;/p&gt;' },
+        { id: 'i6', code: '&lt;/section&gt;' }
+      ],
+      correctOrder: ['i1', 'i2', 'i3', 'i4', 'i5', 'i6']
     }
   },
   {
@@ -794,30 +801,31 @@ const HTML_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'html-30',
-    title: 'Microdatos y datos estructurados',
+    title: 'Sección "Sobre mí"',
     subtitle: 'Nivel 30',
-    xp: 105,
+    xp: 92,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'Los <strong>microdatos</strong> añaden significado extra al HTML para que los buscadores entiendan mejor el contenido, usando atributos como <code>itemscope</code>, <code>itemtype</code> e <code>itemprop</code>.',
-        'El vocabulario más usado es <strong>schema.org</strong>, que define tipos como "Person", "Recipe" o "Product". Google puede mostrar estos datos como resultados enriquecidos en la búsqueda.'
+        'La sección "Sobre mí" cuenta quién sos en un par de párrafos. Es un buen lugar para <code>&lt;section id="sobre-mi"&gt;</code> con un <code>&lt;h2&gt;</code> de título y uno o más <code>&lt;p&gt;</code> de contenido.',
+        'Si querés destacar un dato (años de experiencia, tu especialidad), <code>&lt;strong&gt;</code> es más apropiado que <code>&lt;b&gt;</code>: además de verse en negrita, le indica al lector de pantalla que ese texto tiene importancia real, no solo un estilo visual.'
       ],
       code:
-        '<span class="tok-tag">&lt;div</span> <span class="tok-attr">itemscope</span> <span class="tok-attr">itemtype</span>=<span class="tok-string">"https://schema.org/Person"</span><span class="tok-tag">&gt;</span>\n' +
-        '  <span class="tok-tag">&lt;span</span> <span class="tok-attr">itemprop</span>=<span class="tok-string">"name"</span><span class="tok-tag">&gt;</span>Ana Torres<span class="tok-tag">&lt;/span&gt;</span>\n' +
-        '<span class="tok-tag">&lt;/div&gt;</span>'
+        '<span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span>=<span class="tok-string">"sobre-mi"</span><span class="tok-tag">&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;h2&gt;</span>Sobre mí<span class="tok-tag">&lt;/h2&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;p&gt;</span>Soy <span class="tok-tag">&lt;strong&gt;</span>desarrolladora frontend<span class="tok-tag">&lt;/strong&gt;</span> con foco en interfaces accesibles.<span class="tok-tag">&lt;/p&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/section&gt;</span>'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre microdatos y datos estructurados.',
+      instructions: 'Responde estas preguntas sobre cómo construir la sección "Sobre mí" de tu portafolio.',
       variant: 'plain',
       questions: [
-        { prompt: '¿Para qué sirven los microdatos en HTML?', options: ['Para dar significado extra al contenido y ayudar a los buscadores a entenderlo', 'Para cambiar el estilo visual de la página', 'Para validar formularios', 'Para comprimir el HTML'], answer: 'Para dar significado extra al contenido y ayudar a los buscadores a entenderlo' },
-        { prompt: '¿Qué atributo indica que un elemento y sus hijos forman un grupo de datos estructurados?', options: ['itemscope', 'itemtype', 'itemprop', 'itemdata'], answer: 'itemscope' },
-        { prompt: '¿Qué vocabulario es el más usado para definir tipos de datos estructurados en la web?', options: ['schema.org', 'w3c.org', 'json.org', 'seo.org'], answer: 'schema.org' },
-        { prompt: '¿Qué beneficio puede traer usar datos estructurados correctamente?', options: ['Que Google muestre resultados enriquecidos en la búsqueda', 'Que la página cargue instantáneamente', 'Que no haga falta usar CSS', 'Que el sitio funcione sin JavaScript'], answer: 'Que Google muestre resultados enriquecidos en la búsqueda' }
+        { prompt: '¿Qué etiqueta es más apropiada para el título de la sección "Sobre mí" (siendo el h1 el nombre en el hero)?', options: ['h2', 'h6', 'span', 'b'], answer: 'h2' },
+        { prompt: '¿Por qué conviene usar &lt;strong&gt; en vez de &lt;b&gt; para resaltar un dato importante?', options: ['strong indica importancia semántica, además de verse en negrita', 'son exactamente iguales en todo sentido', 'b es la única etiqueta válida en HTML5', 'strong solo funciona dentro de un párrafo'], answer: 'strong indica importancia semántica, además de verse en negrita' },
+        { prompt: '¿Qué atributo permite que el menú de navegación enlace directamente a esta sección con #sobre-mi?', options: ['id="sobre-mi"', 'class="sobre-mi"', 'name="sobre-mi"', 'href="sobre-mi"'], answer: 'id="sobre-mi"' },
+        { prompt: '¿Cuántos párrafos como mínimo debería tener una sección "Sobre mí"?', options: ['Los que hagan falta para contar tu historia, no hay un número fijo', 'Exactamente uno, nunca más', 'Exactamente tres, siempre', 'Ninguno, solo encabezados'], answer: 'Los que hagan falta para contar tu historia, no hay un número fijo' }
       ]
     }
   },
@@ -962,31 +970,32 @@ const HTML_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'html-36',
-    title: 'API de geolocalización',
+    title: 'Sección de habilidades',
     subtitle: 'Nivel 36',
     xp: 118,
-    type: 'quiz',
+    type: 'fill-tags',
     theory: {
       paragraphs: [
-        'La <strong>API de Geolocalización</strong> del navegador permite obtener la ubicación aproximada del usuario desde JavaScript. No es una etiqueta HTML, sino una funcionalidad del navegador.',
-        'Por razones de privacidad, el navegador siempre pide permiso al usuario antes de compartir su ubicación, y solo funciona en páginas servidas por HTTPS (o localhost).'
+        'Una lista de habilidades (HTML, CSS, JavaScript, Git...) es, semánticamente, una lista sin orden particular: <code>&lt;ul&gt;</code> con un <code>&lt;li&gt;</code> por cada tecnología, dentro de una sección con <code>id="habilidades"</code>.',
+        'Cada <code>&lt;li&gt;</code> puede llevar una clase (por ejemplo <code>class="habilidad"</code>) para que CSS los convierta más adelante en "chips" o etiquetas visuales — la estructura HTML no cambia, solo se le agrega significado visual con CSS.'
       ],
       code:
-        '<span class="tok-comment">// Pide la ubicación del usuario:</span>\n' +
-        'navigator.geolocation.getCurrentPosition(posicion =&gt; {\n' +
-        '  console.log(posicion.coords.latitude, posicion.coords.longitude);\n' +
-        '});'
+        '<span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span>=<span class="tok-string">"habilidades"</span><span class="tok-tag">&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;h2&gt;</span>Habilidades<span class="tok-tag">&lt;/h2&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;ul&gt;</span>\n' +
+        '    <span class="tok-tag">&lt;li</span> <span class="tok-attr">class</span>=<span class="tok-string">"habilidad"</span><span class="tok-tag">&gt;</span>HTML<span class="tok-tag">&lt;/li&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;/ul&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/section&gt;</span>'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre la API de Geolocalización.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Desde dónde se usa la API de Geolocalización?', options: ['Desde JavaScript, con navigator.geolocation', 'Desde una etiqueta &lt;geo&gt; en HTML', 'Desde un atributo CSS', 'Desde el atributo lang del html'], answer: 'Desde JavaScript, con navigator.geolocation' },
-        { prompt: '¿Qué debe ocurrir antes de que una página pueda acceder a la ubicación del usuario?', options: ['El navegador debe pedir permiso al usuario', 'Nada, se obtiene automáticamente', 'El usuario debe escribir su dirección', 'Debe estar en una red wifi'], answer: 'El navegador debe pedir permiso al usuario' },
-        { prompt: '¿Bajo qué condición suele funcionar la API de Geolocalización por motivos de seguridad?', options: ['La página debe servirse por HTTPS (o localhost)', 'La página debe tener menos de 100 KB', 'El usuario debe tener JavaScript desactivado', 'La página debe estar en un iframe'], answer: 'La página debe servirse por HTTPS (o localhost)' },
-        { prompt: '¿Qué método se usa para obtener la posición actual del usuario?', options: ['navigator.geolocation.getCurrentPosition()', 'navigator.location.get()', 'document.geolocation()', 'window.getPosition()'], answer: 'navigator.geolocation.getCurrentPosition()' }
+      instructions: 'Elige la etiqueta o el atributo correcto en cada línea para completar la sección de habilidades.',
+      blanks: [
+        { id: 'b1', before: '&lt;section ', after: '="habilidades"&gt;', answer: 'id', options: ['id', 'class', 'name', 'data'] },
+        { id: 'b2', before: '&lt;', after: '&gt;Habilidades&lt;/h2&gt;', answer: 'h2', options: ['h2', 'h1', 'p', 'li'] },
+        { id: 'b3', before: '&lt;', after: '&gt; &lt;!-- lista de habilidades --&gt;', answer: 'ul', options: ['ul', 'ol', 'li', 'div'] },
+        { id: 'b4', before: '  &lt;', after: '&gt;JavaScript&lt;/li&gt;', answer: 'li', options: ['li', 'ul', 'td', 'span'] }
       ]
     }
   },
@@ -1017,30 +1026,37 @@ const HTML_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'html-38',
-    title: 'Web Components: custom elements',
+    title: 'Tarjetas de proyectos',
     subtitle: 'Nivel 38',
-    xp: 126,
-    type: 'quiz',
+    xp: 122,
+    type: 'order-builder',
     theory: {
       paragraphs: [
-        'Los <strong>Web Components</strong> permiten crear etiquetas HTML propias y reutilizables, como <code>&lt;mi-boton&gt;</code>, definidas con JavaScript mediante <code>customElements.define()</code>.',
-        'Un elemento personalizado siempre debe tener un <strong>guion</strong> en su nombre (como <code>tarjeta-usuario</code>) para diferenciarlo de las etiquetas nativas de HTML, que nunca lo llevan.'
+        'Cada proyecto de tu portafolio es contenido independiente y autocontenido — justo la definición de cuándo usar <code>&lt;article&gt;</code> en vez de un <code>&lt;div&gt;</code> genérico. Una tarjeta de proyecto típica tiene un título, una descripción breve, y un enlace para verlo.',
+        'Repetir esta misma estructura de <code>&lt;article&gt;</code> para cada proyecto (dentro de una sección con <code>id="proyectos"</code>) es justo el patrón que más adelante vas a automatizar con JavaScript, generando estas tarjetas desde una lista de datos en vez de escribirlas todas a mano.'
       ],
       code:
-        '<span class="tok-tag">&lt;tarjeta-usuario</span> <span class="tok-attr">nombre</span>=<span class="tok-string">"Ana"</span><span class="tok-tag">&gt;&lt;/tarjeta-usuario&gt;</span>\n' +
-        '<span class="tok-comment">// customElements.define("tarjeta-usuario", class extends HTMLElement { ... });</span>'
+        '<span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span>=<span class="tok-string">"proyectos"</span><span class="tok-tag">&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;article</span> <span class="tok-attr">class</span>=<span class="tok-string">"tarjeta-proyecto"</span><span class="tok-tag">&gt;</span>\n' +
+        '    <span class="tok-tag">&lt;h3&gt;</span>Mi Proyecto<span class="tok-tag">&lt;/h3&gt;</span>\n' +
+        '    <span class="tok-tag">&lt;p&gt;</span>Descripción breve.<span class="tok-tag">&lt;/p&gt;</span>\n' +
+        '    <span class="tok-tag">&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-string">"#"</span><span class="tok-tag">&gt;</span>Ver proyecto<span class="tok-tag">&lt;/a&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;/article&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/section&gt;</span>'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre Web Components y elementos personalizados.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué permiten crear los Web Components?', options: ['Etiquetas HTML propias y reutilizables', 'Solo animaciones CSS', 'Bases de datos en el navegador', 'Nuevos tipos de archivos de imagen'], answer: 'Etiquetas HTML propias y reutilizables' },
-        { prompt: '¿Qué regla obligatoria debe cumplir el nombre de un elemento personalizado?', options: ['Debe contener al menos un guion', 'Debe empezar con una letra mayúscula', 'Debe tener exactamente 5 letras', 'Debe empezar con la palabra custom'], answer: 'Debe contener al menos un guion' },
-        { prompt: '¿Con qué método de JavaScript se registra un nuevo elemento personalizado?', options: ['customElements.define()', 'document.createElement()', 'window.registerElement()', 'HTMLElement.new()'], answer: 'customElements.define()' },
-        { prompt: '¿Por qué las etiquetas nativas de HTML, como div o section, nunca llevan guion?', options: ['Para poder distinguirlas de los elementos personalizados definidos por el desarrollador', 'Porque el guion no es un carácter válido en HTML', 'Porque ralentizaría el navegador', 'Porque el guion se reserva para atributos'], answer: 'Para poder distinguirlas de los elementos personalizados definidos por el desarrollador' }
-      ]
+      instructions: 'Ordena las piezas para construir la sección de proyectos con una tarjeta.',
+      items: [
+        { id: 'i1', code: '&lt;section id="proyectos"&gt;' },
+        { id: 'i2', code: '&lt;article class="tarjeta-proyecto"&gt;' },
+        { id: 'i3', code: '&lt;h3&gt;Nombre del proyecto&lt;/h3&gt;' },
+        { id: 'i4', code: '&lt;p&gt;Descripción breve del proyecto.&lt;/p&gt;' },
+        { id: 'i5', code: '&lt;a href="#"&gt;Ver proyecto&lt;/a&gt;&lt;/article&gt;' },
+        { id: 'i6', code: '&lt;/section&gt;' }
+      ],
+      correctOrder: ['i1', 'i2', 'i3', 'i4', 'i5', 'i6']
     }
   },
   {
@@ -1069,29 +1085,34 @@ const HTML_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'html-40',
-    title: 'Drag and Drop API',
+    title: 'Sección de experiencia y educación',
     subtitle: 'Nivel 40',
-    xp: 134,
+    xp: 130,
     type: 'quiz',
     theory: {
       paragraphs: [
-        'La <strong>Drag and Drop API</strong> nativa del navegador permite arrastrar elementos y soltarlos en otro lugar de la página. Para que un elemento se pueda arrastrar, necesita el atributo <code>draggable="true"</code>.',
-        'El elemento donde se suelta debe escuchar el evento <code>drop</code>, y normalmente también <code>dragover</code> con <code>preventDefault()</code>, porque por defecto el navegador no permite soltar nada ahí.'
+        'La sección de experiencia/educación suele mostrarse como una lista cronológica: <code>&lt;ol&gt;</code> es más apropiado que <code>&lt;ul&gt;</code> cuando el orden importa, por ejemplo del puesto más reciente al más antiguo.',
+        'Cada puesto puede estructurarse con un <code>&lt;h3&gt;</code> para el cargo y un <code>&lt;time&gt;</code> para las fechas — <code>&lt;time&gt;</code> permite marcar la fecha en un formato que las máquinas (buscadores, calendarios) pueden interpretar, con el atributo <code>datetime</code>, aunque el texto visible sea otro.'
       ],
       code:
-        '<span class="tok-tag">&lt;div</span> <span class="tok-attr">draggable</span>=<span class="tok-string">"true"</span> <span class="tok-attr">id</span>=<span class="tok-string">"pieza"</span><span class="tok-tag">&gt;</span>Arrástrame<span class="tok-tag">&lt;/div&gt;</span>\n' +
-        '<span class="tok-comment">// zona.addEventListener("drop", manejarSoltar);</span>'
+        '<span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span>=<span class="tok-string">"experiencia"</span><span class="tok-tag">&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;h2&gt;</span>Experiencia<span class="tok-tag">&lt;/h2&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;ol&gt;</span>\n' +
+        '    <span class="tok-tag">&lt;li&gt;&lt;h3&gt;</span>Desarrolladora Frontend<span class="tok-tag">&lt;/h3&gt;</span>\n' +
+        '    <span class="tok-tag">&lt;time</span> <span class="tok-attr">datetime</span>=<span class="tok-string">"2023"</span><span class="tok-tag">&gt;</span>2023 - Actualidad<span class="tok-tag">&lt;/time&gt;&lt;/li&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;/ol&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/section&gt;</span>'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre la Drag and Drop API.',
+      instructions: 'Responde estas preguntas sobre la sección de experiencia y educación de tu portafolio.',
       variant: 'plain',
       questions: [
-        { prompt: '¿Qué atributo HTML hace que un elemento se pueda arrastrar?', options: ['draggable=&quot;true&quot;', 'drag=&quot;on&quot;', 'movable=&quot;true&quot;', 'drop=&quot;true&quot;'], answer: 'draggable=&quot;true&quot;' },
-        { prompt: '¿Qué evento debe manejar el elemento donde se suelta algo?', options: ['drop', 'dragend', 'dragstart', 'release'], answer: 'drop' },
-        { prompt: '¿Por qué normalmente hay que llamar a preventDefault() en el evento dragover?', options: ['Porque por defecto el navegador no permite soltar contenido en esa zona', 'Porque cancela el arrastre por completo', 'Porque borra el elemento arrastrado', 'Porque es un requisito solo en Firefox'], answer: 'Porque por defecto el navegador no permite soltar contenido en esa zona' },
-        { prompt: '¿La Drag and Drop API es parte del navegador o requiere una librería externa?', options: ['Es una API nativa del navegador, no requiere librerías', 'Requiere jQuery obligatoriamente', 'Solo funciona con una librería de terceros', 'Es parte de CSS, no de HTML'], answer: 'Es una API nativa del navegador, no requiere librerías' }
+        { prompt: '¿Qué etiqueta es más apropiada para una lista de experiencia laboral en orden cronológico?', options: ['ol', 'ul', 'dl', 'table'], answer: 'ol' },
+        { prompt: '¿Qué hace el atributo datetime de la etiqueta &lt;time&gt;?', options: ['Da una fecha en un formato que las máquinas pueden interpretar, aunque el texto visible sea distinto', 'Cambia el color del texto de la fecha', 'Es obligatorio, sin él <time> no funciona en absoluto', 'Solo sirve para la hora, nunca para años'], answer: 'Da una fecha en un formato que las máquinas pueden interpretar, aunque el texto visible sea distinto' },
+        { prompt: '¿Por qué conviene usar &lt;ol&gt; en vez de &lt;ul&gt; para una lista de experiencia laboral?', options: ['Porque el orden cronológico tiene significado real', 'Son exactamente intercambiables siempre, sin diferencia', 'ol solo admite números romanos', 'ul no permite más de 3 elementos'], answer: 'Porque el orden cronológico tiene significado real' },
+        { prompt: '¿Qué elemento sería razonable usar para el título del cargo dentro de cada ítem de la lista?', options: ['h3', 'h1', 'span sin ningún significado', 'button'], answer: 'h3' }
       ]
     }
   },
@@ -1222,85 +1243,98 @@ const HTML_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'html-46',
-    title: 'Internacionalización',
+    title: 'Formulario de contacto',
     subtitle: 'Nivel 46',
-    xp: 158,
-    type: 'quiz',
+    xp: 154,
+    type: 'fill-tags',
     theory: {
       paragraphs: [
-        'El atributo <code>lang</code> en <code>&lt;html&gt;</code> declara el idioma principal del documento (como <code>lang="es"</code>); también se puede usar en una etiqueta concreta para marcar un fragmento en otro idioma.',
-        'El atributo <code>dir</code> indica la dirección del texto: <code>ltr</code> (izquierda a derecha, por defecto) o <code>rtl</code> (derecha a izquierda), necesario para idiomas como el árabe o el hebreo.'
+        'Un formulario de contacto básico necesita al menos un campo de nombre, uno de correo (<code>type="email"</code>, que valida el formato automáticamente) y un <code>&lt;textarea&gt;</code> para el mensaje, cada uno con su <code>&lt;label&gt;</code> asociado por <code>for</code>/<code>id</code>.',
+        'No olvides el botón de envío, <code>&lt;button type="submit"&gt;</code>, dentro de un <code>&lt;form&gt;</code> — más adelante, en el módulo de JavaScript, vas a interceptar ese envío para validar los datos antes de mandarlos.'
       ],
       code:
-        '<span class="tok-tag">&lt;html</span> <span class="tok-attr">lang</span>=<span class="tok-string">"es"</span><span class="tok-tag">&gt;</span>\n' +
-        '<span class="tok-tag">&lt;p</span> <span class="tok-attr">lang</span>=<span class="tok-string">"en"</span><span class="tok-tag">&gt;</span>Welcome<span class="tok-tag">&lt;/p&gt;</span>\n' +
-        '<span class="tok-tag">&lt;html</span> <span class="tok-attr">dir</span>=<span class="tok-string">"rtl"</span><span class="tok-tag">&gt;</span>'
+        '<span class="tok-tag">&lt;form</span> <span class="tok-attr">id</span>=<span class="tok-string">"contacto"</span><span class="tok-tag">&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;label</span> <span class="tok-attr">for</span>=<span class="tok-string">"nombre"</span><span class="tok-tag">&gt;</span>Nombre<span class="tok-tag">&lt;/label&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;input</span> <span class="tok-attr">type</span>=<span class="tok-string">"text"</span> <span class="tok-attr">id</span>=<span class="tok-string">"nombre"</span><span class="tok-tag">&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;label</span> <span class="tok-attr">for</span>=<span class="tok-string">"mensaje"</span><span class="tok-tag">&gt;</span>Mensaje<span class="tok-tag">&lt;/label&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;textarea</span> <span class="tok-attr">id</span>=<span class="tok-string">"mensaje"</span><span class="tok-tag">&gt;&lt;/textarea&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;button</span> <span class="tok-attr">type</span>=<span class="tok-string">"submit"</span><span class="tok-tag">&gt;</span>Enviar<span class="tok-tag">&lt;/button&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/form&gt;</span>'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre internacionalización con lang y dir.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué declara el atributo lang en la etiqueta html?', options: ['El idioma principal del documento', 'El país del servidor', 'La codificación de caracteres', 'El tamaño de fuente por defecto'], answer: 'El idioma principal del documento' },
-        { prompt: '¿Qué valor de dir se usa para idiomas que se escriben de derecha a izquierda, como el árabe?', options: ['rtl', 'ltr', 'rev', 'reverse'], answer: 'rtl' },
-        { prompt: '¿Por qué es útil declarar lang correctamente?', options: ['Ayuda a lectores de pantalla a pronunciar bien el texto y mejora el SEO', 'Cambia automáticamente los colores del sitio', 'Es obligatorio para que el CSS funcione', 'Acelera la carga de las imágenes'], answer: 'Ayuda a lectores de pantalla a pronunciar bien el texto y mejora el SEO' },
-        { prompt: '¿Qué valor tiene dir por defecto si no se especifica?', options: ['ltr', 'rtl', 'auto', 'none'], answer: 'ltr' }
+      instructions: 'Completa la etiqueta o el atributo que falta en cada línea del formulario de contacto.',
+      blanks: [
+        { id: 'b1', before: '&lt;input ', after: '="email" id="email"&gt;', answer: 'type', options: ['type', 'name', 'id', 'for'] },
+        { id: 'b2', before: '&lt;label ', after: '="mensaje"&gt;Mensaje&lt;/label&gt;', answer: 'for', options: ['for', 'id', 'name', 'target'] },
+        { id: 'b3', before: '&lt;', after: ' id="mensaje"&gt;&lt;/textarea&gt;', answer: 'textarea', options: ['textarea', 'input', 'section', 'p'] },
+        { id: 'b4', before: '&lt;button ', after: '="submit"&gt;Enviar&lt;/button&gt;', answer: 'type', options: ['type', 'name', 'id', 'value'] }
       ]
     }
   },
-  {
+    {
     id: 'html-47',
-    title: 'Validación W3C y estándares web',
+    title: 'Footer con redes sociales',
     subtitle: 'Nivel 47',
-    xp: 162,
-    type: 'quiz',
+    xp: 158,
+    type: 'order-builder',
     theory: {
       paragraphs: [
-        'El <strong>validador del W3C</strong> revisa que un documento HTML cumpla con las reglas oficiales del estándar: etiquetas bien cerradas, atributos válidos, anidamiento correcto, etc.',
-        'Un HTML inválido puede seguir funcionando (los navegadores son tolerantes con errores), pero validar el código ayuda a evitar bugs difíciles de detectar y a que el sitio se comporte igual en distintos navegadores.'
+        'El <code>&lt;footer&gt;</code> suele cerrar la página con información de copyright y enlaces a tus redes profesionales (GitHub, LinkedIn). Cada enlace externo debería abrir en una pestaña nueva con <code>target="_blank"</code>, y por seguridad llevar además <code>rel="noopener noreferrer"</code>.',
+        'Una lista <code>&lt;ul&gt;</code> de enlaces dentro de <code>&lt;footer&gt;</code> es una estructura simple y semánticamente correcta para esto — el mismo patrón que ya usaste para la navegación y las habilidades.'
       ],
       code:
-        '<span class="tok-comment">&lt;!-- HTML inválido: falta cerrar la etiqueta --&gt;</span>\n' +
-        '<span class="tok-tag">&lt;p&gt;</span>Texto sin cerrar\n\n' +
-        '<span class="tok-comment">&lt;!-- HTML válido --&gt;</span>\n' +
-        '<span class="tok-tag">&lt;p&gt;</span>Texto correcto<span class="tok-tag">&lt;/p&gt;</span>'
+        '<span class="tok-tag">&lt;footer&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;ul&gt;</span>\n' +
+        '    <span class="tok-tag">&lt;li&gt;&lt;a</span> <span class="tok-attr">href</span>=<span class="tok-string">"https://github.com/..."</span> <span class="tok-attr">target</span>=<span class="tok-string">"_blank"</span> <span class="tok-attr">rel</span>=<span class="tok-string">"noopener noreferrer"</span><span class="tok-tag">&gt;</span>GitHub<span class="tok-tag">&lt;/a&gt;&lt;/li&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;/ul&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;p&gt;</span>&amp;copy; 2026 Ana Torres<span class="tok-tag">&lt;/p&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/footer&gt;</span>'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre validación W3C y estándares web.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Qué revisa el validador HTML del W3C?', options: ['Que el documento cumpla con las reglas oficiales del estándar HTML', 'La velocidad de carga del sitio', 'El diseño visual de la página', 'Los colores usados en el CSS'], answer: 'Que el documento cumpla con las reglas oficiales del estándar HTML' },
-        { prompt: '¿Qué suele pasar si el HTML tiene errores mínimos, como una etiqueta mal cerrada?', options: ['El navegador suele tolerarlo e intenta corregirlo al mostrarlo', 'La página deja de cargar por completo', 'Se borra automáticamente el archivo', 'El navegador la reemplaza por una página en blanco'], answer: 'El navegador suele tolerarlo e intenta corregirlo al mostrarlo' },
-        { prompt: '¿Qué ventaja tiene validar el HTML aunque el navegador tolere errores?', options: ['Ayuda a evitar bugs difíciles de detectar y mejora la compatibilidad entre navegadores', 'Hace que el sitio use menos memoria RAM', 'Es obligatorio para publicar en internet', 'Cambia automáticamente el diseño a uno responsive'], answer: 'Ayuda a evitar bugs difíciles de detectar y mejora la compatibilidad entre navegadores' },
-        { prompt: '¿Quién es la organización que define los estándares oficiales de HTML junto con WHATWG?', options: ['W3C', 'ISO', 'IEEE', 'ICANN'], answer: 'W3C' }
-      ]
+      instructions: 'Ordena las piezas para construir el footer con enlaces a redes sociales.',
+      items: [
+        { id: 'i1', code: '&lt;footer&gt;' },
+        { id: 'i2', code: '&lt;ul&gt;' },
+        { id: 'i3', code: '&lt;li&gt;&lt;a href="https://github.com/..." target="_blank" rel="noopener noreferrer"&gt;GitHub&lt;/a&gt;&lt;/li&gt;' },
+        { id: 'i4', code: '&lt;/ul&gt;' },
+        { id: 'i5', code: '&lt;p&gt;&amp;copy; 2026 Ana Torres&lt;/p&gt;&lt;/footer&gt;' }
+      ],
+      correctOrder: ['i1', 'i2', 'i3', 'i4', 'i5']
     }
   },
-  {
+    {
     id: 'html-48',
-    title: 'Testing y depuración de HTML',
+    title: 'Uniendo todas las secciones',
     subtitle: 'Nivel 48',
-    xp: 165,
-    type: 'quiz',
+    xp: 162,
+    type: 'order-builder',
     theory: {
       paragraphs: [
-        'Las <strong>herramientas para desarrolladores</strong> del navegador (se abren con F12 o clic derecho → "Inspeccionar") permiten ver el HTML real de la página, modificarlo temporalmente y comprobar cambios al instante.',
-        'La pestaña <em>Elements</em> (o Inspector) muestra el DOM, la pestaña <em>Console</em> muestra errores y mensajes, y la pestaña <em>Network</em> muestra qué recursos se cargaron y cuánto tardaron.'
+        'Ya construiste cada sección por separado: header/hero, sobre mí, habilidades, proyectos, experiencia y contacto/footer. En un portafolio real, todas viven una debajo de la otra dentro de <code>&lt;body&gt;</code>, siguiendo este orden lógico.',
+        'Este orden no es aleatorio: sigue el recorrido natural de un visitante — primero te conoce (inicio, sobre mí), después ve qué sabés hacer (habilidades, proyectos, experiencia), y por último cómo contactarte.'
       ],
       code:
-        '<span class="tok-comment">// Atajo para abrir las herramientas de desarrollador:</span>\n' +
-        '<span class="tok-comment">// F12 (o Ctrl+Shift+I / Cmd+Option+I en Mac)</span>'
+        '<span class="tok-tag">&lt;body&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;header&gt;</span>...<span class="tok-tag">&lt;/header&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;section</span> <span class="tok-attr">id</span>=<span class="tok-string">"inicio"</span><span class="tok-tag">&gt;</span>...<span class="tok-tag">&lt;/section&gt;</span>\n' +
+        '  <span class="tok-comment">&lt;!-- sobre-mi, habilidades, proyectos, experiencia, contacto --&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;footer&gt;</span>...<span class="tok-tag">&lt;/footer&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/body&gt;</span>'
     },
     exercise: {
-      instructions: 'Responde estas preguntas sobre testing y depuración de HTML.',
-      variant: 'plain',
-      questions: [
-        { prompt: '¿Cómo se suelen abrir las herramientas de desarrollador en un navegador de escritorio?', options: ['Con la tecla F12 o clic derecho → Inspeccionar', 'Escribiendo devtools en la barra de direcciones', 'Solo desde el menú de configuración del sistema operativo', 'No se pueden abrir en HTML, solo en apps nativas'], answer: 'Con la tecla F12 o clic derecho → Inspeccionar' },
-        { prompt: '¿Qué pestaña de las herramientas de desarrollador muestra el DOM, la estructura HTML real de la página?', options: ['Elements (o Inspector)', 'Console', 'Network', 'Sources'], answer: 'Elements (o Inspector)' },
-        { prompt: '¿Para qué sirve la pestaña Network de las herramientas de desarrollador?', options: ['Para ver qué recursos se cargaron y cuánto tardaron', 'Para editar el CSS de forma permanente', 'Para escribir comentarios en el HTML', 'Para cambiar el idioma del navegador'], answer: 'Para ver qué recursos se cargaron y cuánto tardaron' },
-        { prompt: '¿Los cambios que haces en el HTML desde el inspector del navegador se guardan en el archivo original?', options: ['No, son temporales y desaparecen al recargar la página', 'Sí, se guardan automáticamente', 'Solo si tienes conexión a internet', 'Sí, pero solo en modo incógnito'], answer: 'No, son temporales y desaparecen al recargar la página' }
-      ]
+      instructions: 'Ordena las secciones tal como deberían aparecer, de arriba a abajo, en tu portafolio.',
+      items: [
+        { id: 'i1', code: 'Header con navegación' },
+        { id: 'i2', code: 'Sección #inicio (hero: nombre y título)' },
+        { id: 'i3', code: 'Sección #sobre-mi' },
+        { id: 'i4', code: 'Sección #habilidades' },
+        { id: 'i5', code: 'Sección #proyectos' },
+        { id: 'i6', code: 'Sección #experiencia' },
+        { id: 'i7', code: 'Sección #contacto y footer' }
+      ],
+      correctOrder: ['i1', 'i2', 'i3', 'i4', 'i5', 'i6', 'i7']
     }
   },
   {
@@ -1334,35 +1368,41 @@ const HTML_LEVELS = [
       ]
     }
   },
-  {
+    {
     id: 'html-50',
-    title: 'Proyecto integrador',
+    title: 'Proyecto integrador: tu portafolio en HTML',
     subtitle: 'Nivel 50',
     xp: 170,
     type: 'order-builder',
     theory: {
       paragraphs: [
-        'Has llegado al último nivel del módulo de HTML5. Es hora de repasar todo lo aprendido: estructura del documento, etiquetas semánticas, formularios, accesibilidad y buenas prácticas, todo junto en una sola página.',
-        'Una página bien construida combina metadatos correctos en <code>&lt;head&gt;</code>, una estructura semántica clara en <code>&lt;body&gt;</code> y recursos externos bien enlazados.'
+        'Llegaste al final del módulo de HTML. Con todo lo aprendido —desde etiquetas básicas hasta formularios, accesibilidad y SEO— ya podés construir la estructura completa de tu portafolio personal: un currículum vivo en la web, con tu información, tus proyectos y una forma de contactarte.',
+        'Este proyecto integrador arma el esqueleto completo, de punta a punta. En los módulos de CSS y JavaScript vas a retomar este mismo portafolio para darle estilo e interactividad — así que esta estructura es la base de todo lo que sigue.'
       ],
       code:
         '<span class="tok-tag">&lt;!DOCTYPE html&gt;</span>\n' +
         '<span class="tok-tag">&lt;html</span> <span class="tok-attr">lang</span>=<span class="tok-string">"es"</span><span class="tok-tag">&gt;</span>\n' +
         '<span class="tok-tag">&lt;head&gt;</span>...<span class="tok-tag">&lt;/head&gt;</span>\n' +
-        '<span class="tok-tag">&lt;body&gt;</span>...<span class="tok-tag">&lt;/body&gt;</span>\n' +
+        '<span class="tok-tag">&lt;body&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;header&gt;</span>...<span class="tok-tag">&lt;/header&gt;</span>\n' +
+        '  <span class="tok-comment">&lt;!-- inicio, sobre-mi, habilidades, proyectos, experiencia, contacto --&gt;</span>\n' +
+        '  <span class="tok-tag">&lt;footer&gt;</span>...<span class="tok-tag">&lt;/footer&gt;</span>\n' +
+        '<span class="tok-tag">&lt;/body&gt;</span>\n' +
         '<span class="tok-tag">&lt;/html&gt;</span>'
     },
     exercise: {
-      instructions: 'Toca las piezas en el orden correcto para construir una página completa de principio a fin.',
+      instructions: 'Ordena las piezas para armar tu portafolio completo, de principio a fin.',
       items: [
-        { id: 'doctype', code: '&lt;!DOCTYPE html&gt;' },
-        { id: 'html-open', code: '&lt;html lang="es"&gt;' },
-        { id: 'head-block', code: '&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Mi proyecto&lt;/title&gt;&lt;link rel="stylesheet" href="estilos.css"&gt;&lt;/head&gt;' },
-        { id: 'body-header', code: '&lt;body&gt;&lt;header&gt;&lt;h1&gt;Mi proyecto&lt;/h1&gt;&lt;nav&gt;...&lt;/nav&gt;&lt;/header&gt;' },
-        { id: 'body-main', code: '&lt;main&gt;&lt;section&gt;Contenido principal&lt;/section&gt;&lt;/main&gt;' },
-        { id: 'body-footer', code: '&lt;footer&gt;Contacto&lt;/footer&gt;&lt;script src="app.js" defer&gt;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;' }
+        { id: 'i1', code: '&lt;!DOCTYPE html&gt;&lt;html lang="es"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Ana Torres · Portafolio&lt;/title&gt;&lt;/head&gt;' },
+        { id: 'i2', code: '&lt;body&gt;&lt;header&gt;&lt;nav&gt;...&lt;/nav&gt;&lt;/header&gt;' },
+        { id: 'i3', code: '&lt;section id="inicio"&gt;&lt;h1&gt;Ana Torres&lt;/h1&gt;&lt;/section&gt;' },
+        { id: 'i4', code: '&lt;section id="sobre-mi"&gt;...&lt;/section&gt;' },
+        { id: 'i5', code: '&lt;section id="habilidades"&gt;...&lt;/section&gt;' },
+        { id: 'i6', code: '&lt;section id="proyectos"&gt;...&lt;/section&gt;' },
+        { id: 'i7', code: '&lt;section id="experiencia"&gt;...&lt;/section&gt;' },
+        { id: 'i8', code: '&lt;section id="contacto"&gt;...&lt;/section&gt;&lt;footer&gt;...&lt;/footer&gt;&lt;/body&gt;&lt;/html&gt;' }
       ],
-      correctOrder: ['doctype', 'html-open', 'head-block', 'body-header', 'body-main', 'body-footer']
+      correctOrder: ['i1', 'i2', 'i3', 'i4', 'i5', 'i6', 'i7', 'i8']
     }
   }
 ];
