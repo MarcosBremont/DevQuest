@@ -2,6 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <script>
+    /* Google Sign-In y el service worker exigen HTTPS: si alguien entra por http://
+       (excepto en localhost) lo redirigimos a la misma URL con https://. */
+    if (location.protocol === 'http:' && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+      location.replace('https://' + location.host + location.pathname + location.search + location.hash);
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
   <title>DevQuest · Aprende a programar</title>
   <meta name="description" content="DevQuest: aprende HTML, CSS y JavaScript jugando, con progreso guardado y soporte offline.">
